@@ -1,5 +1,5 @@
 # RodSiaAPI
 
-MongoDB
-username: admin
-password: 1234
+MongoDB\n
+username: admin\n
+password: 1234\n
