@@ -1,7 +1,9 @@
 require('dotenv').config();
 
-//import mongoose
+//import mongoose and express
 const mongoose = require('mongoose');
+const express = require('express')
+const app = express()
 
 //establish connection to database
 mongoose.connect(
@@ -13,4 +15,9 @@ mongoose.connect(
     }
 );
 
+app.use(express.json())
+
+const listener = app.listen(process.env.PORT || 3000, () => {
+    console.log('App is listening on port ' + listener.address().port)
+})
  
