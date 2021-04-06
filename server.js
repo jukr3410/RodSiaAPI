@@ -1,9 +1,28 @@
 require('dotenv').config();
 
-//import mongoose and express
-const mongoose = require('mongoose');
-const express = require('express')
-const app = express()
+//initializes
+const express = require("express");
+const app = express();
+const mongoose = require("mongoose");
+const path = require("path");
+
+app.use(express.json()); // parses incoming requests with JSON payloads
+
+
+const listener = app.listen(process.env.PORT || 3000, () => {
+    console.log('App is listening on port ' + listener.address().port)
+})
+
+
+//routes
+const productRoute = require("./routes/product");
+const cartRoute = require("./routes/cart");
+const userRoute = require("./routes/user");
+
+//routes middleware
+app.use("/products", productRoute);
+app.use("/carts", cartRoute);
+app.use("/users", userRoute);
 
 //establish connection to database
 mongoose.connect(
@@ -21,3 +40,6 @@ const listener = app.listen(process.env.PORT || 3000, () => {
     console.log('App is listening on port ' + listener.address().port)
 })
  
+
+
+module.exports = app;
