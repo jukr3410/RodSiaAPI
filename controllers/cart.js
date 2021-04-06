@@ -68,9 +68,9 @@ module.exports.addCart = (req,res) => {
           date:req.body.date,
           products:req.body.products
         })
-        // cart.save()
-        //   .then(cart => res.json(cart))
-        //   .catch(err => console.log(err))
+        cart.save()
+          .then(cart => res.json(cart))
+          .catch(err => console.log(err))
 
         res.json(cart)
       })

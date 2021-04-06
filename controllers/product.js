@@ -73,9 +73,9 @@ module.exports.addProduct = (req, res) => {
           image: req.body.image,
           category: req.body.category,
         });
-        // product.save()
-        //   .then(product => res.json(product))
-        //   .catch(err => console.log(err))
+        product.save()
+          .then(product => res.json(product))
+          .catch(err => console.log(err))
         res.json(product);
       });
   }
