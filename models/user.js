@@ -6,11 +6,14 @@ const userSchema = new schema({
         type:Number,
         required:true
     },
-    email:{
+    name:{
         type:String,
-        required:true
+        required:true       
     },
-    username:{
+    email:{
+        type:String
+    },
+    phone:{
         type:String,
         required:true
     },
@@ -18,27 +21,14 @@ const userSchema = new schema({
         type:String,
         required:true
     },
-    name:{
-        firstname:{
-            type:String,
-            required:true
-        },
-        lastname:{
-            type:String,
-            required:true
-        }
+    geolocation:{
+        lat:String,
+        long:String
     },
-    address:{
-        city:String,
-        street:String,
-        number:Number,
-        zipcode:String,
-        geolocation:{
-            lat:String,
-            long:String
-        }
-    },
-    phone:String
+    cars:[{
+        lat:String,
+        long:String
+    }]
 })
 
 module.exports = mongoose.model('user',userSchema)
