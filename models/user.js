@@ -8,7 +8,7 @@ const userSchema = new schema({
     },
     name:{
         type:String,
-        required:true       
+        required:true
     },
     email:{
         type:String
@@ -26,8 +26,10 @@ const userSchema = new schema({
         long:String
     },
     cars:[{
-        lat:String,
-        long:String
+        brand:String,
+        model:String,
+        type:String,
+        year:String
     }]
 })
 

@@ -15,13 +15,9 @@ const listener = app.listen(process.env.PORT || 3000, () => {
 
 
 //routes
-const productRoute = require("./routes/product");
-const cartRoute = require("./routes/cart");
 const userRoute = require("./routes/user");
 
 //routes middleware
-app.use("/products", productRoute);
-app.use("/carts", cartRoute);
 app.use("/users", userRoute);
 
 //establish connection to database

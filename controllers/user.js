@@ -42,24 +42,22 @@ module.exports.addUser = (req, res) => {
       .then(() => {
         const user = new User({
           id: userCount + 1,
-      email:req.body.email,
-      username:req.body.username,
-      password:req.body.password,
-      name:{
-          firstname:req.body.name.firstname,
-          lastname:req.body.name.lastname
-      },
-      address:{
-          city:req.body.address.city,
-          street:req.body.address.street,
-          number:req.body.address.number,
-          zipcode:req.body.address.zipcode,
+          name:req.body.name,
+          email:req.body.email,
+          phone:req.body.phone,
+          password:req.body.password,
           geolocation:{
-              lat:req.body.address.geolocation.lat,
-              long:req.body.address.geolocation.long
-          }
-      },
-      phone:req.body.phone
+            lat:req.body.geolocation.lat,
+            long:req.body.geolocation.long
+          },
+          cars:[
+            {
+              brand:req.body.cars[0].brand,
+              model:req.body.cars[0].model,
+              type:req.body.cars[0].type,
+              year:req.body.cars[0].year
+            }
+          ]
         })
         user.save()
           .then(user => res.json(user))
@@ -83,25 +81,23 @@ module.exports.editUser = (req, res) => {
     })
   } else {
     res.json({
-      id: req.params.id,
-      email:req.body.email,
-      username:req.body.username,
-      password:req.body.password,
-      name:{
-          firstname:req.body.firstname,
-          lastname:req.body.lastname
-      },
-      address:{
-          city:req.body.address.city,
-          street:req.body.address.street,
-          number:req.body.number,
-          zipcode:req.body.zipcode,
+      id: userCount + 1,
+          name:req.body.name,
+          email:req.body.email,
+          phone:req.body.phone,
+          password:req.body.password,
           geolocation:{
-              lat:req.body.geolocation.lat,
-              long:req.body.geolocation.long
-          }
-      },
-      phone:req.body.phone
+            lat:req.body.geolocation.lat,
+            long:req.body.geolocation.long
+          },
+          cars:[
+            {
+              brand:req.body.cars.brand,
+              model:req.body.cars.model,
+              type:req.body.cars.type,
+              year:req.body.cars.year
+            }
+          ]
     })
   }
 }
