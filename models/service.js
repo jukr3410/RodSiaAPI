@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
-const schema = mongoose.Schema
+const Schema = mongoose.Schema
 const Garages = require('./garages')
+ObjectId = Schema.Types;
 
 const servicesSchema = new schema({
     id:{
@@ -12,14 +13,13 @@ const servicesSchema = new schema({
         required:true
     },
     serviceType:[{
-        type:String,
+        type:mongoose.Schema.Types.ObjectId, 
+        ref: 'serviceType',
         require:true
     }],
-    garages:{
-        garagesId:{
-        type:schema.Types.Number,
+    garage:{
+        type:Schema.Types.Number,
         ref:Garages
-       }
     }
 })
 

@@ -1,9 +1,9 @@
 const mongoose = require('mongoose')
 const Services = require('./service')
 
-const schema = mongoose.Schema
+const Schema = mongoose.Schema
 
-const garagesSchema = new schema({
+const garagesSchema = new Schema({
     id:{
         type:Number,
         required:true
