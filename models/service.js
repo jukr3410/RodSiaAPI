@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 var mongoosastic=require("mongoosastic");
 const Garage = require('./garage');
+const ServiceType = require('./serviceType');
 ObjectId = Schema.Types;
 
 const servicesSchema = new Schema({
@@ -17,7 +18,7 @@ const servicesSchema = new Schema({
 
     serviceType:[{
         type:Schema.Types.Number, 
-        ref: 'ServiceType',
+        ref: ServiceType,
         require:true
     }],
     garage:{
