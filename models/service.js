@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const schema = mongoose.Schema
-const Garages = require('./garages')
+const Garages = require('./garage')
 
 const servicesSchema = new schema({
     id:{
@@ -11,10 +11,10 @@ const servicesSchema = new schema({
         type:String,
         required:true
     },
-    serviceType:[{
+    serviceType:{
         type:String,
         require:true
-    }],
+    },
     garages:[{
         garagesId:{
         type:schema.Types.Number,
@@ -23,4 +23,4 @@ const servicesSchema = new schema({
     }]
 })
 
-module.exports = mongoose.model('services',servicesSchema)
+module.exports = mongoose.model('service',servicesSchema)
