@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const Services = require('./service')
+const Services = require('./services')
 
 const schema = mongoose.Schema
 
@@ -30,23 +30,23 @@ const garagesSchema = new schema({
     services:[{
         serviceId:{
             type:schema.Types.Number,
-            ref:Service,
+            ref:Services,
             required:true
         }
     }],
     address:{
         addressDesc:{
-            type:String
+            type:String,
+            required:true
         },
         geolocation:{
             lat:String,
             long:String,
         }
     },
-    images:[
-        String
+    images:[String
     ]
 
 })
 
-module.exports = mongoose.model('garage',garagesSchema)
+module.exports = mongoose.model('garages',garagesSchema)
