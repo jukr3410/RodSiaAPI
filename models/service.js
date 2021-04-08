@@ -15,12 +15,12 @@ const servicesSchema = new schema({
         type:String,
         require:true
     }],
-    garages:[{
+    garages:{
         garagesId:{
         type:schema.Types.Number,
         ref:Garages
        }
-    }]
+    }
 })
 
-module.exports = mongoose.model('services',servicesSchema)
+module.exports = mongoose.model('service',servicesSchema)

@@ -27,13 +27,6 @@ const garagesSchema = new schema({
         type:Boolean,
         required:true
     },
-    services:[{
-        serviceId:{
-            type:schema.Types.Number,
-            ref:Services,
-            required:true
-        }
-    }],
     address:{
         addressDesc:{
             type:String
