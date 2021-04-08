@@ -44,9 +44,7 @@ const garagesSchema = new schema({
             long:String,
         }
     },
-    images:[String
-    ]
-
+    images:[String]
 })
 
 module.exports = mongoose.model('garages',garagesSchema)
