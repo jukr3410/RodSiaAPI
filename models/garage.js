@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-const Services = require('./service')
 
 const Schema = mongoose.Schema
 
@@ -42,4 +41,4 @@ const garagesSchema = new Schema({
 
 })
 
-module.exports = mongoose.model('garage',garagesSchema)
+module.exports = mongoose.model('Garage',garagesSchema)

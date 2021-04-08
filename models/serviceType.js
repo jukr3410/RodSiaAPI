@@ -9,4 +9,4 @@ const serviceTypeSchema = new Schema({
     }
 });
 
-module.exports = mongoose.model('serviceType', serviceTypeSchema);
+module.exports = mongoose.model('ServiceType', serviceTypeSchema);
