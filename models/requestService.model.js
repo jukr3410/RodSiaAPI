@@ -1,9 +1,9 @@
 const mongoose = require('mongoose')
-const schema = mongoose.Schema
-const User = require('./user')
-const Service = require('./service')
+const Schema = mongoose.Schema
+const User = require('./user.model')
+const Service = require('./service.model')
 
-const RequestServiceSchema = new schema({
+const RequestServiceSchema = new Schema({
     id:{
         type:Number,
         required:true
@@ -29,4 +29,4 @@ const RequestServiceSchema = new schema({
     
 
 })
-module.exports = mongoose.model('requestService',RequestServiceSchema)
+module.exports = mongoose.model('RequestService',RequestServiceSchema)

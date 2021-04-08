@@ -1,10 +1,10 @@
 const mongoose = require('mongoose')
-const Garage = require('./garage') 
+const Garage = require('./garage.model') 
 
 
-const schema = mongoose.Schema
+const Schema = mongoose.Schema
 
-const reviewSchema = new schema({
+const reviewSchema = new Schema({
     id:{
         type:Number,
         required:true
@@ -20,10 +20,10 @@ const reviewSchema = new schema({
         required:true
     },
     garagesId:{
-        type:schema.Types.Number,
+        type:Schema.Types.Number,
         ref:Garage,
-        required:true       
+        required:true
     }
     
 })
-module.exports = mongoose.model('review',reviewSchema)
+module.exports = mongoose.model('Review',reviewSchema)

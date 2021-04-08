@@ -1,4 +1,4 @@
-const User = require('../models/user')
+const User = require('../models/user.model')
 
 module.exports.getAllUser = (req, res) => {
   const limit = Number(req.query.limit) || 0

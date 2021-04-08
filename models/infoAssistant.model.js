@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
-const schema = mongoose.Schema
+const Schema = mongoose.Schema
 
-const infoAssistantSchema = new schema({
+const infoAssistantSchema = new Schema({
     id:{
         type:Number,
         required:true
@@ -17,4 +17,4 @@ const infoAssistantSchema = new schema({
     images:[String]
 
 })
-module.exports = mongoose.model('infoAssistant',infoAssistantSchema)
+module.exports = mongoose.model('InfoAssistant',infoAssistantSchema)
