@@ -16,7 +16,7 @@ const servicesSchema = new Schema({
     },
 
     serviceType:[{
-        type:mongoose.Schema.Types.ObjectId, 
+        type:Schema.Types.Number, 
         ref: 'ServiceType',
         require:true
     }],
