@@ -42,10 +42,16 @@ MongoDbConfig.configure()
 
             // render the error page
             res.status(err.status || 500);
-            res.json(AppResponseDto.buildWithErrorMessages('Something went wrong 5xx ' + err));
+            res.json({
+                error: {
+                    status: statusCode,
+                    message: err.message
+                }
+            });
+            //res.json(AppResponseDto.buildWithErrorMessages('Something went wrong 5xx ' + err));
         });
 
-        
+
     })
     .catch((err) => {
         throw err;
