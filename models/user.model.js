@@ -5,42 +5,43 @@ const secret = process.env.JWT_SECRET || 'JWT_SUPER_SECRET';
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-    id:{
+    id: {
         type:Number,
         required:[true, "can't be blank"]
     },
-    name:{
+    name: {
         type:String,
         required:[true, "can't be blank"]
     },
-    email:{
+    email: {
         type:String,
         lowercase: true,
         match: [/\S+@\S+\.\S+/, 'is invalid']
     },
-    phone:{
+    phone: {
         type:String,
         required:[true, "can't be blank"],
         unique: true,
         match: [/^[0-9]+$/, 'is invalid'],
         index: true
     },
-    password:{
+    password: {
         type:String,
         required:true
     },
-    geolocation:{
+    geolocation: {
         lat:String,
         long:String
     },
-    cars:[{
+    cars: [{
         brand:String,
         model:String,
         type:String,
         year:String
     }],
 
-    
+    reviews: [{type: Schema.Types.ObjectId, ref: 'Review'}],
+    requestservices: [{type: Schema.Types.ObjectId, ref: 'RequestService'}]
 
 });
 
