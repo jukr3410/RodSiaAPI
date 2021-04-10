@@ -1,14 +1,14 @@
 const mongoose = require('mongoose')
-const Garage = require('./garage.model') 
+
 
 
 const Schema = mongoose.Schema
 
 const reviewSchema = new Schema({
    
-    requestId:{
-        type:schema.Types.Number,
-        ref:RequestService,
+    request:{
+        type:Schema.Types.ObjectId,
+        ref: 'RequestService',
         required:true
     },
     Text:String,
@@ -16,9 +16,9 @@ const reviewSchema = new Schema({
         type:Number,
         required:true
     },
-    garagesId:{
-        type:Schema.Types.Number,
-        ref:Garage,
+    garage:{
+        type:Schema.Types.ObjectId,
+        ref: 'Garage',
         required:true
     }
     

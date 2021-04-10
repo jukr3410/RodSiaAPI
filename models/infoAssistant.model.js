@@ -4,7 +4,8 @@ const Schema = mongoose.Schema
 const infoAssistantSchema = new Schema({
  
     serviceType:{
-        type:String
+        type:Schema.Types.ObjectId,
+        required:true
     },
     problemObserve:{
         type:String,

@@ -7,7 +7,7 @@ const RequestServiceSchema = new Schema({
    
     requestUser:{
         userId:{
-            type:schema.Types.Number,
+            type:Schema.Types.ObjectId,
             ref:User,
             required:true
         },
@@ -16,8 +16,8 @@ const RequestServiceSchema = new Schema({
             long:String
         }
     },
-    serviceId:[{
-        type:schema.Types.Number,
+    service:[{
+        type:Schema.Types.ObjectId,
         ref:Service,
         required:true
         }
