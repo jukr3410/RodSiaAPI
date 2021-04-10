@@ -7,10 +7,7 @@ const ServiceType = require('./serviceType.model');
 ObjectId = Schema.Types;
 
 const servicesSchema = new Schema({
-    id:{
-        type:Number,
-        required:true
-    },
+   
     name:{
         type:String,
         required:true

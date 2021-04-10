@@ -4,10 +4,7 @@ const User = require('./user.model')
 const Service = require('./service.model')
 
 const RequestServiceSchema = new Schema({
-    id:{
-        type:Number,
-        required:true
-    },
+   
     requestUser:{
         userId:{
             type:schema.Types.Number,

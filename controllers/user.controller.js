@@ -35,11 +35,6 @@ module.exports.addUser = (req, res) => {
     })
   } else {
 
-    let userCount = 0;
-    User.find().countDocuments(function (err, count) {
-        userCount = count
-      })
-      .then(() => {
         const user = new User({
           id: userCount + 1,
           name:req.body.name,
@@ -64,13 +59,10 @@ module.exports.addUser = (req, res) => {
           .catch(err => console.log(err))
 
         res.json(user)
-      })
-
-
-
-
+      
     //res.json({id:User.find().count()+1,...req.body})
-  }
+  
+}
 }
 
 module.exports.editUser = (req, res) => {
@@ -81,7 +73,7 @@ module.exports.editUser = (req, res) => {
     })
   } else {
     res.json({
-      id: userCount + 1,
+      
           name:req.body.name,
           email:req.body.email,
           phone:req.body.phone,

@@ -5,10 +5,7 @@ const secret = process.env.JWT_SECRET || 'JWT_SUPER_SECRET';
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-    id: {
-        type:Number,
-        required:[true, "can't be blank"]
-    },
+    
     name: {
         type:String,
         required:[true, "can't be blank"]

@@ -5,10 +5,7 @@ const Garage = require('./garage.model')
 const Schema = mongoose.Schema
 
 const reviewSchema = new Schema({
-    id:{
-        type:Number,
-        required:true
-    },
+   
     requestId:{
         type:schema.Types.Number,
         ref:RequestService,
