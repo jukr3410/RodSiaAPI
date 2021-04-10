@@ -1,12 +1,11 @@
 
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-var mongoosastic=require("mongoosastic");
+var mongoosastic = require("mongoosastic");
 const Garage = require('./garage.model');
 const ServiceType = require('./serviceType.model');
 
 const servicesSchema = new Schema({
-   
     name:{
         type:String,
         required: [true, 'Name must not be emtpy']
@@ -16,8 +15,7 @@ const servicesSchema = new Schema({
     },
     serviceType:[{
         type:Schema.Types.ObjectId, 
-        ref: ServiceType,
-        require:true
+        ref: ServiceType
     }],
     garage:{
         type:Schema.Types.ObjectId,

@@ -7,9 +7,12 @@ const garagesSchema = new Schema({
         type: Number,
         required: [true, "can't be blank"]
     },
-    name: {
+    phone: {
         type: String,
-        required: true
+        required: [true, "can't be blank"],
+        unique: true,
+        match: [/^[0-9]+$/, 'is invalid'],
+        index: true
     },
     Phone: {
         type: Number,
@@ -33,11 +36,16 @@ const garagesSchema = new Schema({
         geolocation: {
             lat: String,
             long: String,
+            required: true
         }
     },
     images: [{
         type: Schema.Types.ObjectId,
         ref: 'FileUpload'
+    }],
+    services: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Service'
     }]
 
 })
