@@ -1,7 +1,7 @@
 
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-var mongoosastic=require("mongoosastic");
+var mongoosastic = require("mongoosastic");
 const Garage = require('./garage.model');
 const ServiceType = require('./serviceType.model');
 
