@@ -1,3 +1,4 @@
+const serviceModel = require('../models/service.model')
 const Service = require('../models/service.model')
 
 module.exports.getAllService = (req, res) => {
@@ -36,45 +37,32 @@ module.exports.getManyService = (req, res) => {
 }
 
 
-module.exports.addUser = (req, res) => {
+module.exports.addService = (req, res) => {
     if (typeof req.body == undefined) {
         res.json({
             status: "error",
             message: "data is undefined"
         })
     } else {
-
-        let userCount = 0;
+        let serviceCount = 0;
         User.find().countDocuments(function (err, count) {
-                userCount = count
+            if(err) throw err;
+            serviceCount = count
             })
             .then(() => {
-                const user = new User({
-                    id: userCount + 1,
-                    email: req.body.email,
-                    username: req.body.username,
-                    password: req.body.password,
-                    name: {
-                        firstname: req.body.name.firstname,
-                        lastname: req.body.name.lastname
-                    },
-                    address: {
-                        city: req.body.address.city,
-                        street: req.body.address.street,
-                        number: req.body.address.number,
-                        zipcode: req.body.address.zipcode,
-                        geolocation: {
-                            lat: req.body.address.geolocation.lat,
-                            long: req.body.address.geolocation.long
-                        }
-                    },
-                    phone: req.body.phone
+                const service = new Service({
+                    id: serviceCount + 1,
+                    name: req.body.name,
+                    description: req.body.description,
+                    serviceType: req.body.serviceType,
+                    garage: req.body.garage,
+                    images: req.body.images
                 })
                 user.save()
-                    .then(user => res.json(user))
+                    .then(service => res.json(service))
                     .catch(err => console.log(err))
 
-                res.json(user)
+                res.json(service)
             })
 
 
