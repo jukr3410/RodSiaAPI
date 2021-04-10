@@ -7,8 +7,8 @@ module.exports.getAllServiceType = (req, res) => {
     ServiceType.find().select(['-_id']).limit(limit).sort({
             id: sort
         })
-        .then(serviceTypes => {
-            res.json(serviceTypes)
+        .then(serviceType => {
+            res.json(serviceType)
         })
         .catch(err => console.log(err))
 }
@@ -79,7 +79,7 @@ module.exports.deleteServiceType = (req, res) => {
     if (req.params.id == null) {
         res.json({
             status: "error",
-            message: "cart id should be provided"
+            message: "service tpye id should be provided"
         })
     } else {
         ServiceType.findOne({id: req.params.id})

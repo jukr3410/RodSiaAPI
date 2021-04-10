@@ -51,13 +51,13 @@ module.exports.addUser = (req, res) => {
           requestServices: req.body.requestServices
 
 
-        })
+        });
         user.save()
           .then(user => res.json(user))
           .catch(err => console.log(err))
 
         res.json(user)
-      })
+      });
 
     // res.json({id:User.find().count()+1,...req.body})
   }
