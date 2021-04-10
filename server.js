@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const path = require("path");
 const logger = require("morgan");
 const MongoDbConfig = require("./configs/mongodb.config");
+const AppResponseDto = require("./dtos/responses/appResponse.dto")
 const app = express();
 
 
@@ -17,9 +18,7 @@ MongoDbConfig.configure()
         // routes
         const userRoute = require("./routes/user.routes");
         const serviceRoute = require("./routes/service.routes")
-        const {
-            count
-        } = require("console");
+        
 
 
         app.use(logger("dev"));
@@ -44,13 +43,13 @@ MongoDbConfig.configure()
 
             // render the error page
             res.status(err.status || 500);
-            res.json({
-                error: {
-                    status: statusCode,
-                    message: err.message
-                }
-            });
-            //res.json(AppResponseDto.buildWithErrorMessages('Something went wrong 5xx ' + err));
+            // res.json({
+            //     error: {
+            //         status: statusCode,
+            //         message: err.message
+            //     }
+            // });
+            res.json(AppResponseDto.buildWithErrorMessages('Something went wrong 5xx ' + err));
         });
 
 
