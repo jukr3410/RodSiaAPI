@@ -16,8 +16,7 @@ const servicesSchema = new Schema({
     },
     serviceType:[{
         type:Schema.Types.ObjectId, 
-        ref: ServiceType,
-        require:true
+        ref: ServiceType
     }],
     garage:{
         type:Schema.Types.ObjectId,
