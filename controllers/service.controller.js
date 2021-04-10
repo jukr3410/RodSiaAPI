@@ -44,7 +44,7 @@ module.exports.addService = (req, res) => {
         })
     } else {
         let serviceCount = 0;
-        User.find().countDocuments(function (err, count) {
+        Service.find().countDocuments(function (err, count) {
             if(err) throw err;
             serviceCount = count
             })
@@ -57,7 +57,7 @@ module.exports.addService = (req, res) => {
                     garage: req.body.garage,
                     images: req.body.images
                 })
-                user.save()
+                service.save()
                     .then(service => res.json(service))
                     .catch(err => console.log(err))
 
@@ -67,11 +67,11 @@ module.exports.addService = (req, res) => {
 
 
 
-        //res.json({id:User.find().count()+1,...req.body})
+        //res.json({id:Service.find().count()+1,...req.body})
     }
 }
 
-module.exports.editUser = (req, res) => {
+module.exports.editService = (req, res) => {
     if (typeof req.body == undefined || req.params.id == null) {
         res.json({
             status: "error",
@@ -98,19 +98,19 @@ module.exports.editUser = (req, res) => {
     }
 }
 
-module.exports.deleteUser = (req, res) => {
+module.exports.deleteService = (req, res) => {
     if (req.params.id == null) {
         res.json({
             status: "error",
             message: "cart id should be provided"
         })
     } else {
-        User.findOne({
+        Service.findOne({
                 id: req.params.id
             })
             .select(['-_id'])
-            .then(user => {
-                res.json(user)
+            .then(service => {
+                res.json(service)
             })
             .catch(err => console.log(err))
     }
