@@ -6,7 +6,6 @@ const Garage = require('./garage.model');
 const ServiceType = require('./serviceType.model');
 
 const servicesSchema = new Schema({
-   
     name:{
         type:String,
         required: [true, 'Name must not be emtpy']
