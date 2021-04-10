@@ -33,7 +33,12 @@ const requestServiceSchema = new Schema({
     status: {
         type: String,
         required: true
+    },
+    date: {
+        type: Date
     }
 
-} , {timestamps: true});
+}, {
+    timestamps: true
+});
 module.exports = mongoose.model("RequestService", requestServiceSchema);

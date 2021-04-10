@@ -16,6 +16,7 @@ MongoDbConfig.configure()
     .then((res) => {
         // routes
         const userRoute = require("./routes/user.routes");
+        const serviceRoute = require("./routes/service.routes")
         const {
             count
         } = require("console");
@@ -28,6 +29,7 @@ MongoDbConfig.configure()
 
         // routes middleware
         app.use("/users", userRoute);
+        app.use("/services", serviceRoute);
 
         // catch 404 and forward to error handler
         app.use(function (req, res, next) {
