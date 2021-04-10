@@ -94,7 +94,7 @@ module.exports.deleteUser = (req, res) => {
   if (req.params.id == null) {
     res.json({
       status: "error",
-      message: "cart id should be provided"
+      message: "user id should be provided"
     })
   } else {
     User.findOne({
