@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/jukr3410/RodSiaAPI#readme",
   "dependencies": {
+    "bcrypt": "^5.0.1",
+    "bcrypt-nodejs": "0.0.3",
     "bluebird": "^3.7.2",
     "body-parser": "^1.19.0",
     "dotenv": "^8.2.0",
@@ -25,6 +27,7 @@
     "express": "^4.17.1",
     "express-session": "^1.17.1",
     "finalhandler": "^1.1.2",
+    "jsonwebtoken": "^8.5.1",
     "mongoosastic": "^4.6.0",
     "mongoose": "^5.12.3",
     "morgan": "^1.10.0",
