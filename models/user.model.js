@@ -34,7 +34,8 @@ const userSchema = new Schema({
         brand:String,
         model:String,
         type:String,
-        year:String
+        year:String,
+        fuelType:String
     }],
 
     reviews: [{type: Schema.Types.ObjectId, ref: 'Review'}],
