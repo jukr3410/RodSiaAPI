@@ -26,10 +26,6 @@ const userSchema = new Schema({
         type:String,
         required:true
     },
-    geolocation: {
-        lat:String,
-        long:String
-    },
     cars: [{
         brand:String,
         model:String,
