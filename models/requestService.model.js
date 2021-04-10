@@ -4,6 +4,10 @@ const User = require("./user.model");
 const Service = require("./service.model");
 
 const RequestServiceSchema = new Schema({
+    id: {
+        type: Number,
+        required: [true, "can't be blank"]
+    },
     user: {
         type: Schema.Types.ObjectId,
         ref: User,
@@ -20,7 +24,7 @@ const RequestServiceSchema = new Schema({
         long: String,
         required: true
     },
-    
+
     problemDesc: {
         type: String
     },
