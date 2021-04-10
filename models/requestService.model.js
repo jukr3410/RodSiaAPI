@@ -9,16 +9,28 @@ const RequestServiceSchema = new Schema({
         ref: User,
         required: true,
     },
+    service: [{
+        type: Schema.Types.ObjectId,
+        ref: Service,
+        required: true,
+    }],
 
     geolocation: {
         lat: String,
         long: String,
     },
-    service: [{
-        type: Schema.Types.ObjectId,
-        ref: Service,
-        required: true,
-    }, ],
-    problemDesc: String,
+    
+    problemDesc: {
+        type: String
+    },
+    confirmRequest: {
+        type: Boolean,
+        required: true
+    },
+    status: {
+        type: String,
+        required: true
+    }
+
 });
 module.exports = mongoose.model("RequestService", RequestServiceSchema);
