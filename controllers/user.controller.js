@@ -34,7 +34,6 @@ module.exports.addUser = (req, res) => {
       message: "data is undefined"
     })
   } else {
-
     let userCount = 0;
     User.find().countDocuments(function (err, count) {
         userCount = count
@@ -42,24 +41,22 @@ module.exports.addUser = (req, res) => {
       .then(() => {
         const user = new User({
           id: userCount + 1,
+          name: req.body.name,
           email: req.body.email,
-          username: req.body.username,
+          phone: req.body.phone,
           password: req.body.password,
-          name: {
-            firstname: req.body.name.firstname,
-            lastname: req.body.name.lastname
+          validatePhone: req.body.validatePhone,
+          cars: {
+            brand: req.body.cars.brand,
+            model: req.body.cars.model,
+            type: req.body.cars.type,
+            year: req.body.cars.year,
+            fuelType: req.body.cars.fuelType
           },
-          address: {
-            city: req.body.address.city,
-            street: req.body.address.street,
-            number: req.body.address.number,
-            zipcode: req.body.address.zipcode,
-            geolocation: {
-              lat: req.body.address.geolocation.lat,
-              long: req.body.address.geolocation.long
-            }
-          },
-          phone: req.body.phone
+          review: req.body.review,
+          requestServices: req.body.requestServices
+
+
         })
         user.save()
           .then(user => res.json(user))
@@ -68,7 +65,7 @@ module.exports.addUser = (req, res) => {
         res.json(user)
       })
 
-    //res.json({id:User.find().count()+1,...req.body})
+    // res.json({id:User.find().count()+1,...req.body})
   }
 }
 
