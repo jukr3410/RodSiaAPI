@@ -7,8 +7,8 @@ module.exports.getAllServiceType = (req, res) => {
     ServiceType.find().select(['-_id']).limit(limit).sort({
             id: sort
         })
-        .then(serviceType => {
-            res.json(serviceType)
+        .then(serviceTypes => {
+            res.json(serviceTypes)
         })
         .catch(err => console.log(err))
 }
