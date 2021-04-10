@@ -41,7 +41,7 @@ const userSchema = new Schema({
     }],
 
     reviews: [{type: Schema.Types.ObjectId, ref: 'Review'}],
-    requestservices: [{type: Schema.Types.ObjectId, ref: 'RequestService'}]
+    requestServices: [{type: Schema.Types.ObjectId, ref: 'RequestService'}]
 
 });
 
