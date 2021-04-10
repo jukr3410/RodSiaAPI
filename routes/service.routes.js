@@ -10,4 +10,4 @@ router.put('/:id',service.editService);
 router.patch('/:id',service.editService);
 router.delete('/:id',service.deleteService);
 
-module.exports = router
+module.exports = router;

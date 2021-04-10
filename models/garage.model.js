@@ -1,74 +1,76 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
 const garagesSchema = new Schema({
     id: {
         type: Number,
-        required: [true, "can't be blank"]
+        required: [true, "can't be blank"],
     },
     name: {
         type: String,
-        required: [true, "can't be blank"]
+        required: [true, "can't be blank"],
     },
     phone: {
         type: String,
         required: [true, "can't be blank"],
         unique: true,
-        match: [/^[0-9]+$/, 'is invalid'],
-        index: true
+        match: [/^[0-9]+$/, "is invalid"],
+        index: true,
     },
     email: {
-        type: String
+        type: String,
     },
     password: {
         type: String,
-        required: true
+        required: true,
     },
     validatePhone: {
         type: Boolean,
-        required: true
+        required: true,
     },
     address: {
         addressDesc: {
-            type: String
+            type: String,
         },
         geolocation: {
             lat: String,
             long: String,
-            required: true
-        }
+        },
+        
     },
     images: [{
         type: Schema.Types.ObjectId,
-        ref: 'FileUpload'
-    }],
+        ref: "FileUpload",
+    }, ],
     services: [{
         type: Schema.Types.ObjectId,
-        ref: 'Service'
-    }],
+        ref: "Service",
+    }, ],
     reviews: [{
         type: Schema.Types.ObjectId,
-        ref: 'Review'
-    }]
-
+        ref: "Review",
+    }, ],
 });
-garagesSchema.path('password', {
-    // เข้ารหัส password ด้วย hash ที่นี้ password จะไม่ใช่ string แล้ว 
+garagesSchema.path("password", {
+    // เข้ารหัส password ด้วย hash ที่นี้ password จะไม่ใช่ string แล้ว
     // จะดึงก็ต้อง this.password.toObject() หรือ this.get('password')
 
     set: function (password) {
         const salt = bcrypt.genSaltSync(10);
         const hashedPassword = bcrypt.hashSync(password, salt);
         return hashedPassword;
-    }
+    },
 });
 
 garagesSchema.methods.isValidPassword = function (inputPassword, callback) {
-    bcrypt.compare(inputPassword, this.password.toObject(), function (err, isMatch) {
-        if (err)
-            return callback(err);
-        callback(null, isMatch);
-    })
+    bcrypt.compare(
+        inputPassword,
+        this.password.toObject(),
+        function (err, isMatch) {
+            if (err) return callback(err);
+            callback(null, isMatch);
+        }
+    );
 };
-module.exports = mongoose.model('Garage', garagesSchema)
+module.exports = mongoose.model("Garage", garagesSchema);
