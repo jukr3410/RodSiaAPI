@@ -9,10 +9,9 @@ const reviewSchema = new Schema({
         type: Number,
         required: [true, "can't be blank"]
     },
-    request: {
+    service: {
         type: Schema.Types.ObjectId,
-        ref: 'RequestService',
-        required: true
+        ref: 'Service'
     },
     Text: String,
     star: {
@@ -21,8 +20,7 @@ const reviewSchema = new Schema({
     },
     garage: {
         type: Schema.Types.ObjectId,
-        ref: 'Garage',
-        required: true
+        ref: 'Garage'
     }
 
 })
