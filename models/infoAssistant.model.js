@@ -9,13 +9,13 @@ const infoAssistantSchema = new Schema({
     },
     serviceType: {
         type: Schema.Types.ObjectId,
-        required: true
+        ref: 'ServiceType'
     },
     problemObserve: {
         type: String,
         required: true
     },
-    desc: String,
+    desc: {type: String},
     images: [{
         type: Schema.Types.ObjectId,
         ref: 'FileUpload'

@@ -7,16 +7,16 @@ const garagesSchema = new Schema({
         type: Number,
         required: [true, "can't be blank"]
     },
+    name: {
+        type: String,
+        required: [true, "can't be blank"]
+    },
     phone: {
         type: String,
         required: [true, "can't be blank"],
         unique: true,
         match: [/^[0-9]+$/, 'is invalid'],
         index: true
-    },
-    Phone: {
-        type: Number,
-        required: true
     },
     email: {
         type: String
@@ -46,9 +46,13 @@ const garagesSchema = new Schema({
     services: [{
         type: Schema.Types.ObjectId,
         ref: 'Service'
+    }],
+    reviews: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Review'
     }]
 
-})
+});
 garagesSchema.path('password', {
     // เข้ารหัส password ด้วย hash ที่นี้ password จะไม่ใช่ string แล้ว 
     // จะดึงก็ต้อง this.password.toObject() หรือ this.get('password')

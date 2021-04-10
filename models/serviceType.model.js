@@ -15,9 +15,14 @@ const serviceTypeSchema = new Schema({
     description: {
         type: String
     },
-    service: [{
-        type: Schema.Types.ObjectId, ref: 'Service'
+    services: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Service'
     }],
+    infoAssistants: [{
+        type: Schema.Types.ObjectId,
+        ref: 'InfoAssistant'
+    }]
 });
 
 module.exports = mongoose.model('ServiceType', serviceTypeSchema);

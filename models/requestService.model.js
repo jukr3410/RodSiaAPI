@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 const User = require("./user.model");
 const Service = require("./service.model");
 
-const RequestServiceSchema = new Schema({
+const requestServiceSchema = new Schema({
     id: {
         type: Number,
         required: [true, "can't be blank"]
