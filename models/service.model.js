@@ -23,7 +23,7 @@ const servicesSchema = new Schema({
         type:Schema.Types.ObjectId,
         ref:Garage
     },
-    Images: [{
+    images: [{
         type: Schema.Types.ObjectId,
         ref: 'FileUpload'
     }]
