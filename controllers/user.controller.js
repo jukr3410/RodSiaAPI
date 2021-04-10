@@ -46,13 +46,7 @@ module.exports.addUser = (req, res) => {
           phone: req.body.phone,
           password: req.body.password,
           validatePhone: req.body.validatePhone,
-          cars: {
-            brand: req.body.cars.brand,
-            model: req.body.cars.model,
-            type: req.body.cars.type,
-            year: req.body.cars.year,
-            fuelType: req.body.cars.fuelType
-          },
+          cars: req.body.cars,
           review: req.body.review,
           requestServices: req.body.requestServices
 

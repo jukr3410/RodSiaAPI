@@ -29,17 +29,19 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
-    validatePhone:{
-        type:Boolean,
-        required:true
+    validatePhone: {
+        type: Boolean,
+        required: true
     },
-    cars: [{
-        brand:String,
-        model:String,
-        type:String,
-        year:String,
-        fuelType:String
-    }],
+    cars: [
+        {
+            brand: {type: String},
+            model: {type: String},
+            type: {type: String},
+            year: {type: String},
+            fuelType: {type: String}
+        }
+    ],
 
     reviews: [{
         type: Schema.Types.ObjectId,
