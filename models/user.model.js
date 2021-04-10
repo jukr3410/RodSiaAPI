@@ -26,6 +26,10 @@ const userSchema = new Schema({
         type:String,
         required:true
     },
+    validatePhone:{
+        type:Boolean,
+        required:true
+    },
     cars: [{
         brand:String,
         model:String,
