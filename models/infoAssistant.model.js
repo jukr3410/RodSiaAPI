@@ -12,7 +12,10 @@ const infoAssistantSchema = new Schema({
         required:true
     },
     desc:String,
-    images:[String]
+    images: [{
+        type: Schema.Types.ObjectId,
+        ref: 'FileUpload'
+    }]
 
 })
 module.exports = mongoose.model('InfoAssistant',infoAssistantSchema)

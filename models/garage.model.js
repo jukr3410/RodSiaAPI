@@ -32,7 +32,10 @@ const garagesSchema = new Schema({
             long:String,
         }
     },
-    images:[String]
+    images: [{
+        type: Schema.Types.ObjectId,
+        ref: 'FileUpload'
+    }]
 
 })
 garagesSchema.path('password', {
