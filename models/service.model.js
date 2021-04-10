@@ -4,25 +4,30 @@ const Schema = mongoose.Schema;
 var mongoosastic=require("mongoosastic");
 const Garage = require('./garage.model');
 const ServiceType = require('./serviceType.model');
-ObjectId = Schema.Types;
 
 const servicesSchema = new Schema({
    
     name:{
         type:String,
-        required:true
+        required: [true, 'Name must not be emtpy']
     },
-
+    description: {
+        type: String
+    },
     serviceType:[{
-        type:Schema.Types.Number, 
+        type:Schema.Types.ObjectId, 
         ref: ServiceType,
         require:true
     }],
     garage:{
-        type:Schema.Types.Number,
+        type:Schema.Types.ObjectId,
         ref:Garage
-    }
-})
+    },
+    Images: [{
+        type: Schema.Types.ObjectId,
+        ref: 'FileUpload'
+    }]
+});
 
-module.exports = mongoose.model('Service',servicesSchema)
+module.exports = mongoose.model('Service',servicesSchema);
 
