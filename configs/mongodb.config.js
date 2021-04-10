@@ -10,8 +10,12 @@ exports.configure = function() {
     });
 
     return mongoose.connect(process.env.MONGODB_URI, {
-        debug: process.env.DEBUG || true,
+        //debug: process.env.DEBUG || true,
         keepAlive: true,
         useNewUrlParser: true,
+        useFindAndModify: true,
+        useUnifiedTopology: true, 
+        useNewUrlParser: true, 
+        useCreateIndex: true
     });
 }
