@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-expert.configure = function() {
+exports.configure = function() {
     mongoose.Promise = global.Promise;
     mongoose.set('debug', true);
     mongoose.connection.on('error', function(err) {
