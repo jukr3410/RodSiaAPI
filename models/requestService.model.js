@@ -9,15 +9,16 @@ const RequestServiceSchema = new Schema({
         ref: User,
         required: true,
     },
-    service: [{
+    service: {
         type: Schema.Types.ObjectId,
         ref: Service,
-        required: true,
-    }],
+        required: true
+    },
 
     geolocation: {
         lat: String,
         long: String,
+        required: true
     },
     
     problemDesc: {
