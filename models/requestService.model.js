@@ -3,16 +3,14 @@ const Schema = mongoose.Schema;
 const User = require("./user.model");
 const Service = require("./service.model");
 
-const RequestServiceSchema = new Schema({
+const requestServiceSchema = new Schema({
     user: {
         type: Schema.Types.ObjectId,
-        ref: User,
-        required: true,
+        ref: User
     },
     service: {
         type: Schema.Types.ObjectId,
-        ref: Service,
-        required: true
+        ref: Service
     },
 
     geolocation: {
@@ -33,5 +31,5 @@ const RequestServiceSchema = new Schema({
         required: true
     }
 
-});
-module.exports = mongoose.model("RequestService", RequestServiceSchema);
+} , {timestamps: true});
+module.exports = mongoose.model("RequestService", requestServiceSchema);
