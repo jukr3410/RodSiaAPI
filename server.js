@@ -19,7 +19,11 @@ MongoDbConfig.configure()
         const userRoute = require("./routes/user.routes");
         const serviceRoute = require("./routes/service.routes");
         const serviceTypeRoute = require("./routes/serviceType.routes");
-
+        const reviewRoute = require("./routes/review.routes");
+        const requestSerivceRoute = require("./routes/requestService.routes");
+        const infoAssistantRoute = require("./routes/infoAssistant.routes");
+        const garageRoutes = require("./routes/garage.routes");
+        const fileUploadRoute = require("./routes/fileUpload.routes");
 
         app.use(logger("dev"));
         // parses incoming requests with JSON payloads
@@ -30,6 +34,11 @@ MongoDbConfig.configure()
         app.use("/users", userRoute);
         app.use("/services", serviceRoute);
         app.use("/service-types", serviceTypeRoute);
+        app.use("/reviews", reviewRoute);
+        app.use("/request-services", requestSerivceRoute);
+        app.use("/info-assistants", infoAssistantRoute);
+        app.use("/garages", garageRoutes);
+        app.use("/file-upload", fileUploadRoute);
 
 
         // catch 404 and forward to error handler

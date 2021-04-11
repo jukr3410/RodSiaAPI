@@ -21,7 +21,7 @@ const requestServiceSchema = new Schema({
     geolocation: {
         lat: String,
         long: String,
-        required: true
+        // required: true
     },
 
     problemDesc: {
@@ -36,7 +36,8 @@ const requestServiceSchema = new Schema({
         required: true
     },
     date: {
-        type: Date
+        type: Date,
+        timestamps:true
     }
 
 }, {
