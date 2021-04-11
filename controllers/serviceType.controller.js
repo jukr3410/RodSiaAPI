@@ -79,7 +79,7 @@ module.exports.deleteServiceType = (req, res) => {
     if (req.params.id == null) {
         res.json({
             status: "error",
-            message: "cart id should be provided"
+            message: "service tpye id should be provided"
         })
     } else {
         ServiceType.findOne({id: req.params.id})

@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-
 const serviceType = require('../controllers/serviceType.controller');
 
 router.get('/',serviceType.getAllServiceType);
