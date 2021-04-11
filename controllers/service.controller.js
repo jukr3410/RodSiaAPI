@@ -13,27 +13,18 @@ module.exports.getAllService = (req, res) => {
         .catch(err => console.log(err))
 }
 
-module.exports.getOneService = (req, res) => {
-    const ReqId = req.params.id
+module.exports.getService = (req, res) => {
+    const id = req.params.id
 
     Service.findOne({
-            id: ReqId
-        }).then(service => {
-            res.json(service)
-        })
-        .catch(err => console.log(err))
-}
-module.exports.getManyService = (req, res) => {
-    const ReqName = req.params.name
-
-    Service.findMany({
-            name: /Reqname/
-        })
+            id
+        }).select(['-_id'])
         .then(service => {
             res.json(service)
         })
         .catch(err => console.log(err))
 }
+
 
 
 module.exports.addService = (req, res) => {
@@ -45,8 +36,7 @@ module.exports.addService = (req, res) => {
     } else {
         let serviceCount = 0;
         Service.find().countDocuments(function (err, count) {
-            if(err) throw err;
-            serviceCount = count
+                serviceCount = count
             })
             .then(() => {
                 const service = new Service({
@@ -56,18 +46,15 @@ module.exports.addService = (req, res) => {
                     serviceType: req.body.serviceType,
                     garage: req.body.garage,
                     images: req.body.images
-                })
+                });
                 service.save()
                     .then(service => res.json(service))
                     .catch(err => console.log(err))
 
                 res.json(service)
-            })
+            });
 
-
-
-
-        //res.json({id:Service.find().count()+1,...req.body})
+        // res.json({id:Service.find().count()+1,...req.body})
     }
 }
 
@@ -79,21 +66,12 @@ module.exports.editService = (req, res) => {
         })
     } else {
         res.json({
-
+            id: req.body.id,
             name: req.body.name,
-            email: req.body.email,
-            phone: req.body.phone,
-            password: req.body.password,
-            geolocation: {
-                lat: req.body.geolocation.lat,
-                long: req.body.geolocation.long
-            },
-            cars: [{
-                brand: req.body.cars.brand,
-                model: req.body.cars.model,
-                type: req.body.cars.type,
-                year: req.body.cars.year
-            }]
+            description: req.body.description,
+            serviceType: req.body.serviceType,
+            garage: req.body.garage,
+            images: req.body.images
         })
     }
 }
@@ -102,7 +80,7 @@ module.exports.deleteService = (req, res) => {
     if (req.params.id == null) {
         res.json({
             status: "error",
-            message: "cart id should be provided"
+            message: "service id should be provided"
         })
     } else {
         Service.findOne({

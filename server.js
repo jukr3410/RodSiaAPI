@@ -17,8 +17,8 @@ MongoDbConfig.configure()
     .then((res) => {
         // routes
         const userRoute = require("./routes/user.routes");
-        // const serviceRoute = require("./routes/service.routes");
-
+        const serviceRoute = require("./routes/service.routes");
+        const serviceTypeRoute = require("./routes/serviceType.routes");
 
 
         app.use(logger("dev"));
@@ -28,7 +28,8 @@ MongoDbConfig.configure()
 
         // routes middleware
         app.use("/users", userRoute);
-        // app.use("/services", serviceRoute);
+        app.use("/services", serviceRoute);
+        app.use("/service-types", serviceTypeRoute);
 
 
         // catch 404 and forward to error handler
