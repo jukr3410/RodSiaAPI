@@ -20,7 +20,7 @@ const requestServiceSchema = new Schema({
     geolocation: {
         lat: String,
         long: String,
-        required: true
+        // required: true
     },
 
     problemDesc: {
