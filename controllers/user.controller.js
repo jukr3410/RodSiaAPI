@@ -46,7 +46,12 @@ module.exports.addUser = (req, res) => {
           phone: req.body.phone,
           password: req.body.password,
           validatePhone: req.body.validatePhone,
-          cars: req.body.cars,
+          cars: [{
+            brand: req.body.cars.brand,
+            model: req.body.cars.model,
+            type: req.body.cars.type,
+            year: req.body.cars.year
+          }],
           review: req.body.review,
           requestServices: req.body.requestServices
 
@@ -76,34 +81,34 @@ module.exports.editUser = (req, res) => {
       email: req.body.email,
       phone: req.body.phone,
       password: req.body.password,
-      geolocation: {
-        lat: req.body.geolocation.lat,
-        long: req.body.geolocation.long
-      },
+      validatePhone: req.body.validatePhone,
       cars: [{
         brand: req.body.cars.brand,
         model: req.body.cars.model,
         type: req.body.cars.type,
         year: req.body.cars.year
-      }]
+      }],
+      review: req.body.review,
+      requestServices: req.body.requestServices
     })
-  }
-}
 
-module.exports.deleteUser = (req, res) => {
-  if (req.params.id == null) {
-    res.json({
-      status: "error",
-      message: "user id should be provided"
-    })
-  } else {
-    User.findOne({
-        id: req.params.id
+  }
+
+  module.exports.deleteUser = (req, res) => {
+    if (req.params.id == null) {
+      res.json({
+        status: "error",
+        message: "user id should be provided"
       })
-      .select(['-_id'])
-      .then(user => {
-        res.json(user)
-      })
-      .catch(err => console.log(err))
+    } else {
+      User.findOne({
+          id: req.params.id
+        })
+        .select(['-_id'])
+        .then(user => {
+          res.json(user)
+        })
+        .catch(err => console.log(err))
+    }
   }
 }
