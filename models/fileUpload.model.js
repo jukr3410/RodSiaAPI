@@ -25,6 +25,8 @@ const fileUploadSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'InfoAssistant'
     }
+}, {
+    timestamps: true
 });
 
 module.exports = mongoose.model('FileUpload', fileUploadSchema);
