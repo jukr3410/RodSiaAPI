@@ -35,7 +35,8 @@ const requestServiceSchema = new Schema({
         required: true
     },
     date: {
-        type: Date
+        type: Date,
+        timestamps:true
     }
 
 }, {
