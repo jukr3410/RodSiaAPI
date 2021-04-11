@@ -6,7 +6,8 @@ const Service = require("./service.model");
 const requestServiceSchema = new Schema({
     id: {
         type: Number,
-        required: [true, "can't be blank"]
+        required: [true, "can't be blank"],
+        unique: true
     },
     user: {
         type: Schema.Types.ObjectId,
