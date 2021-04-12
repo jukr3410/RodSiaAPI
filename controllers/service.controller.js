@@ -1,4 +1,5 @@
-const Service = require('../models/service.model')
+const Service = require('../models/service.model');
+const ServiceType = require('../models/serviceType.model');
 
 module.exports.getAllService = (req, res) => {
     const limit = Number(req.query.limit) || 0
@@ -92,4 +93,24 @@ module.exports.deleteService = (req, res) => {
             })
             .catch(err => console.log(err))
     }
-}
+};
+
+module.exports.getByServiceType = (req, res) => {
+    if (req.params.id == null) {
+        req.json({
+            status: "error",
+            message: "ServiceType id should be provided"
+        })
+    } else {
+        const query = {
+            serviceTypes: {
+                "$in": [req.params.id]
+            }
+        };
+        Service.find(query)
+            .then(services => {
+                res.json(services)
+            })
+            .catch(err => console.log(err))
+    }
+};

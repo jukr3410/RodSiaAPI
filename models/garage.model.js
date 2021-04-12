@@ -1,8 +1,11 @@
 const mongoose = require("mongoose");
+const bcrypt = require('bcrypt-nodejs');
+const jwt = require('jsonwebtoken');
+const secret = process.env.JWT_SECRET || 'JWT_SUPER_SECRET';
 
 const Schema = mongoose.Schema;
 
-const garagesSchema = new Schema({
+const garageSchema = new Schema({
     id: {
         type: Number,
         required: [true, "can't be blank"],
@@ -34,10 +37,14 @@ const garagesSchema = new Schema({
             type: String,
         },
         geolocation: {
-            lat: String,
-            long: String,
+            lat: {
+                type: String,
+            },
+            long: {
+                type: String,
+            },
         },
-        
+
     },
     images: [{
         type: Schema.Types.ObjectId,
@@ -52,7 +59,9 @@ const garagesSchema = new Schema({
         ref: "Review",
     }, ],
 });
-garagesSchema.path("password", {
+
+
+garageSchema.path("password", {
     // เข้ารหัส password ด้วย hash ที่นี้ password จะไม่ใช่ string แล้ว
     // จะดึงก็ต้อง this.password.toObject() หรือ this.get('password')
 
@@ -63,7 +72,7 @@ garagesSchema.path("password", {
     },
 });
 
-garagesSchema.methods.isValidPassword = function (inputPassword, callback) {
+garageSchema.methods.isValidPassword = function (inputPassword, callback) {
     bcrypt.compare(
         inputPassword,
         this.password.toObject(),
@@ -73,4 +82,4 @@ garagesSchema.methods.isValidPassword = function (inputPassword, callback) {
         }
     );
 };
-module.exports = mongoose.model("Garage", garagesSchema);
+module.exports = mongoose.model("Garage", garageSchema);

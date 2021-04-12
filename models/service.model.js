@@ -17,7 +17,7 @@ const servicesSchema = new Schema({
     description: {
         type: String
     },
-    serviceType:[{
+    serviceTypes:[{
         type:Schema.Types.ObjectId, 
         ref: ServiceType
     }],
