@@ -173,7 +173,7 @@ module.exports.getByServiceName = (req, res) => {
         const query = {
             name: {
                 // "$regex": new RegExp(name, "i")
-                "$regex": name,$options: 'i'
+                "$regex": name, $options: 'i'
             }
         };
 
