@@ -177,7 +177,7 @@ module.exports.getByServiceName = (req, res) => {
             }
         };
 
-        Garage.find(query)
+        Service.find(query)
             .then(service => {
                 res.json(service)
             })
