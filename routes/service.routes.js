@@ -4,6 +4,8 @@ const service = require('../controllers/service.controller');
 
 router.get('/',service.getAllService);
 router.get('/:id',service.getService);
+router.get('/by-service-type/:id',service.getByServiceType);
+
 router.post('/',service.addService);
 router.put('/:id',service.editService);
 router.patch('/:id',service.editService);

@@ -139,3 +139,24 @@ module.exports.deleteService = (req, res) => {
             });
     }
 }
+
+
+module.exports.getByServiceType = (req, res) => {
+    if (req.params.id == null) {
+        req.json({
+            status: "error",
+            message: "ServiceType id should be provided"
+        })
+    } else {
+        const query = {
+            serviceTypes: {
+                "$in": [req.params.id]
+            }
+        };
+        Service.find(query)
+            .then(services => {
+                res.json(services)
+            })
+            .catch(err => console.log(err))
+    }
+};
