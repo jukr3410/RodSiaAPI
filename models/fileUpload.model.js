@@ -24,6 +24,10 @@ const fileUploadSchema = new Schema({
     infoAssistant: {
         type: Schema.Types.ObjectId,
         ref: 'InfoAssistant'
+    },
+    requestService: {
+        type: Schema.Types.ObjectId,
+        ref: 'RequestService'
     }
 }, {
     timestamps: true
