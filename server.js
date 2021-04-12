@@ -31,14 +31,14 @@ MongoDbConfig.configure()
 
 
         // routes middleware
-        app.use("/users", userRoute);
-        app.use("/services", serviceRoute);
-        app.use("/service-types", serviceTypeRoute);
-        app.use("/reviews", reviewRoute);
-        app.use("/request-services", requestSerivceRoute);
-        app.use("/info-assistants", infoAssistantRoute);
-        app.use("/garages", garageRoutes);
-        app.use("/file-upload", fileUploadRoute);
+        app.use("/api", userRoute);
+        app.use("/api", serviceRoute);
+        app.use("/api", serviceTypeRoute);
+        app.use("/api", reviewRoute);
+        app.use("/api", requestSerivceRoute);
+        app.use("/api", infoAssistantRoute);
+        app.use("/api", garageRoutes);
+        app.use("/api", fileUploadRoute);
 
 
         // catch 404 and forward to error handler
