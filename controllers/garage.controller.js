@@ -149,3 +149,27 @@ module.exports.deleteGarage = (req, res) => {
             });
     }
 }
+module.exports.getByGarageName = (req, res) => {
+    const name = req.params.name
+    if (name == null) {
+        req.json({
+            status: "error",
+            message: "Garage name should be provided"
+        })
+    } else {
+        const query = {
+            name: {
+                // "$regex": new RegExp(name, "i")
+                "$regex": name,$options: 'i'
+            }
+        };
+
+        Garage.find(query)
+            .then(garage => {
+                res.json(garage)
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }
+};

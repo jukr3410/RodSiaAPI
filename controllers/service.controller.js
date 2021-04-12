@@ -162,3 +162,27 @@ module.exports.getByServiceType = (req, res) => {
             });
     }
 };
+module.exports.getByServiceName = (req, res) => {
+    const name = req.params.name
+    if (name == null) {
+        req.json({
+            status: "error",
+            message: "Service name should be provided"
+        })
+    } else {
+        const query = {
+            name: {
+                // "$regex": new RegExp(name, "i")
+                "$regex": name,$options: 'i'
+            }
+        };
+
+        Garage.find(query)
+            .then(service => {
+                res.json(service)
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }
+};

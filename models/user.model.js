@@ -33,15 +33,23 @@ const userSchema = new Schema({
         type: Boolean,
         required: true
     },
-    cars: [
-        {
-            brand: {type: String},
-            model: {type: String},
-            type: {type: String},
-            year: {type: String},
-            fuelType: {type: String}
+    cars: [{
+        brand: {
+            type: String
+        },
+        model: {
+            type: String
+        },
+        type: {
+            type: String
+        },
+        year: {
+            type: String
+        },
+        fuelType: {
+            type: String
         }
-    ],
+    }],
 
     reviews: [{
         type: Schema.Types.ObjectId,

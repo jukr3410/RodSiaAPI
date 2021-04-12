@@ -20,12 +20,13 @@ const requestServiceSchema = new Schema({
 
     geolocation: {
         lat: {
-            type: String
+            type: String,
+            required: true
         },
         long: {
-            type: String
+            type: String,
+            required: true
         },
-        // required: true
     },
 
     problemDesc: {

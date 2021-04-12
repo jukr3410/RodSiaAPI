@@ -16,7 +16,9 @@ const infoAssistantSchema = new Schema({
         type: String,
         required: true
     },
-    desc: {type: String},
+    desc: {
+        type: String
+    },
     images: [{
         type: Schema.Types.ObjectId,
         ref: 'FileUpload'

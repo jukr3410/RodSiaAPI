@@ -47,6 +47,7 @@ module.exports.addRequestService = (req, res) => {
                 requestServiceCount = count
             })
             .then(() => {
+
                 const requestService = new RequestService({
                     id: requestServiceCount + 1,
                     user: req.body.user,

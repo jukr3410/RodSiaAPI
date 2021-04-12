@@ -1,4 +1,3 @@
-
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const Garage = require('./garage.model');
@@ -10,20 +9,20 @@ const servicesSchema = new Schema({
         required: [true, "can't be blank"],
         unique: true
     },
-    name:{
-        type:String,
+    name: {
+        type: String,
         required: [true, 'Name must not be emtpy']
     },
     description: {
         type: String
     },
-    serviceTypes:[{
-        type:Schema.Types.ObjectId, 
+    serviceTypes: [{
+        type: Schema.Types.ObjectId,
         ref: ServiceType
     }],
-    garage:{
-        type:Schema.Types.ObjectId,
-        ref:Garage
+    garage: {
+        type: Schema.Types.ObjectId,
+        ref: Garage
     },
     images: [{
         type: Schema.Types.ObjectId,
@@ -31,5 +30,4 @@ const servicesSchema = new Schema({
     }]
 });
 
-module.exports = mongoose.model('Service',servicesSchema);
-
+module.exports = mongoose.model('Service', servicesSchema);
