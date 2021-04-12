@@ -1,4 +1,5 @@
-const ServiceType = require('../models/serviceType.model');
+const ServiceType = require('../models/serviceType.model')
+
 
 module.exports.getAllServiceType = (req, res) => {
     const limit = Number(req.query.limit) || 0
@@ -15,26 +16,32 @@ module.exports.getAllServiceType = (req, res) => {
 
 module.exports.getServiceType = (req, res) => {
     const id = req.params.id
-
     ServiceType.findOne({
             id
-        }).select(['-_id'])
+        })
         .then(serviceType => {
             res.json(serviceType)
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+            if (err.kind === 'ObjectId') {
+                return res.status(404).send({
+                    message: "ServiceType not found with id " + id
+                });
+            }
+            return res.status(500).send({
+                message: "Error retrieving ServiceType with id " + id
+            });
+        });
 }
 
 
 
 module.exports.addServiceType = (req, res) => {
-    if (typeof req.body == undefined) {
-        res.json({
-            status: "error",
-            message: "data is undefined"
-        })
+    if (req.body == undefined) {
+        return res.status(400).send({
+            message: "ServiceType content can not be empty"
+        });
     } else {
-
         let serviceTypeCount = 0;
         ServiceType.find().countDocuments(function (err, count) {
                 serviceTypeCount = count
@@ -46,47 +53,89 @@ module.exports.addServiceType = (req, res) => {
                     description: req.body.description,
                     services: req.body.services,
                     infoAssistants: req.body.infoAssistants
-                })
+                });
                 serviceType.save()
                     .then(serviceType => res.json(serviceType))
                     .catch(err => console.log(err))
+                res.status(500).send({
+                    message: err.message || "Some error occurred while creating the ServiceType."
+                });
 
                 res.json(serviceType)
-            })
+            });
 
-        //res.json({id:ServiceType.find().count()+1,...req.body})
+        // res.json({id:ServiceType.find().count()+1,...req.body})
     }
 }
 
 module.exports.editServiceType = (req, res) => {
-    if (typeof req.body == undefined || req.params.id == null) {
+    const id = req.params.id
+    if (typeof req.body == undefined || id == null) {
         res.json({
             status: "error",
             message: "something went wrong! check your sent data"
         })
     } else {
-        res.json({
-            id: req.body.id,
-            name: req.body.name,
-            description: req.body.description,
-            services: req.body.services,
-            infoAssistants: req.body.infoAssistants
-        })
+        ServiceType.findOneAndUpdate({
+                id
+            }, {
+                name: req.body.name,
+                description: req.body.description,
+                services: req.body.services,
+                infoAssistants: req.body.infoAssistants
+            }, {
+                new: true
+            })
+            .then(serviceType => {
+                if (!serviceType) {
+                    return res.status(404).send({
+                        message: "ServiceType not found with id " + id
+                    });
+                }
+                res.send(serviceType);
+            }).catch(err => {
+                if (err.kind === 'ObjectId') {
+                    return res.status(404).send({
+                        message: "ServiceType not found with id " + id
+                    });
+                }
+                return res.status(500).send({
+                    message: "Error updating ServiceType with id " + id
+                });
+            });
+
     }
 }
 
 module.exports.deleteServiceType = (req, res) => {
-    if (req.params.id == null) {
+    const id = req.params.id
+    if (id == null) {
         res.json({
             status: "error",
-            message: "service tpye id should be provided"
+            message: "serviceType id should be provided"
         })
     } else {
-        ServiceType.findOne({id: req.params.id})
-            .select(['-_id'])
-            .then(serviceType => {
-                res.json(serviceType)
+        ServiceType.findOneAndRemove({
+                id
             })
-            .catch(err => console.log(err))
+            .then(serviceType => {
+                if (!serviceType) {
+                    return res.status(404).send({
+                        message: "ServiceType not found with id " + id
+                    });
+                }
+                res.send({
+                    message: "ServiceType deleted successfully!"
+                });
+            }).catch(err => {
+                if (err.kind === 'ObjectId' || err.name === 'NotFound') {
+                    return res.status(404).send({
+                        message: "ServiceType not found with id " + id
+                    });
+                }
+                return res.status(500).send({
+                    message: "Could not delete ServiceType with id " + id
+                });
+            });
     }
 }

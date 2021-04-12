@@ -1,4 +1,5 @@
-const InfoAssistant = require('../models/infoAssistant.model');
+const InfoAssistant = require('../models/infoAssistant.model')
+
 
 module.exports.getAllInfoAssistant = (req, res) => {
     const limit = Number(req.query.limit) || 0
@@ -15,24 +16,31 @@ module.exports.getAllInfoAssistant = (req, res) => {
 
 module.exports.getInfoAssistant = (req, res) => {
     const id = req.params.id
-
     InfoAssistant.findOne({
             id
-        }).select(['-_id'])
+        })
         .then(infoAssistant => {
             res.json(infoAssistant)
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+            if (err.kind === 'ObjectId') {
+                return res.status(404).send({
+                    message: "InfoAssistant not found with id " + id
+                });
+            }
+            return res.status(500).send({
+                message: "Error retrieving InfoAssistant with id " + id
+            });
+        });
 }
 
 
 
 module.exports.addInfoAssistant = (req, res) => {
-    if (typeof req.body == undefined) {
-        res.json({
-            status: "error",
-            message: "data is undefined"
-        })
+    if (req.body == undefined) {
+        return res.status(400).send({
+            message: "InfoAssistant content can not be empty"
+        });
     } else {
         let infoAssistantCount = 0;
         InfoAssistant.find().countDocuments(function (err, count) {
@@ -49,6 +57,9 @@ module.exports.addInfoAssistant = (req, res) => {
                 infoAssistant.save()
                     .then(infoAssistant => res.json(infoAssistant))
                     .catch(err => console.log(err))
+                res.status(500).send({
+                    message: err.message || "Some error occurred while creating the InfoAssistant."
+                });
 
                 res.json(infoAssistant)
             });
@@ -58,37 +69,73 @@ module.exports.addInfoAssistant = (req, res) => {
 }
 
 module.exports.editInfoAssistant = (req, res) => {
-    if (typeof req.body == undefined || req.params.id == null) {
+    const id = req.params.id
+    if (typeof req.body == undefined || id == null) {
         res.json({
             status: "error",
             message: "something went wrong! check your sent data"
         })
     } else {
-        res.json({
-            id: req.body.id,
-            serviceType: req.body.serviceType,
-            problemObserve: req.body.problemObserve,
-            desc: req.body.desc,
-            images: req.body.images
+        InfoAssistant.findOneAndUpdate({
+                id
+            }, {
+                serviceType: req.body.serviceType,
+                problemObserve: req.body.problemObserve,
+                desc: req.body.desc,
+                images: req.body.images
+            }, {
+                new: true
+            })
+            .then(infoAssistant => {
+                if (!infoAssistant) {
+                    return res.status(404).send({
+                        message: "InfoAssistant not found with id " + id
+                    });
+                }
+                res.send(infoAssistant);
+            }).catch(err => {
+                if (err.kind === 'ObjectId') {
+                    return res.status(404).send({
+                        message: "InfoAssistant not found with id " + id
+                    });
+                }
+                return res.status(500).send({
+                    message: "Error updating InfoAssistant with id " + id
+                });
+            });
 
-        })
     }
 }
 
 module.exports.deleteInfoAssistant = (req, res) => {
-    if (req.params.id == null) {
+    const id = req.params.id
+    if (id == null) {
         res.json({
             status: "error",
             message: "infoAssistant id should be provided"
         })
     } else {
-        InfoAssistant.findOne({
-                id: req.params.id
+        InfoAssistant.findOneAndRemove({
+                id
             })
-            .select(['-_id'])
             .then(infoAssistant => {
-                res.json(infoAssistant)
-            })
-            .catch(err => console.log(err))
+                if (!infoAssistant) {
+                    return res.status(404).send({
+                        message: "InfoAssistant not found with id " + id
+                    });
+                }
+                res.send({
+                    message: "InfoAssistant deleted successfully!"
+                });
+            }).catch(err => {
+                if (err.kind === 'ObjectId' || err.name === 'NotFound') {
+                    return res.status(404).send({
+                        message: "InfoAssistant not found with id " + id
+                    });
+                }
+                return res.status(500).send({
+                    message: "Could not delete InfoAssistant with id " + id
+                });
+            });
     }
 }

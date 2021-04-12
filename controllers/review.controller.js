@@ -1,5 +1,6 @@
 const Review = require('../models/review.model')
 
+
 module.exports.getAllReview = (req, res) => {
     const limit = Number(req.query.limit) || 0
     const sort = req.query.sort == "desc" ? -1 : 1
@@ -15,24 +16,31 @@ module.exports.getAllReview = (req, res) => {
 
 module.exports.getReview = (req, res) => {
     const id = req.params.id
-
     Review.findOne({
             id
-        }).select(['-_id'])
+        })
         .then(review => {
             res.json(review)
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+            if (err.kind === 'ObjectId') {
+                return res.status(404).send({
+                    message: "Review not found with id " + id
+                });
+            }
+            return res.status(500).send({
+                message: "Error retrieving Review with id " + id
+            });
+        });
 }
 
 
 
 module.exports.addReview = (req, res) => {
-    if (typeof req.body == undefined) {
-        res.json({
-            status: "error",
-            message: "data is undefined"
-        })
+    if (req.body == undefined) {
+        return res.status(400).send({
+            message: "Review content can not be empty"
+        });
     } else {
         let reviewCount = 0;
         Review.find().countDocuments(function (err, count) {
@@ -46,50 +54,90 @@ module.exports.addReview = (req, res) => {
                     star: req.body.star,
                     user: req.body.user,
                     garage: req.body.garage
-                })
+                });
                 review.save()
                     .then(review => res.json(review))
                     .catch(err => console.log(err))
+                res.status(500).send({
+                    message: err.message || "Some error occurred while creating the Review."
+                });
 
                 res.json(review)
-            })
+            });
 
         // res.json({id:Review.find().count()+1,...req.body})
     }
 }
 
 module.exports.editReview = (req, res) => {
-    if (typeof req.body == undefined || req.params.id == null) {
+    const id = req.params.id
+    if (typeof req.body == undefined || id == null) {
         res.json({
             status: "error",
             message: "something went wrong! check your sent data"
         })
     } else {
-        res.json({
-            id: req.body.id,
-            service: req.body.service,
-            text: req.body.text,
-            star: req.body.star,
-            user: req.body.user,
-            garage: req.body.garage
-        })
+        Review.findOneAndUpdate({
+                id
+            }, {
+                service: req.body.service,
+                text: req.body.text,
+                star: req.body.star,
+                user: req.body.user,
+                garage: req.body.garage
+            }, {
+                new: true
+            })
+            .then(review => {
+                if (!review) {
+                    return res.status(404).send({
+                        message: "Review not found with id " + id
+                    });
+                }
+                res.send(review);
+            }).catch(err => {
+                if (err.kind === 'ObjectId') {
+                    return res.status(404).send({
+                        message: "Review not found with id " + id
+                    });
+                }
+                return res.status(500).send({
+                    message: "Error updating Review with id " + id
+                });
+            });
+
     }
 }
 
 module.exports.deleteReview = (req, res) => {
-    if (req.params.id == null) {
+    const id = req.params.id
+    if (id == null) {
         res.json({
             status: "error",
             message: "review id should be provided"
         })
     } else {
-        Review.findOne({
-                id: req.params.id
+        Review.findOneAndRemove({
+                id
             })
-            .select(['-_id'])
             .then(review => {
-                res.json(review)
-            })
-            .catch(err => console.log(err))
+                if (!review) {
+                    return res.status(404).send({
+                        message: "Review not found with id " + id
+                    });
+                }
+                res.send({
+                    message: "Review deleted successfully!"
+                });
+            }).catch(err => {
+                if (err.kind === 'ObjectId' || err.name === 'NotFound') {
+                    return res.status(404).send({
+                        message: "Review not found with id " + id
+                    });
+                }
+                return res.status(500).send({
+                    message: "Could not delete Review with id " + id
+                });
+            });
     }
 }

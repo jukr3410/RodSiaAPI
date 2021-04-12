@@ -1,4 +1,5 @@
-const FileUpload = require('../models/fileUpload.model');
+const FileUpload = require('../models/fileUpload.model')
+
 
 module.exports.getAllFileUpload = (req, res) => {
     const limit = Number(req.query.limit) || 0
@@ -15,24 +16,31 @@ module.exports.getAllFileUpload = (req, res) => {
 
 module.exports.getFileUpload = (req, res) => {
     const id = req.params.id
-
     FileUpload.findOne({
             id
-        }).select(['-_id'])
+        })
         .then(fileUpload => {
             res.json(fileUpload)
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+            if (err.kind === 'ObjectId') {
+                return res.status(404).send({
+                    message: "FileUpload not found with id " + id
+                });
+            }
+            return res.status(500).send({
+                message: "Error retrieving FileUpload with id " + id
+            });
+        });
 }
 
 
 
 module.exports.addFileUpload = (req, res) => {
-    if (typeof req.body == undefined) {
-        res.json({
-            status: "error",
-            message: "data is undefined"
-        })
+    if (req.body == undefined) {
+        return res.status(400).send({
+            message: "FileUpload content can not be empty"
+        });
     } else {
         let fileUploadCount = 0;
         FileUpload.find().countDocuments(function (err, count) {
@@ -50,6 +58,9 @@ module.exports.addFileUpload = (req, res) => {
                 fileUpload.save()
                     .then(fileUpload => res.json(fileUpload))
                     .catch(err => console.log(err))
+                res.status(500).send({
+                    message: err.message || "Some error occurred while creating the FileUpload."
+                });
 
                 res.json(fileUpload)
             });
@@ -59,37 +70,74 @@ module.exports.addFileUpload = (req, res) => {
 }
 
 module.exports.editFileUpload = (req, res) => {
-    if (typeof req.body == undefined || req.params.id == null) {
+    const id = req.params.id
+    if (typeof req.body == undefined || id == null) {
         res.json({
             status: "error",
             message: "something went wrong! check your sent data"
         })
     } else {
-        res.json({
-            id: req.body.id,
-            fileName: req.body.fileName,
-            filePath: req.body.filePath,
-            service: req.body.service,
-            garage: req.body.garage,
-            infoAssistant: req.body.infoAssistant
-        })
+        FileUpload.findOneAndUpdate({
+                id
+            }, {
+                fileName: req.body.fileName,
+                filePath: req.body.filePath,
+                service: req.body.service,
+                garage: req.body.garage,
+                infoAssistant: req.body.infoAssistant
+            }, {
+                new: true
+            })
+            .then(fileUpload => {
+                if (!fileUpload) {
+                    return res.status(404).send({
+                        message: "FileUpload not found with id " + id
+                    });
+                }
+                res.send(fileUpload);
+            }).catch(err => {
+                if (err.kind === 'ObjectId') {
+                    return res.status(404).send({
+                        message: "FileUpload not found with id " + id
+                    });
+                }
+                return res.status(500).send({
+                    message: "Error updating FileUpload with id " + id
+                });
+            });
+
     }
 }
 
 module.exports.deleteFileUpload = (req, res) => {
-    if (req.params.id == null) {
+    const id = req.params.id
+    if (id == null) {
         res.json({
             status: "error",
             message: "fileUpload id should be provided"
         })
     } else {
-        FileUpload.findOne({
-                id: req.params.id
+        FileUpload.findOneAndRemove({
+                id
             })
-            .select(['-_id'])
             .then(fileUpload => {
-                res.json(fileUpload)
-            })
-            .catch(err => console.log(err))
+                if (!fileUpload) {
+                    return res.status(404).send({
+                        message: "FileUpload not found with id " + id
+                    });
+                }
+                res.send({
+                    message: "FileUpload deleted successfully!"
+                });
+            }).catch(err => {
+                if (err.kind === 'ObjectId' || err.name === 'NotFound') {
+                    return res.status(404).send({
+                        message: "FileUpload not found with id " + id
+                    });
+                }
+                return res.status(500).send({
+                    message: "Could not delete FileUpload with id " + id
+                });
+            });
     }
 }

@@ -1,5 +1,6 @@
 const Garage = require('../models/garage.model')
 
+
 module.exports.getAllGarage = (req, res) => {
     const limit = Number(req.query.limit) || 0
     const sort = req.query.sort == "desc" ? -1 : 1
@@ -15,24 +16,31 @@ module.exports.getAllGarage = (req, res) => {
 
 module.exports.getGarage = (req, res) => {
     const id = req.params.id
-
     Garage.findOne({
             id
-        }).select(['-_id'])
+        })
         .then(garage => {
             res.json(garage)
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+            if (err.kind === 'ObjectId') {
+                return res.status(404).send({
+                    message: "Garage not found with id " + id
+                });
+            }
+            return res.status(500).send({
+                message: "Error retrieving Garage with id " + id
+            });
+        });
 }
 
 
 
 module.exports.addGarage = (req, res) => {
-    if (typeof req.body == undefined) {
-        res.json({
-            status: "error",
-            message: "data is undefined"
-        })
+    if (req.body == undefined) {
+        return res.status(400).send({
+            message: "Garage content can not be empty"
+        });
     } else {
         let garageCount = 0;
         Garage.find().countDocuments(function (err, count) {
@@ -54,6 +62,9 @@ module.exports.addGarage = (req, res) => {
                 garage.save()
                     .then(garage => res.json(garage))
                     .catch(err => console.log(err))
+                res.status(500).send({
+                    message: err.message || "Some error occurred while creating the Garage."
+                });
 
                 res.json(garage)
             });
@@ -63,41 +74,78 @@ module.exports.addGarage = (req, res) => {
 }
 
 module.exports.editGarage = (req, res) => {
-    if (typeof req.body == undefined || req.params.id == null) {
+    const id = req.params.id
+    if (typeof req.body == undefined || id == null) {
         res.json({
             status: "error",
             message: "something went wrong! check your sent data"
         })
     } else {
-        res.json({
-            id: req.body.id,
-            name: req.body.name,
-            phone: req.body.phone,
-            email: req.body.email,
-            password: req.body.password,
-            validatePhone: req.body.validatePhone,
-            address: req.body.address,
-            images: req.body.images,
-            services: req.body.services,
-            reviews: req.body.reviews
-        })
+        Garage.findOneAndUpdate({
+                id
+            }, {
+                name: req.body.name,
+                phone: req.body.phone,
+                email: req.body.email,
+                password: req.body.password,
+                validatePhone: req.body.validatePhone,
+                address: req.body.address,
+                images: req.body.images,
+                services: req.body.services,
+                reviews: req.body.reviews
+            }, {
+                new: true
+            })
+            .then(garage => {
+                if (!garage) {
+                    return res.status(404).send({
+                        message: "Garage not found with id " + id
+                    });
+                }
+                res.send(garage);
+            }).catch(err => {
+                if (err.kind === 'ObjectId') {
+                    return res.status(404).send({
+                        message: "Garage not found with id " + id
+                    });
+                }
+                return res.status(500).send({
+                    message: "Error updating Garage with id " + id
+                });
+            });
+
     }
 }
 
 module.exports.deleteGarage = (req, res) => {
-    if (req.params.id == null) {
+    const id = req.params.id
+    if (id == null) {
         res.json({
             status: "error",
             message: "garage id should be provided"
         })
     } else {
-        Garage.findOne({
-                id: req.params.id
+        Garage.findOneAndRemove({
+                id
             })
-            .select(['-_id'])
             .then(garage => {
-                res.json(garage)
-            })
-            .catch(err => console.log(err))
+                if (!garage) {
+                    return res.status(404).send({
+                        message: "Garage not found with id " + id
+                    });
+                }
+                res.send({
+                    message: "Garage deleted successfully!"
+                });
+            }).catch(err => {
+                if (err.kind === 'ObjectId' || err.name === 'NotFound') {
+                    return res.status(404).send({
+                        message: "Garage not found with id " + id
+                    });
+                }
+                return res.status(500).send({
+                    message: "Could not delete Garage with id " + id
+                });
+            });
     }
 }

@@ -1,4 +1,5 @@
-const RequestService = require('../models/requestService.model');
+const RequestService = require('../models/requestService.model')
+
 
 module.exports.getAllRequestService = (req, res) => {
     const limit = Number(req.query.limit) || 0
@@ -15,24 +16,31 @@ module.exports.getAllRequestService = (req, res) => {
 
 module.exports.getRequestService = (req, res) => {
     const id = req.params.id
-
     RequestService.findOne({
             id
-        }).select(['-_id'])
+        })
         .then(requestService => {
             res.json(requestService)
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+            if (err.kind === 'ObjectId') {
+                return res.status(404).send({
+                    message: "RequestService not found with id " + id
+                });
+            }
+            return res.status(500).send({
+                message: "Error retrieving RequestService with id " + id
+            });
+        });
 }
 
 
 
 module.exports.addRequestService = (req, res) => {
-    if (typeof req.body == undefined) {
-        res.json({
-            status: "error",
-            message: "data is undefined"
-        })
+    if (req.body == undefined) {
+        return res.status(400).send({
+            message: "RequestService content can not be empty"
+        });
     } else {
         let requestServiceCount = 0;
         RequestService.find().countDocuments(function (err, count) {
@@ -46,12 +54,11 @@ module.exports.addRequestService = (req, res) => {
                     geolocation: req.body.geolocation,
                     problemDesc: req.body.problemDesc,
                     confirmRequest: req.body.confirmRequest,
-                    date: req.body.date
+                    status: req.body.status,
                 });
                 requestService.save()
                     .then(requestService => res.json(requestService))
                     .catch(err => console.log(err))
-
                 res.json(requestService)
             });
 
@@ -60,38 +67,75 @@ module.exports.addRequestService = (req, res) => {
 }
 
 module.exports.editRequestService = (req, res) => {
-    if (typeof req.body == undefined || req.params.id == null) {
+    const id = req.params.id
+    if (typeof req.body == undefined || id == null) {
         res.json({
             status: "error",
             message: "something went wrong! check your sent data"
         })
     } else {
-        res.json({
-            id: req.body.id,
-            user: req.body.user,
-            service: req.body.service,
-            geolocation: req.body.geolocation,
-            problemDesc: req.body.problemDesc,
-            confirmRequest: req.body.confirmRequest,
-            date: req.body.date
-        })
+        RequestService.findOneAndUpdate({
+                id
+            }, {
+                user: req.body.user,
+                service: req.body.service,
+                geolocation: req.body.geolocation,
+                problemDesc: req.body.problemDesc,
+                confirmRequest: req.body.confirmRequest,
+                status: req.body.status,
+            }, {
+                new: true
+            })
+            .then(requestService => {
+                if (!requestService) {
+                    return res.status(404).send({
+                        message: "RequestService not found with id " + id
+                    });
+                }
+                res.send(requestService);
+            }).catch(err => {
+                if (err.kind === 'ObjectId') {
+                    return res.status(404).send({
+                        message: "RequestService not found with id " + id
+                    });
+                }
+                return res.status(500).send({
+                    message: "Error updating RequestService with id " + id
+                });
+            });
+
     }
 }
 
 module.exports.deleteRequestService = (req, res) => {
-    if (req.params.id == null) {
+    const id = req.params.id
+    if (id == null) {
         res.json({
             status: "error",
             message: "requestService id should be provided"
         })
     } else {
-        RequestService.findOne({
-                id: req.params.id
+        RequestService.findOneAndRemove({
+                id
             })
-            .select(['-_id'])
             .then(requestService => {
-                res.json(requestService)
-            })
-            .catch(err => console.log(err))
+                if (!requestService) {
+                    return res.status(404).send({
+                        message: "RequestService not found with id " + id
+                    });
+                }
+                res.send({
+                    message: "RequestService deleted successfully!"
+                });
+            }).catch(err => {
+                if (err.kind === 'ObjectId' || err.name === 'NotFound') {
+                    return res.status(404).send({
+                        message: "RequestService not found with id " + id
+                    });
+                }
+                return res.status(500).send({
+                    message: "Could not delete RequestService with id " + id
+                });
+            });
     }
 }
