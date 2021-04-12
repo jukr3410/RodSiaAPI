@@ -44,7 +44,7 @@ module.exports.addService = (req, res) => {
                     id: serviceCount + 1,
                     name: req.body.name,
                     description: req.body.description,
-                    serviceType: req.body.serviceType,
+                    serviceTypes: req.body.serviceTypes,
                     garage: req.body.garage,
                     images: req.body.images
                 });
