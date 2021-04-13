@@ -1,5 +1,7 @@
 const Garage = require('../models/garage.model')
 
+const FileUpload = require('../models/fileUpload.model');
+
 
 module.exports.getAllGarage = (req, res) => {
     const limit = Number(req.query.limit) || 0
@@ -55,10 +57,29 @@ module.exports.addGarage = (req, res) => {
                     password: req.body.password,
                     validatePhone: req.body.validatePhone,
                     address: req.body.address,
-                    images: req.body.images,
                     services: req.body.services,
                     reviews: req.body.reviews
                 });
+
+                const images = req.files;
+
+                for (let i = 0; i < images.length; i++){
+                    let file = images[i];
+                    let filePath = file.path.replace(new RegExp('\\\\', 'g'), '/');
+                    filePath = filePath.replace('public', '');
+                    let fileUpload = new FileUpload({
+                        fileName = file.fileName,
+                        filePath = filePath,
+
+                    });
+
+                    fileUpload.garage = garage;
+                    garage.images.push(fileUpload);
+                    fileUpload.save();
+                }
+
+               
+
                 garage.save()
                     .then(garage => res.json(garage))
                     .catch(err => console.log(err))
