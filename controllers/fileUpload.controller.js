@@ -1,13 +1,13 @@
 const FileUpload = require('../models/fileUpload.model');
 
-const AWS = require('aws-sdk');
-const async = require('async');
-const bucketName = 'rodsiastorages';
-const path = require('path');
-const fs = require('fs');
+const AWS = require("aws-sdk");
+const async = require("async");
+const bucketName = "rodsiastorages";
+const path = require("path");
+const fs = require("fs");
 let pathParams, image, imageName;
 
-AWS.config.loadFormPath('config.json');
+AWS.config.loadFromPath("config.json");
 
 const s3 = new AWS.S3({region: 'ap-southeast-1'});
 const createMainBucket = (callback) => {
@@ -63,6 +63,19 @@ exports.upload = (req, res, next) => {
 	});
 };
 
+
+exports.displayForm = (req, res) => {
+	res.writeHead(200, {
+		"Content-Type": "text/html",
+	});
+	res.write(
+		'<form action="/api/file-uploads" method="post" enctype="multipart/form-data">' +
+		'<input type="file" name="file">' +
+		'<input type="submit" value="Upload">' +
+		"</form>"
+	);
+	res.end();
+};
 // module.exports.getAllFileUpload = (req, res) => {
 //     const limit = Number(req.query.limit) || 0
 //     const sort = req.query.sort == "desc" ? -1 : 1
