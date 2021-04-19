@@ -61,25 +61,8 @@ module.exports.addGarage = (req, res) => {
                     reviews: req.body.reviews
                 });
 
-                const images = req.files;
-
-                for (let i = 0; i < images.length; i++){
-                    let file = images[i];
-                    let filePath = file.path.replace(new RegExp('\\\\', 'g'), '/');
-                    filePath = filePath.replace('public', '');
-                    let fileUpload = new FileUpload({
-                        fileName = file.fileName,
-                        filePath = filePath,
-
-                    });
-
-                    fileUpload.garage = garage;
-                    garage.images.push(fileUpload);
-                    fileUpload.save();
-                }
-
-               
-
+                
+        
                 garage.save()
                     .then(garage => res.json(garage))
                     .catch(err => console.log(err))
