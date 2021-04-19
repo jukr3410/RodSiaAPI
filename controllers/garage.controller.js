@@ -56,13 +56,16 @@ module.exports.addGarage = (req, res) => {
                     email: req.body.email,
                     password: req.body.password,
                     validatePhone: req.body.validatePhone,
-                    address: req.body.address,
+                    address: {
+                        addressDesc: req.body.address.addressDesc,
+                        geolocation: {
+                            lat: req.body.address.geolocation.lat,
+                            long: req.body.address.geolocation.long
+                        }
+                    },
                     services: req.body.services,
                     reviews: req.body.reviews
-                });
-
-                
-        
+                })
                 garage.save()
                     .then(garage => res.json(garage))
                     .catch(err => console.log(err))
@@ -164,7 +167,8 @@ module.exports.getByGarageName = (req, res) => {
         const query = {
             name: {
                 // "$regex": new RegExp(name, "i")
-                "$regex": name,$options: 'i'
+                "$regex": name,
+                $options: 'i'
             }
         };
 
