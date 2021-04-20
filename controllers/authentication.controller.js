@@ -1,4 +1,4 @@
-const User = require('../models/user.model')
+const User = require('../models/user.model').isValidPassword
 const bcrypt = require('bcrypt');
 const session = require('express-session')
 const Garage = require('../models/garage.model')
@@ -18,43 +18,43 @@ module.exports.registerUser = (req, res) => {
                 email: req.body.email
             }
         ]
-    }).then((users) => {
-        if (users) {
+    }).then((user) => {
+        if (user) {
             res.send({
                 message: "This user already. "
             })
         } else {
-            let userCount = 0;
-            User.find().countDocuments(function (err, count) {
-                    userCount = count
-                })
-                .then(() => {
-                    const user = new User({
-                        id: userCount + 1,
-                        name: req.body.name,
-                        email: req.body.email,
-                        phone: req.body.phone,
-                        password: req.body.password,
-                        validatePhone: req.body.validatePhone,
-                        cars: [{
-                            brand: req.body.cars.brand,
-                            model: req.body.cars.model,
-                            type: req.body.cars.type,
-                            year: req.body.cars.year
-                        }],
-                        review: req.body.review,
-                        requestServices: req.body.requestServices
-                    });
-                    user.save()
-                        .then(user => res.json(user))
-                        .catch(err => console.log(err))
-                    // session.phone = user.phone
-                    // res.status(200).send('phone = ' + session.phone)
-                    res.status(500).send({
-                        message: err.message || "Some error occurred while creating the User."
-                    });
-                    res.json(user)
-                });
+            // let userCount = 0;
+            // User.find().countDocuments(function (err, count) {
+            //         userCount = count
+            //     })
+            // .then(() => {
+            const user = new User({
+                // id: userCount + 1,
+                name: req.body.name,
+                email: req.body.email,
+                phone: req.body.phone,
+                password: req.body.password,
+                validatePhone: req.body.validatePhone,
+                cars: [{
+                    brand: req.body.cars.brand,
+                    model: req.body.cars.model,
+                    type: req.body.cars.type,
+                    year: req.body.cars.year
+                }],
+                review: req.body.review,
+                requestServices: req.body.requestServices
+            });
+            user.save()
+                .then(user => res.json(user))
+                .catch(err => console.log(err))
+            // session.phone = user.phone
+            // res.status(200).send('phone = ' + session.phone)
+            res.status(500).send({
+                message: err.message || "Some error occurred while creating the User."
+            });
+            res.json(user)
+            // });
         }
     })
 }
@@ -78,45 +78,46 @@ module.exports.registerGarage = (req, res) => {
                 message: "This garage already. "
             })
         } else {
-            let garageCount = 0;
-            Garage.find().countDocuments(function (err, count) {
-                    garageCount = count
-                })
-                .then(() => {
-                    const garage = new Garage({
-                        id: garageCount + 1,
-                        name: req.body.name,
-                        phone: req.body.phone,
-                        email: req.body.email,
-                        password: req.body.password,
-                        validatePhone: req.body.validatePhone,
-                        address: {
-                            addressDesc: req.body.address.addressDesc,
-                            geolocation: {
-                                lat: req.body.address.geolocation.lat,
-                                long: req.body.address.geolocation.long
-                            }
-                        },
-                        services: req.body.services,
-                        reviews: req.body.reviews
-                    });
-                    garage.save()
-                        .then(garage => res.json(garage))
-                        .catch(err => console.log(err))
-                    // session.phone = user.phone
-                    // res.status(200).send('phone = ' + session.phone)
-                    res.status(500).send({
-                        message: err.message || "Some error occurred while creating the User."
-                    });
-                    res.json(garage)
-                });
+            // let garageCount = 0;
+            // Garage.find().countDocuments(function (err, count) {
+            //         garageCount = count
+            //     })
+            //     .then(() => {
+            const garage = new Garage({
+                // id: garageCount + 1,
+                name: req.body.name,
+                phone: req.body.phone,
+                email: req.body.email,
+                password: req.body.password,
+                validatePhone: req.body.validatePhone,
+                address: {
+                    addressDesc: req.body.address.addressDesc,
+                    geolocation: {
+                        lat: req.body.address.geolocation.lat,
+                        long: req.body.address.geolocation.long
+                    }
+                },
+                services: req.body.services,
+                reviews: req.body.reviews
+            });
+            garage.save()
+                .then(garage => res.json(garage))
+                .catch(err => console.log(err))
+            // session.phone = user.phone
+            // res.status(200).send('phone = ' + session.phone)
+            res.status(500).send({
+                message: err.message || "Some error occurred while creating the User.",
+            });
+            res.json(garage)
+            // });
         }
     })
 }
 
-module.exports.login = (req, res) => {
+module.exports.loginUser = (req, res) => {
     const phone = req.body.phone
-    User.find({
+    const password = req.body.password
+    User.findOne({
             phone
         })
         .then(user => {
@@ -124,18 +125,46 @@ module.exports.login = (req, res) => {
                 message: "User not found with that " + phone
             });
             else {
-                bcrypt.compare(req.body.password, user.password, (error, match => {
+                bcrypt.compare(password, user.password, (error => {
                     if (error) res.status(500).json(error)
-                    else res.status(403).json({
-                        error: "password do not match."
-                    })
+                    res.end()
                 }))
+                req.session.loginUser = true
+                req.session.phone = phone
             }
+            res.json(user)
         })
         .catch(err => {
             res.status(500).json(err)
         });
 }
+module.exports.loginGarage = (req, res) => {
+    const phone = req.body.phone
+    const password = req.body.password
+    Garage.findOne({
+            phone
+        })
+        .then(garage => {
+            if (!garage) res.status(404).send({
+                message: "User not found with that " + phone
+            });
+            else {
+                // isValidPassword(password, garage)
+                bcrypt.compare(password, garage.password, (error => {
+                    if (error) res.status(500).json(error)
+                    res.end()
+
+                }))
+            }
+            res.json(garage)
+        })
+
+        .catch(err => {
+            res.status(500).json(err)
+        });
+}
+
+
 module.exports.logout = (req, res) => {
     if (session) {
         req.session.destroy(() => {
@@ -143,6 +172,7 @@ module.exports.logout = (req, res) => {
         });
     }
 }
+
 module.exports.getSession = (req, res) => {
     console.log(sess)
     if (!session) {
