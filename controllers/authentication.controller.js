@@ -1,5 +1,9 @@
-const User = require('../models/user.model').isValidPassword
-const bcrypt = require('bcrypt');
+const User = require('../models/user.model')
+const mongoose = require('mongoose')
+// const model = mongoose.model
+const Schema = mongoose.Schema
+const isValidPassword = mongoose.model('User', userSchema)
+const bcrypt = require('bcrypt')
 const session = require('express-session')
 const Garage = require('../models/garage.model')
 
@@ -125,12 +129,13 @@ module.exports.loginUser = (req, res) => {
                 message: "User not found with that " + phone
             });
             else {
-                bcrypt.compare(password, user.password, (error => {
-                    if (error) res.status(500).json(error)
-                    res.end()
-                }))
-                req.session.loginUser = true
-                req.session.phone = phone
+                isValidPassword(password)
+                // bcrypt.compare(password, user.password, (error => {
+                //     if (error) res.status(500).json(error)
+                //     res.end()
+                // }))
+                session.loginUser = true
+                session.phone = phone
             }
             res.json(user)
         })
@@ -138,6 +143,7 @@ module.exports.loginUser = (req, res) => {
             res.status(500).json(err)
         });
 }
+
 module.exports.loginGarage = (req, res) => {
     const phone = req.body.phone
     const password = req.body.password
@@ -155,6 +161,8 @@ module.exports.loginGarage = (req, res) => {
                     res.end()
 
                 }))
+                session.loginGarage = true
+                session.phone = phone
             }
             res.json(garage)
         })
@@ -167,7 +175,7 @@ module.exports.loginGarage = (req, res) => {
 
 module.exports.logout = (req, res) => {
     if (session) {
-        req.session.destroy(() => {
+        session.destroy(() => {
             req.logout();
         });
     }
