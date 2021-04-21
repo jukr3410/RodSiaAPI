@@ -1,8 +1,7 @@
 const User = require('../models/user.model')
 const mongoose = require('mongoose')
 // const model = mongoose.model
-const Schema = mongoose.Schema
-const isValidPassword = mongoose.model('User', userSchema)
+//const Schema = mongoose.Schema
 const bcrypt = require('bcrypt')
 const session = require('express-session')
 const Garage = require('../models/garage.model')
@@ -129,7 +128,9 @@ module.exports.loginUser = (req, res) => {
                 message: "User not found with that " + phone
             });
             else {
-                isValidPassword(password)
+                User.isValidPassword(password).catch(err => {
+                    res.status(500).json(err)
+                });
                 // bcrypt.compare(password, user.password, (error => {
                 //     if (error) res.status(500).json(error)
                 //     res.end()

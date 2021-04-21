@@ -77,6 +77,32 @@ module.exports.uploadByGarage = (req, res, next) => {
 };
 
 
+module.exports.uploadByInfoAssistant = (req, res, next) => {
+	var tmp_path = req.files.file.path;
+	// console.log("item", req.files.file)
+	//var tmp_path = req.files.file.path;
+	image = fs.createReadStream(tmp_path);
+	imageName = "info-assistants/" + req.files.file.name; // ex. set name such as use id-date.(png/jpg)
+	async.series([createMainBucket, createItemObject], (err, result) => {
+		if (err) {
+			return res.send(err);
+		} else {
+			const fileUpload = new FileUpload({
+				fileName: req.files.file.name,
+				fileLink: process.env.S3_FILE_URL+imageName,
+				garage: req.params.id
+			});
+			fileUpload.save()
+				.catch(err => console.log(err));
+			return res.json({
+				message: "Successfully  uploaded",
+				fileUpload
+			});
+		}
+	});
+};
+
+
 
 
 module.exports.displayForm = (req, res) => {
@@ -115,6 +141,29 @@ module.exports.getByGarageId = (req, res) => {
     } else {
         const query = {
             garage: {
+                "$in": [req.params.id]
+            }
+        };
+        FileUpload.find(query)
+            .then(images => {
+                res.json(images)
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }
+};
+
+
+module.exports.getByInfoId = (req, res) => {
+    if (req.params.id == null) {
+        req.json({
+            status: "error",
+            message: "Info Assist id should be provided"
+        })
+    } else {
+        const query = {
+            infoAssistant: {
                 "$in": [req.params.id]
             }
         };

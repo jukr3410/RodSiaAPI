@@ -77,7 +77,7 @@ userSchema.path('password', {
     }
 });
 
-userSchema.methods.isValidPassword = function (inputPassword, callback) {
+module.exports.isValidPassword = function (inputPassword, callback) {
     bcrypt.compare(inputPassword, this.password.toObject(), function (err, isMatch) {
         if (err)
             return callback(err);
