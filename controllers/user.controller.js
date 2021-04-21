@@ -7,7 +7,7 @@ module.exports.getAllUser = (req, res) => {
   const sort = req.query.sort == "desc" ? -1 : 1
 
   User.find().select(['-_id']).limit(limit).sort({
-      id: sort
+      _id: sort
     })
     .then(users => {
       res.json(users)
@@ -17,12 +17,11 @@ module.exports.getAllUser = (req, res) => {
 
 module.exports.getUser = (req, res) => {
   // const id = req.params.id
-  const newObjectId = new ObjectId(req.params.id)
+  const id = new ObjectId(req.params.id)
   User.findById({
-      "_id": newObjectId
+      "_id": id
     })
     .then(user => {
-
       res.json(user)
     })
     .catch(err => {
@@ -65,8 +64,6 @@ module.exports.addUser = (req, res) => {
       },
       review: req.body.review,
       requestServices: req.body.requestServices
-
-
     });
     user.save()
       .then(user => res.json(user))
@@ -74,24 +71,22 @@ module.exports.addUser = (req, res) => {
     res.status(500).send({
       message: err.message || "Some error occurred while creating the User."
     });
-
     res.json(user)
     // });
-
     // res.json({id:User.find().count()+1,...req.body})
   }
 }
 
 module.exports.editUser = (req, res) => {
-  const id = req.params.id
+  const id = new ObjectId(req.params.id)
   if (typeof req.body == undefined || id == null) {
     res.json({
       status: "error",
       message: "something went wrong! check your sent data"
     })
   } else {
-    User.findOneAndUpdate({
-        id
+    User.findByIdAndUpdate({
+        "_id": id
       }, {
         name: req.body.name,
         email: req.body.email,
@@ -131,15 +126,15 @@ module.exports.editUser = (req, res) => {
 }
 
 module.exports.deleteUser = (req, res) => {
-  const id = req.params.id
+  const id = new ObjectId(req.params.id)
   if (id == null) {
     res.json({
       status: "error",
       message: "user id should be provided"
     })
   } else {
-    User.findOneAndRemove({
-        id
+    User.findByIdAndRemove({
+      "_id": id
       })
       .then(user => {
         if (!user) {

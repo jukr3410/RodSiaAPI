@@ -1,4 +1,5 @@
 const Service = require('../models/service.model')
+const ObjectId = require('mongodb').ObjectID
 
 
 module.exports.getAllService = (req, res) => {
@@ -6,7 +7,7 @@ module.exports.getAllService = (req, res) => {
     const sort = req.query.sort == "desc" ? -1 : 1
 
     Service.find().select(['-_id']).limit(limit).sort({
-            id: sort
+            _id: sort
         })
         .then(services => {
             res.json(services)
@@ -15,9 +16,9 @@ module.exports.getAllService = (req, res) => {
 }
 
 module.exports.getService = (req, res) => {
-    const id = req.params.id
-    Service.findOne({
-            id
+    const id = new ObjectId(req.params.id)
+    Service.findById({
+        "_id": id
         })
         .then(service => {
             res.json(service)
@@ -42,13 +43,13 @@ module.exports.addService = (req, res) => {
             message: "Service content can not be empty"
         });
     } else {
-        let serviceCount = 0;
-        Service.find().countDocuments(function (err, count) {
-                serviceCount = count
-            })
-            .then(() => {
+        // let serviceCount = 0;
+        // Service.find().countDocuments(function (err, count) {
+        //         serviceCount = count
+        //     })
+        //     .then(() => {
                 const service = new Service({
-                    id: serviceCount + 1,
+                    // id: serviceCount + 1,
                     serviceType: req.body.serviceType,
                     problemObserve: req.body.problemObserve,
                     desc: req.body.desc,
@@ -60,24 +61,22 @@ module.exports.addService = (req, res) => {
                 res.status(500).send({
                     message: err.message || "Some error occurred while creating the Service."
                 });
-
                 res.json(service)
-            });
-
+            // });
         // res.json({id:Service.find().count()+1,...req.body})
     }
 }
 
 module.exports.editService = (req, res) => {
-    const id = req.params.id
+    const id = new ObjectId(req.params.id)
     if (typeof req.body == undefined || id == null) {
         res.json({
             status: "error",
             message: "something went wrong! check your sent data"
         })
     } else {
-        Service.findOneAndUpdate({
-                id
+        Service.findByIdAndUpdate({
+            "_id": id
             }, {
                 serviceType: req.body.serviceType,
                 problemObserve: req.body.problemObserve,
@@ -108,15 +107,15 @@ module.exports.editService = (req, res) => {
 }
 
 module.exports.deleteService = (req, res) => {
-    const id = req.params.id
+    const id = new ObjectId(req.params.id)
     if (id == null) {
         res.json({
             status: "error",
             message: "service id should be provided"
         })
     } else {
-        Service.findOneAndRemove({
-                id
+        Service.findByIdAndRemove({
+            "_id": id
             })
             .then(service => {
                 if (!service) {
@@ -142,7 +141,9 @@ module.exports.deleteService = (req, res) => {
 
 
 module.exports.getByServiceType = (req, res) => {
-    if (req.params.id == null) {
+    const id = new ObjectId(req.params.id)
+
+    if (id == null) {
         req.json({
             status: "error",
             message: "ServiceType id should be provided"
@@ -150,7 +151,7 @@ module.exports.getByServiceType = (req, res) => {
     } else {
         const query = {
             serviceTypes: {
-                "$in": [req.params.id]
+                "$in": [id]
             }
         };
         Service.find(query)

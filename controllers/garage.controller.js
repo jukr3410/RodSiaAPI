@@ -8,7 +8,7 @@ module.exports.getAllGarage = (req, res) => {
     const sort = req.query.sort == "desc" ? -1 : 1
 
     Garage.find().select(['-_id']).limit(limit).sort({
-            id: sort
+            _id: sort
         })
         .then(garages => {
             res.json(garages)
@@ -17,9 +17,9 @@ module.exports.getAllGarage = (req, res) => {
 }
 
 module.exports.getGarage = (req, res) => {
-    const id = req.params.id
-    Garage.findOne({
-            id
+    const id = new ObjectId(req.params.id)
+    Garage.findById({
+            "_id": id
         })
         .then(garage => {
             res.json(garage)
@@ -44,52 +44,52 @@ module.exports.addGarage = (req, res) => {
             message: "Garage content can not be empty"
         });
     } else {
-        let garageCount = 0;
-        Garage.find().countDocuments(function (err, count) {
-                garageCount = count
-            })
-            .then(() => {
-                const garage = new Garage({
-                    id: garageCount + 1,
-                    name: req.body.name,
-                    phone: req.body.phone,
-                    email: req.body.email,
-                    password: req.body.password,
-                    validatePhone: req.body.validatePhone,
-                    address: {
-                        addressDesc: req.body.address.addressDesc,
-                        geolocation: {
-                            lat: req.body.address.geolocation.lat,
-                            long: req.body.address.geolocation.long
-                        }
-                    },
-                    services: req.body.services,
-                    reviews: req.body.reviews
-                })
-                garage.save()
-                    .then(garage => res.json(garage))
-                    .catch(err => console.log(err))
-                res.status(500).send({
-                    message: err.message || "Some error occurred while creating the Garage."
-                });
+        // let garageCount = 0;
+        // Garage.find().countDocuments(function (err, count) {
+        //         garageCount = count
+        //     })
+        //     .then(() => {
+        const garage = new Garage({
+            // id: garageCount + 1,
+            name: req.body.name,
+            phone: req.body.phone,
+            email: req.body.email,
+            password: req.body.password,
+            validatePhone: req.body.validatePhone,
+            address: {
+                addressDesc: req.body.address.addressDesc,
+                geolocation: {
+                    lat: req.body.address.geolocation.lat,
+                    long: req.body.address.geolocation.long
+                }
+            },
+            services: req.body.services,
+            reviews: req.body.reviews
+        })
+        garage.save()
+            .then(garage => res.json(garage))
+            .catch(err => console.log(err))
+        res.status(500).send({
+            message: err.message || "Some error occurred while creating the Garage."
+        });
 
-                res.json(garage)
-            });
+        res.json(garage)
+        // });
 
         // res.json({id:Garage.find().count()+1,...req.body})
     }
 }
 
 module.exports.editGarage = (req, res) => {
-    const id = req.params.id
+    const id = new ObjectId(req.params.id)
     if (typeof req.body == undefined || id == null) {
         res.json({
             status: "error",
             message: "something went wrong! check your sent data"
         })
     } else {
-        Garage.findOneAndUpdate({
-                id
+        Garage.findByIdAndUpdate({
+                "_id": id
             }, {
                 name: req.body.name,
                 phone: req.body.phone,
@@ -125,15 +125,15 @@ module.exports.editGarage = (req, res) => {
 }
 
 module.exports.deleteGarage = (req, res) => {
-    const id = req.params.id
+    const id = new ObjectId(req.params.id)
     if (id == null) {
         res.json({
             status: "error",
             message: "garage id should be provided"
         })
     } else {
-        Garage.findOneAndRemove({
-                id
+        Garage.findByIdAndRemove({
+                "_id": id
             })
             .then(garage => {
                 if (!garage) {

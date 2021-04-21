@@ -1,4 +1,6 @@
 const ServiceType = require('../models/serviceType.model')
+const ObjectId = require('mongodb').ObjectID
+
 
 
 module.exports.getAllServiceType = (req, res) => {
@@ -6,7 +8,7 @@ module.exports.getAllServiceType = (req, res) => {
     const sort = req.query.sort == "desc" ? -1 : 1
 
     ServiceType.find().select(['-_id']).limit(limit).sort({
-            id: sort
+            _id: sort
         })
         .then(serviceTypes => {
             res.json(serviceTypes)
@@ -15,9 +17,9 @@ module.exports.getAllServiceType = (req, res) => {
 }
 
 module.exports.getServiceType = (req, res) => {
-    const id = req.params.id
-    ServiceType.findOne({
-            id
+    const id = new ObjectId(req.params.id)
+    User.findById({
+            "_id": id
         })
         .then(serviceType => {
             res.json(serviceType)
@@ -42,42 +44,40 @@ module.exports.addServiceType = (req, res) => {
             message: "ServiceType content can not be empty"
         });
     } else {
-        let serviceTypeCount = 0;
-        ServiceType.find().countDocuments(function (err, count) {
-                serviceTypeCount = count
-            })
-            .then(() => {
-                const serviceType = new ServiceType({
-                    id: serviceTypeCount + 1,
-                    name: req.body.name,
-                    description: req.body.description,
-                    services: req.body.services,
-                    infoAssistants: req.body.infoAssistants
-                });
-                serviceType.save()
-                    .then(serviceType => res.json(serviceType))
-                    .catch(err => console.log(err))
-                res.status(500).send({
-                    message: err.message || "Some error occurred while creating the ServiceType."
-                });
-
-                res.json(serviceType)
-            });
-
+        // let serviceTypeCount = 0;
+        // ServiceType.find().countDocuments(function (err, count) {
+        //         serviceTypeCount = count
+        //     })
+        //     .then(() => {
+        const serviceType = new ServiceType({
+            // id: serviceTypeCount + 1,
+            name: req.body.name,
+            description: req.body.description,
+            services: req.body.services,
+            infoAssistants: req.body.infoAssistants
+        });
+        serviceType.save()
+            .then(serviceType => res.json(serviceType))
+            .catch(err => console.log(err))
+        res.status(500).send({
+            message: err.message || "Some error occurred while creating the ServiceType."
+        });
+        res.json(serviceType)
+        // });
         // res.json({id:ServiceType.find().count()+1,...req.body})
     }
 }
 
 module.exports.editServiceType = (req, res) => {
-    const id = req.params.id
+    const id = new ObjectId(req.params.id)
     if (typeof req.body == undefined || id == null) {
         res.json({
             status: "error",
             message: "something went wrong! check your sent data"
         })
     } else {
-        ServiceType.findOneAndUpdate({
-                id
+        ServiceType.findByIdAndUpdate({
+                "_id": id
             }, {
                 name: req.body.name,
                 description: req.body.description,
@@ -108,15 +108,15 @@ module.exports.editServiceType = (req, res) => {
 }
 
 module.exports.deleteServiceType = (req, res) => {
-    const id = req.params.id
+    const id = new ObjectId(req.params.id)
     if (id == null) {
         res.json({
             status: "error",
             message: "serviceType id should be provided"
         })
     } else {
-        ServiceType.findOneAndRemove({
-                id
+        ServiceType.findByIdAndRemove({
+            "_id": id
             })
             .then(serviceType => {
                 if (!serviceType) {

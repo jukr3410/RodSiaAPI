@@ -6,7 +6,7 @@ module.exports.getAllRequestService = (req, res) => {
     const sort = req.query.sort == "desc" ? -1 : 1
 
     RequestService.find().select(['-_id']).limit(limit).sort({
-            id: sort
+            _id: sort
         })
         .then(requestServices => {
             res.json(requestServices)
@@ -15,9 +15,9 @@ module.exports.getAllRequestService = (req, res) => {
 }
 
 module.exports.getRequestService = (req, res) => {
-    const id = req.params.id
-    RequestService.findOne({
-            id
+    const id = new ObjectId(req.params.id)
+    RequestService.findById({
+            "_id": id
         })
         .then(requestService => {
             res.json(requestService)
@@ -42,14 +42,14 @@ module.exports.addRequestService = (req, res) => {
             message: "RequestService content can not be empty"
         });
     } else {
-        let requestServiceCount = 0;
-        RequestService.find().countDocuments(function (err, count) {
-                requestServiceCount = count
-            })
-            .then(() => {
+        // let requestServiceCount = 0;
+        // RequestService.find().countDocuments(function (err, count) {
+        //         requestServiceCount = count
+        //     })
+        //     .then(() => {
 
                 const requestService = new RequestService({
-                    id: requestServiceCount + 1,
+                    // id: requestServiceCount + 1,
                     user: req.body.user,
                     service: req.body.service,
                     geolocation: req.body.geolocation,
@@ -61,22 +61,22 @@ module.exports.addRequestService = (req, res) => {
                     .then(requestService => res.json(requestService))
                     .catch(err => console.log(err))
                 res.json(requestService)
-            });
+            // });
 
         // res.json({id:RequestService.find().count()+1,...req.body})
     }
 }
 
 module.exports.editRequestService = (req, res) => {
-    const id = req.params.id
+    const id = new ObjectId(req.params.id)
     if (typeof req.body == undefined || id == null) {
         res.json({
             status: "error",
             message: "something went wrong! check your sent data"
         })
     } else {
-        RequestService.findOneAndUpdate({
-                id
+        RequestService.findByIdAndUpdate({
+                "_id" : id
             }, {
                 user: req.body.user,
                 service: req.body.service,
@@ -109,15 +109,15 @@ module.exports.editRequestService = (req, res) => {
 }
 
 module.exports.deleteRequestService = (req, res) => {
-    const id = req.params.id
+    const id = new ObjectId(req.params.id)
     if (id == null) {
         res.json({
             status: "error",
             message: "requestService id should be provided"
         })
     } else {
-        RequestService.findOneAndRemove({
-                id
+        RequestService.findByIdAndRemove({
+                "_id" : id
             })
             .then(requestService => {
                 if (!requestService) {

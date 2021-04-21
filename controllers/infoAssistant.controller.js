@@ -6,7 +6,7 @@ module.exports.getAllInfoAssistant = (req, res) => {
     const sort = req.query.sort == "desc" ? -1 : 1
 
     InfoAssistant.find().select(['-_id']).limit(limit).sort({
-            id: sort
+            _id: sort
         })
         .then(infoAssistants => {
             res.json(infoAssistants)
@@ -15,9 +15,9 @@ module.exports.getAllInfoAssistant = (req, res) => {
 }
 
 module.exports.getInfoAssistant = (req, res) => {
-    const id = req.params.id
-    InfoAssistant.findOne({
-            id
+    const id = new ObjectId(req.params.id)
+    InfoAssistant.findById({
+            "_id": id
         })
         .then(infoAssistant => {
             res.json(infoAssistant)
@@ -42,42 +42,42 @@ module.exports.addInfoAssistant = (req, res) => {
             message: "InfoAssistant content can not be empty"
         });
     } else {
-        let infoAssistantCount = 0;
-        InfoAssistant.find().countDocuments(function (err, count) {
-                infoAssistantCount = count
-            })
-            .then(() => {
-                const infoAssistant = new InfoAssistant({
-                    id: infoAssistantCount + 1,
-                    serviceType: req.body.serviceType,
-                    problemObserve: req.body.problemObserve,
-                    desc: req.body.desc,
-                    images: req.body.images
-                });
-                infoAssistant.save()
-                    .then(infoAssistant => res.json(infoAssistant))
-                    .catch(err => console.log(err))
-                res.status(500).send({
-                    message: err.message || "Some error occurred while creating the InfoAssistant."
-                });
+        // let infoAssistantCount = 0;
+        // InfoAssistant.find().countDocuments(function (err, count) {
+        //         infoAssistantCount = count
+        //     })
+        //     .then(() => {
+        const infoAssistant = new InfoAssistant({
+            // id: infoAssistantCount + 1,
+            serviceType: req.body.serviceType,
+            problemObserve: req.body.problemObserve,
+            desc: req.body.desc,
+            images: req.body.images
+        });
+        infoAssistant.save()
+            .then(infoAssistant => res.json(infoAssistant))
+            .catch(err => console.log(err))
+        res.status(500).send({
+            message: err.message || "Some error occurred while creating the InfoAssistant."
+        });
 
-                res.json(infoAssistant)
-            });
+        res.json(infoAssistant)
+        // });
 
         // res.json({id:InfoAssistant.find().count()+1,...req.body})
     }
 }
 
 module.exports.editInfoAssistant = (req, res) => {
-    const id = req.params.id
+    const id = new ObjectId(req.params.id)
     if (typeof req.body == undefined || id == null) {
         res.json({
             status: "error",
             message: "something went wrong! check your sent data"
         })
     } else {
-        InfoAssistant.findOneAndUpdate({
-                id
+        InfoAssistant.findByIdAndUpdate({
+                "_id": id
             }, {
                 serviceType: req.body.serviceType,
                 problemObserve: req.body.problemObserve,
@@ -108,15 +108,15 @@ module.exports.editInfoAssistant = (req, res) => {
 }
 
 module.exports.deleteInfoAssistant = (req, res) => {
-    const id = req.params.id
+    const id = new ObjectId(req.params.id)
     if (id == null) {
         res.json({
             status: "error",
             message: "infoAssistant id should be provided"
         })
     } else {
-        InfoAssistant.findOneAndRemove({
-                id
+        InfoAssistant.findByIdAndRemove({
+                "_id": id
             })
             .then(infoAssistant => {
                 if (!infoAssistant) {

@@ -1,4 +1,5 @@
 const Review = require('../models/review.model')
+const ObjectId = require('mongodb').ObjectID
 
 
 module.exports.getAllReview = (req, res) => {
@@ -6,7 +7,7 @@ module.exports.getAllReview = (req, res) => {
     const sort = req.query.sort == "desc" ? -1 : 1
 
     Review.find().select(['-_id']).limit(limit).sort({
-            id: sort
+            _id: sort
         })
         .then(reviews => {
             res.json(reviews)
@@ -15,9 +16,9 @@ module.exports.getAllReview = (req, res) => {
 }
 
 module.exports.getReview = (req, res) => {
-    const id = req.params.id
-    Review.findOne({
-            id
+    const id = new ObjectId(req.params.id)
+    Review.findById({
+            "+id": id
         })
         .then(review => {
             res.json(review)
@@ -42,43 +43,43 @@ module.exports.addReview = (req, res) => {
             message: "Review content can not be empty"
         });
     } else {
-        let reviewCount = 0;
-        Review.find().countDocuments(function (err, count) {
-                reviewCount = count
-            })
-            .then(() => {
-                const review = new Review({
-                    id: reviewCount + 1,
-                    service: req.body.service,
-                    text: req.body.text,
-                    star: req.body.star,
-                    user: req.body.user,
-                    garage: req.body.garage
-                });
-                review.save()
-                    .then(review => res.json(review))
-                    .catch(err => console.log(err))
-                res.status(500).send({
-                    message: err.message || "Some error occurred while creating the Review."
-                });
+        // let reviewCount = 0;
+        // Review.find().countDocuments(function (err, count) {
+        //         reviewCount = count
+        //     })
+        //     .then(() => {
+        const review = new Review({
+            // id: reviewCount + 1,
+            service: req.body.service,
+            text: req.body.text,
+            star: req.body.star,
+            user: req.body.user,
+            garage: req.body.garage
+        });
+        review.save()
+            .then(review => res.json(review))
+            .catch(err => console.log(err))
+        res.status(500).send({
+            message: err.message || "Some error occurred while creating the Review."
+        });
 
-                res.json(review)
-            });
+        res.json(review)
+        // });
 
         // res.json({id:Review.find().count()+1,...req.body})
     }
 }
 
 module.exports.editReview = (req, res) => {
-    const id = req.params.id
+    const id = new ObjectId(req.params.id)
     if (typeof req.body == undefined || id == null) {
         res.json({
             status: "error",
             message: "something went wrong! check your sent data"
         })
     } else {
-        Review.findOneAndUpdate({
-                id
+        Review.findByIdAndUpdate({
+                "_id": id
             }, {
                 service: req.body.service,
                 text: req.body.text,
@@ -110,15 +111,15 @@ module.exports.editReview = (req, res) => {
 }
 
 module.exports.deleteReview = (req, res) => {
-    const id = req.params.id
+    const id = new ObjectId(req.params.id)
     if (id == null) {
         res.json({
             status: "error",
             message: "review id should be provided"
         })
     } else {
-        Review.findOneAndRemove({
-                id
+        Review.findByIdAndRemove({
+                "_id": id
             })
             .then(review => {
                 if (!review) {

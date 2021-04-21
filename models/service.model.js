@@ -4,11 +4,11 @@ const Garage = require('./garage.model');
 const ServiceType = require('./serviceType.model');
 
 const servicesSchema = new Schema({
-    id: {
-        type: Number,
-        required: [true, "can't be blank"],
-        unique: true
-    },
+    // id: {
+    //     type: Number,
+    //     required: [true, "can't be blank"],
+    //     unique: true
+    // },
     name: {
         type: String,
         required: [true, 'Name must not be emtpy']

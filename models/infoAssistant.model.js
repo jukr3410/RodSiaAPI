@@ -3,11 +3,11 @@ const Schema = mongoose.Schema
 
 const infoAssistantSchema = new Schema({
 
-    id: {
-        type: Number,
-        required: [true, "can't be blank"],
-        unique: true
-    },
+    // id: {
+    //     type: Number,
+    //     required: [true, "can't be blank"],
+    //     unique: true
+    // },
     serviceType: {
         type: Schema.Types.ObjectId,
         ref: 'ServiceType'

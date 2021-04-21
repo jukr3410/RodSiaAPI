@@ -3,10 +3,10 @@ const Schema = mongoose.Schema;
 const service = require('./service.model')
 
 const serviceTypeSchema = new Schema({
-    id: {
-        type: Number,
-        required: [true, "can't be blank"]
-    },
+    // id: {
+    //     type: Number,
+    //     required: [true, "can't be blank"]
+    // },
     name: {
         type: String,
         unique: true,
