@@ -7,6 +7,7 @@ const logger = require("morgan");
 const MongoDbConfig = require("./configs/mongodb.config");
 const AppResponseDto = require("./dtos/responses/appResponse.dto")
 const app = express();
+const session = require('express-session');
 
 
 const listener = app.listen(process.env.PORT || 3000, () => {
@@ -24,6 +25,7 @@ MongoDbConfig.configure()
         const infoAssistantRoute = require("./routes/infoAssistant.routes");
         const garageRoutes = require("./routes/garage.routes");
         const fileUploadRoute = require("./routes/fileUpload.routes");
+        const authenticationRoute = require("./routes/authentication.routes");
 
         app.use(logger("dev"));
         // parses incoming requests with JSON payloads
@@ -39,7 +41,7 @@ MongoDbConfig.configure()
         app.use("/api", infoAssistantRoute);
         app.use("/api", garageRoutes);
         app.use("/api", fileUploadRoute);
-
+        app.use("/auth", authenticationRoute);
 
         // catch 404 and forward to error handler
         app.use(function (req, res, next) {

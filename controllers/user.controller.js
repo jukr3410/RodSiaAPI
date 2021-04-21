@@ -1,4 +1,5 @@
 const User = require('../models/user.model')
+const ObjectId = require('mongodb').ObjectID
 
 
 module.exports.getAllUser = (req, res) => {
@@ -15,11 +16,13 @@ module.exports.getAllUser = (req, res) => {
 }
 
 module.exports.getUser = (req, res) => {
-  const id = req.params.id
-  User.findOne({
-      id
+  // const id = req.params.id
+  const newObjectId = new ObjectId(req.params.id)
+  User.findById({
+      "_id": newObjectId
     })
     .then(user => {
+
       res.json(user)
     })
     .catch(err => {
@@ -42,38 +45,38 @@ module.exports.addUser = (req, res) => {
       message: "User content can not be empty"
     });
   } else {
-    let userCount = 0;
-    User.find().countDocuments(function (err, count) {
-        userCount = count
-      })
-      .then(() => {
-        const user = new User({
-          id: userCount + 1,
-          name: req.body.name,
-          email: req.body.email,
-          phone: req.body.phone,
-          password: req.body.password,
-          validatePhone: req.body.validatePhone,
-          cars: [{
-            brand: req.body.cars.brand,
-            model: req.body.cars.model,
-            type: req.body.cars.type,
-            year: req.body.cars.year
-          }],
-          review: req.body.review,
-          requestServices: req.body.requestServices
+    // let userCount = 0;
+    // User.find().countDocuments(function (err, count) {
+    //     userCount = count
+    //   })
+    //   .then(() => {
+    const user = new User({
+      // id: userCount + 1,
+      name: req.body.name,
+      email: req.body.email,
+      phone: req.body.phone,
+      password: req.body.password,
+      validatePhone: req.body.validatePhone,
+      cars: {
+        brand: req.body.cars.brand,
+        model: req.body.cars.model,
+        type: req.body.cars.type,
+        year: req.body.cars.year
+      },
+      review: req.body.review,
+      requestServices: req.body.requestServices
 
 
-        });
-        user.save()
-          .then(user => res.json(user))
-          .catch(err => console.log(err))
-        res.status(500).send({
-          message: err.message || "Some error occurred while creating the User."
-        });
+    });
+    user.save()
+      .then(user => res.json(user))
+      .catch(err => console.log(err))
+    res.status(500).send({
+      message: err.message || "Some error occurred while creating the User."
+    });
 
-        res.json(user)
-      });
+    res.json(user)
+    // });
 
     // res.json({id:User.find().count()+1,...req.body})
   }
@@ -103,7 +106,9 @@ module.exports.editUser = (req, res) => {
         }],
         review: req.body.review,
         requestServices: req.body.requestServices
-      },{new: true})
+      }, {
+        new: true
+      })
       .then(user => {
         if (!user) {
           return res.status(404).send({

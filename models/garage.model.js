@@ -6,10 +6,10 @@ const secret = process.env.JWT_SECRET || 'JWT_SUPER_SECRET';
 const Schema = mongoose.Schema;
 
 const garageSchema = new Schema({
-    id: {
-        type: Number,
-        required: [true, "can't be blank"],
-    },
+    // id: {
+    //     type: Number,
+    //     required: [true, "can't be blank"],
+    // },
     name: {
         type: String,
         required: [true, "can't be blank"],
@@ -23,6 +23,9 @@ const garageSchema = new Schema({
     },
     email: {
         type: String,
+        lowercase: true,
+        unique: true,
+        match: [/\S+@\S+\.\S+/, 'is invalid']
     },
     password: {
         type: String,
@@ -72,10 +75,10 @@ garageSchema.path("password", {
     },
 });
 
-garageSchema.methods.isValidPassword = function (inputPassword, callback) {
+garageSchema.methods.isValidPassword = function (inputPassword, findPassword, callback) {
     bcrypt.compare(
         inputPassword,
-        this.password.toObject(),
+        findPassword.this.password.toObject(),
         function (err, isMatch) {
             if (err) return callback(err);
             callback(null, isMatch);
