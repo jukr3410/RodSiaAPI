@@ -6,7 +6,7 @@ const multipartMiddleware = multipart()
 
 router.get('/file-uploads', fileUpload.displayForm);
 router.get('/garages/:id/images', fileUpload.displayForm);
-router.get('/garinfo-assistants/:id/images', fileUpload.displayForm);
+router.get('/info-assistants/:id/images', fileUpload.displayForm);
 
 // router.get('/file-uploads/:id', fileUpload.getFileUpload);
 router.post('/garages/:id/file-uploads', multipartMiddleware, fileUpload.upload);
