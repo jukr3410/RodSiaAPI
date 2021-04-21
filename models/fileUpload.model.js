@@ -7,6 +7,10 @@ const fileUploadSchema = new Schema({
     //     required: [true, "can't be blank"],
     //     unique: true
     // },
+    _id: {
+        type: Schema.Types.ObjectId
+    },
+    
     fileName: {
         type: String,
         unique: true

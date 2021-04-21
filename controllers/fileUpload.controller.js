@@ -1,4 +1,6 @@
 const FileUpload = require('../models/fileUpload.model');
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 const AWS = require("aws-sdk");
 const async = require("async");
@@ -56,13 +58,20 @@ module.exports.uploadByGarage = (req, res, next) => {
 	// console.log("item", req.files.file)
 	//var tmp_path = req.files.file.path;
 	image = fs.createReadStream(tmp_path);
-	imageName = "garages/" + req.files.file.name; // ex. set name such as use id-date.(png/jpg)
+	//imageName = "garages/" + req.files.file.name; // ex. set name such as use id-date.(png/jpg)
+	const pathImg = "garages/"
+	const parts = req.files.file.name.split(".");
+	const extension = parts[parts.length - 1];
+	imageName = pathImg + req.params.id + '-' + Date.now();
+	if (extension === 'png' || extension === 'jpeg' || extension === 'jpg')
+		imageName += '.' + extension;
 	async.series([createMainBucket, createItemObject], (err, result) => {
 		if (err) {
 			return res.send(err);
 		} else {
 			const fileUpload = new FileUpload({
-				fileName: req.files.file.name,
+				_id: new mongoose.Types.ObjectId(),
+				fileName: req.params.id + '-' + Date.now(),
 				fileLink: process.env.S3_FILE_URL+imageName,
 				garage: req.params.id
 			});
@@ -82,13 +91,18 @@ module.exports.uploadByInfoAssistant = (req, res, next) => {
 	// console.log("item", req.files.file)
 	//var tmp_path = req.files.file.path;
 	image = fs.createReadStream(tmp_path);
-	imageName = "info-assistants/" + req.files.file.name; // ex. set name such as use id-date.(png/jpg)
+	const pathImg = "info-assistants/"
+	const parts = req.files.file.name.split(".");
+	const extension = parts[parts.length - 1];
+	imageName = pathImg + req.params.id + '-' + Date.now();
+	if (extension === 'png' || extension === 'jpeg' || extension === 'jpg')
+		imageName += '.' + extension;
 	async.series([createMainBucket, createItemObject], (err, result) => {
 		if (err) {
 			return res.send(err);
 		} else {
 			const fileUpload = new FileUpload({
-				fileName: req.files.file.name,
+				fileName: req.params.id + '-' + Date.now(),
 				fileLink: process.env.S3_FILE_URL+imageName,
 				garage: req.params.id
 			});
