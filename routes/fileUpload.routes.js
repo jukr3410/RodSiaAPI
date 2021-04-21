@@ -11,7 +11,7 @@ router.get('/info-assistants/:id/images', fileUpload.displayForm);
 
 // router.get('/file-uploads/:id', fileUpload.getFileUpload);
 router.post('/file-uploads', multipartMiddleware, fileUpload.upload);
-router.post('/garages/:id/file-uploads', multipartMiddleware, fileUpload.upload);
+router.post('/garages/:id/file-uploads', multipartMiddleware, fileUpload.uploadByGarage);
 router.post('/info-assistants/:id/file-uploads', multipartMiddleware, fileUpload.upload);
 
 // router.delete('/file-uploads/:id', fileUpload.deleteFileUpload);
