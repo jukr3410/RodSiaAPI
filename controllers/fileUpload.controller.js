@@ -9,26 +9,28 @@ let pathParams, image, imageName;
 
 AWS.config.loadFromPath("config.json");
 
-const s3 = new AWS.S3({region: 'ap-southeast-1'});
+const s3 = new AWS.S3({
+	region: 'ap-southeast-1'
+});
 const createMainBucket = (callback) => {
-    const bucketParams = {
-        Bucket: bucketName
-    };
-    s3.headBucket(bucketParams, function(err, data) {
-        if (err) {
-            console.log("ErrorHeadBucket", err);
-            s3.createBucket(bucketParams, function(err, data) {
-                if (err) {
-                    console.log("Error", err);
-                    callback(null, data);
-                } else {
-                    callback (null, data);
-                }
-            });
-        } else {
-            callback(null, data);
-        }
-    });
+	const bucketParams = {
+		Bucket: bucketName
+	};
+	s3.headBucket(bucketParams, function (err, data) {
+		if (err) {
+			console.log("ErrorHeadBucket", err);
+			s3.createBucket(bucketParams, function (err, data) {
+				if (err) {
+					console.log("Error", err);
+					callback(null, data);
+				} else {
+					callback(null, data);
+				}
+			});
+		} else {
+			callback(null, data);
+		}
+	});
 };
 
 const createItemObject = (callback) => {
@@ -49,33 +51,83 @@ const createItemObject = (callback) => {
 	});
 };
 
-exports.upload = (req, res, next) => {
+module.exports.upload = (req, res, next) => {
 	var tmp_path = req.files.file.path;
 	// console.log("item", req.files.file)
-	var tmp_path = req.files.file.path;
+	//var tmp_path = req.files.file.path;
 	image = fs.createReadStream(tmp_path);
 	imageName = "garages/" + req.files.file.name; // ex. set name such as use id-date.(png/jpg)
 	async.series([createMainBucket, createItemObject], (err, result) => {
-		if (err) return res.send(err);
-		else return res.json({
-			message: "Successfully uploaded"
-		});
+		if (err) {
+			return res.send(err);
+		} else {
+			const fileUpload = new FileUpload({
+				fileName: req.files.file.name,
+				fileLink: process.env.S3_FILE_URL+imageName,
+				garage: req.params.id
+			});
+			fileUpload.save()
+				.catch(err => console.log(err));
+			return res.json({
+				message: "Successfully  uploaded",
+				fileUpload
+			});
+		}
 	});
 };
 
 
-exports.displayForm = (req, res) => {
+
+
+module.exports.displayForm = (req, res) => {
 	res.writeHead(200, {
 		"Content-Type": "text/html",
 	});
 	res.write(
-		'<form action="/api/file-uploads" method="post" enctype="multipart/form-data">' +
+		'<form action="/api/garages/60740615ef1ee83b90af3b77/file-uploads" method="post" enctype="multipart/form-data">' +
 		'<input type="file" name="file">' +
 		'<input type="submit" value="Upload">' +
 		"</form>"
 	);
 	res.end();
 };
+
+
+module.exports.getAllGarageFiles = (req, res) => {
+    const limit = Number(req.query.limit) || 0
+    const sort = req.query.sort == "desc" ? -1 : 1
+
+    FileUpload.find().select(['-_id']).limit(limit).sort({
+            id: sort
+        })
+        .then(fileUploads => {
+            res.json(fileUploads)
+        })
+        .catch(err => console.log(err))
+}
+
+module.exports.getByGarageId = (req, res) => {
+    if (req.params.id == null) {
+        req.json({
+            status: "error",
+            message: "Garage id should be provided"
+        })
+    } else {
+        const query = {
+            garage: {
+                "$in": [req.params.id]
+            }
+        };
+        FileUpload.find(query)
+            .then(images => {
+                res.json(images)
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }
+};
+
 // module.exports.getAllFileUpload = (req, res) => {
 //     const limit = Number(req.query.limit) || 0
 //     const sort = req.query.sort == "desc" ? -1 : 1

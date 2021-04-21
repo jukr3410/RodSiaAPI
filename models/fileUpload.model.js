@@ -2,15 +2,16 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const fileUploadSchema = new Schema({
-    id: {
-        type: Number,
-        required: [true, "can't be blank"],
+    // id: {
+    //     type: Number,
+    //     required: [true, "can't be blank"],
+    //     unique: true
+    // },
+    fileName: {
+        type: String,
         unique: true
     },
-    fileName: {
-        type: String
-    },
-    filePath: {
+    fileLink: {
         type: String
     },
     service: {
