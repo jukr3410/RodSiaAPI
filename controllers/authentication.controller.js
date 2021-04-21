@@ -49,12 +49,12 @@ module.exports.registerUser = (req, res) => {
                 requestServices: req.body.requestServices
             });
             user.save()
-                .then(user => res.json(user))
+            session.loginUser = true
+            session.phone = req.body.phone
+                // .then(serviceType => res.json(serviceType))
                 .catch(err => console.log(err))
-            // session.phone = user.phone
-            // res.status(200).send('phone = ' + session.phone)
-            res.status(500).send({
-                message: err.message || "Some error occurred while creating the User."
+            res.status(200).send({
+                message: "register successfully."
             });
             res.json(user)
             // });
@@ -104,12 +104,12 @@ module.exports.registerGarage = (req, res) => {
                 reviews: req.body.reviews
             });
             garage.save()
-                .then(garage => res.json(garage))
+            session.loginGarage = true
+            session.phone = req.body.phone
+                // .then(serviceType => res.json(serviceType))
                 .catch(err => console.log(err))
-            // session.phone = user.phone
-            // res.status(200).send('phone = ' + session.phone)
-            res.status(500).send({
-                message: err.message || "Some error occurred while creating the User.",
+            res.status(200).send({
+                message: "register successfully."
             });
             res.json(garage)
             // });
@@ -128,7 +128,7 @@ module.exports.loginUser = (req, res) => {
                 message: "User not found with that " + phone
             });
             else {
-                User.isValidPassword(password).catch(err => {
+                User.isValidPassword(password,user.password).catch(err => {
                     res.status(500).json(err)
                 });
                 // bcrypt.compare(password, user.password, (error => {
@@ -156,12 +156,14 @@ module.exports.loginGarage = (req, res) => {
                 message: "User not found with that " + phone
             });
             else {
-                // isValidPassword(password, garage)
-                bcrypt.compare(password, garage.password, (error => {
-                    if (error) res.status(500).json(error)
-                    res.end()
+                User.isValidPassword(password).catch(err => {
+                    res.status(500).json(err)
+                });
+                // bcrypt.compare(password, garage.password, (error => {
+                //     if (error) res.status(500).json(error)
+                //     res.end()
 
-                }))
+                // }))
                 session.loginGarage = true
                 session.phone = phone
             }

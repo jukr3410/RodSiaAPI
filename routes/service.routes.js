@@ -6,9 +6,9 @@ router.get('/services',service.getAllService);
 router.get('/services-id/:id',service.getService);
 router.get('/services-name/:name',service.getByServiceName);
 router.get('/service-type/:id/services',service.getByServiceType);
-router.post('/',service.addService);
-router.put('/:id',service.editService);
-router.patch('/:id',service.editService);
-router.delete('/:id',service.deleteService);
+router.post('/services',service.addService);
+router.put('/services/:id',service.editService);
+router.patch('/services/:id',service.editService);
+router.delete('/services/:id',service.deleteService);
 
 module.exports = router;

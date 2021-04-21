@@ -55,10 +55,10 @@ module.exports.addInfoAssistant = (req, res) => {
             images: req.body.images
         });
         infoAssistant.save()
-            .then(infoAssistant => res.json(infoAssistant))
+            // .then(serviceType => res.json(serviceType))
             .catch(err => console.log(err))
-        res.status(500).send({
-            message: err.message || "Some error occurred while creating the InfoAssistant."
+        res.status(200).send({
+            message: "Add infomation assistant successfully."
         });
 
         res.json(infoAssistant)

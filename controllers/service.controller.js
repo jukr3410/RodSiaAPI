@@ -18,7 +18,7 @@ module.exports.getAllService = (req, res) => {
 module.exports.getService = (req, res) => {
     const id = new ObjectId(req.params.id)
     Service.findById({
-        "_id": id
+            "_id": id
         })
         .then(service => {
             res.json(service)
@@ -48,21 +48,22 @@ module.exports.addService = (req, res) => {
         //         serviceCount = count
         //     })
         //     .then(() => {
-                const service = new Service({
-                    // id: serviceCount + 1,
-                    serviceType: req.body.serviceType,
-                    problemObserve: req.body.problemObserve,
-                    desc: req.body.desc,
-                    images: req.body.images
-                });
-                service.save()
-                    .then(service => res.json(service))
-                    .catch(err => console.log(err))
-                res.status(500).send({
-                    message: err.message || "Some error occurred while creating the Service."
-                });
-                res.json(service)
-            // });
+        const service = new Service({
+            // id: serviceCount + 1,
+            name: req.body.name,
+            description: req.body.description,
+            serviceTypes: req.body.serviceType,
+            garage: req.body.garage,
+            images: req.body.images
+        });
+        service.save()
+            // .then(service => res.json(service))
+            .catch(err => console.log(err))
+        res.status(200).send({
+            message: "Add service successfully."
+        });
+        res.json(service)
+        // });
         // res.json({id:Service.find().count()+1,...req.body})
     }
 }
@@ -76,7 +77,7 @@ module.exports.editService = (req, res) => {
         })
     } else {
         Service.findByIdAndUpdate({
-            "_id": id
+                "_id": id
             }, {
                 serviceType: req.body.serviceType,
                 problemObserve: req.body.problemObserve,
@@ -115,7 +116,7 @@ module.exports.deleteService = (req, res) => {
         })
     } else {
         Service.findByIdAndRemove({
-            "_id": id
+                "_id": id
             })
             .then(service => {
                 if (!service) {
@@ -174,7 +175,8 @@ module.exports.getByServiceName = (req, res) => {
         const query = {
             name: {
                 // "$regex": new RegExp(name, "i")
-                "$regex": name, $options: 'i'
+                "$regex": name,
+                $options: 'i'
             }
         };
 

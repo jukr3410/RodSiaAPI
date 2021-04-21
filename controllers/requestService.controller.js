@@ -48,20 +48,23 @@ module.exports.addRequestService = (req, res) => {
         //     })
         //     .then(() => {
 
-                const requestService = new RequestService({
-                    // id: requestServiceCount + 1,
-                    user: req.body.user,
-                    service: req.body.service,
-                    geolocation: req.body.geolocation,
-                    problemDesc: req.body.problemDesc,
-                    confirmRequest: req.body.confirmRequest,
-                    status: req.body.status,
-                });
-                requestService.save()
-                    .then(requestService => res.json(requestService))
-                    .catch(err => console.log(err))
-                res.json(requestService)
-            // });
+        const requestService = new RequestService({
+            // id: requestServiceCount + 1,
+            user: req.body.user,
+            service: req.body.service,
+            geolocation: req.body.geolocation,
+            problemDesc: req.body.problemDesc,
+            confirmRequest: req.body.confirmRequest,
+            status: req.body.status,
+        });
+        requestService.save()
+            // .then(serviceType => res.json(serviceType))
+            .catch(err => console.log(err))
+        res.status(200).send({
+            message: "Add request service successfully."
+        });
+        res.json(requestService)
+        // });
 
         // res.json({id:RequestService.find().count()+1,...req.body})
     }
@@ -76,7 +79,7 @@ module.exports.editRequestService = (req, res) => {
         })
     } else {
         RequestService.findByIdAndUpdate({
-                "_id" : id
+                "_id": id
             }, {
                 user: req.body.user,
                 service: req.body.service,
@@ -117,7 +120,7 @@ module.exports.deleteRequestService = (req, res) => {
         })
     } else {
         RequestService.findByIdAndRemove({
-                "_id" : id
+                "_id": id
             })
             .then(requestService => {
                 if (!requestService) {

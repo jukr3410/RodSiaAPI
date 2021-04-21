@@ -67,10 +67,10 @@ module.exports.addGarage = (req, res) => {
             reviews: req.body.reviews
         })
         garage.save()
-            .then(garage => res.json(garage))
+            // .then(serviceType => res.json(serviceType))
             .catch(err => console.log(err))
-        res.status(500).send({
-            message: err.message || "Some error occurred while creating the Garage."
+        res.status(200).send({
+            message: "Add garage successfully."
         });
 
         res.json(garage)

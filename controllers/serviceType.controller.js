@@ -57,10 +57,10 @@ module.exports.addServiceType = (req, res) => {
             infoAssistants: req.body.infoAssistants
         });
         serviceType.save()
-            .then(serviceType => res.json(serviceType))
+            // .then(serviceType => res.json(serviceType))
             .catch(err => console.log(err))
-        res.status(500).send({
-            message: err.message || "Some error occurred while creating the ServiceType."
+        res.status(200).send({
+            message: "Add serviceType successfully."
         });
         res.json(serviceType)
         // });
@@ -116,7 +116,7 @@ module.exports.deleteServiceType = (req, res) => {
         })
     } else {
         ServiceType.findByIdAndRemove({
-            "_id": id
+                "_id": id
             })
             .then(serviceType => {
                 if (!serviceType) {

@@ -61,7 +61,10 @@ const garageSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "Review",
     }, ],
+}, {
+    timestamps: true
 });
+
 
 
 garageSchema.path("password", {

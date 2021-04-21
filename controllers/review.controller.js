@@ -57,10 +57,10 @@ module.exports.addReview = (req, res) => {
             garage: req.body.garage
         });
         review.save()
-            .then(review => res.json(review))
+            // .then(serviceType => res.json(serviceType))
             .catch(err => console.log(err))
-        res.status(500).send({
-            message: err.message || "Some error occurred while creating the Review."
+        res.status(200).send({
+            message: "Add review successfully."
         });
 
         res.json(review)

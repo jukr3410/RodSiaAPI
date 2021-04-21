@@ -134,7 +134,7 @@ module.exports.deleteUser = (req, res) => {
     })
   } else {
     User.findByIdAndRemove({
-      "_id": id
+        "_id": id
       })
       .then(user => {
         if (!user) {
