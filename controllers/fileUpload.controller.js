@@ -55,7 +55,8 @@ const createItemObject = (callback) => {
 
 module.exports.uploadByGarage = (req, res, next) => {
 	var tmp_path = req.files.file.path;
-	// console.log("item", req.files.file)
+
+	console.log("item", req.files.file)
 	//var tmp_path = req.files.file.path;
 	image = fs.createReadStream(tmp_path);
 	//imageName = "garages/" + req.files.file.name; // ex. set name such as use id-date.(png/jpg)
