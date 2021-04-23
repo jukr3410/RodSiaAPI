@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt-nodejs');
+const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken');
 const secret = process.env.JWT_SECRET || 'JWT_SUPER_SECRET';
 const Schema = mongoose.Schema;
@@ -9,7 +9,7 @@ const userSchema = new Schema({
     //     type: Number,
     //     required: [true, "can't be blank"]
     // },
-    
+
     name: {
         type: String,
         required: [true, "can't be blank"]
@@ -77,13 +77,18 @@ userSchema.path('password', {
     }
 });
 
-module.exports.isValidPassword = function (inputPassword, comparePassword) {
-    comparePassword = this.password.toObject()
-    bcrypt.compare(inputPassword, comparePassword, function (err, isMatch) {
-        if (err)
-            return callback(err);
-        callback(null, isMatch);
-    })
-};
+// module.exports.isValidPassword = function (inputPassword, comparePassword, callback) {
+//     comparePassword = this.password.toObject()
+//     console.log(comparePassword)
+//     bcrypt.compare(inputPassword, comparePassword, function (error, isMatch) {
+//         if (error)
+//             return callback(error);
+//         callback(null, isMatch);
+//     })
+// };
 
 module.exports = mongoose.model('User', userSchema);
+module.exports.isValidPassword = async (inputPassword, hashPassword) => {
+    const result = await bcrypt.compare(String(inputPassword), String(hashPassword));
+    return result;
+};
