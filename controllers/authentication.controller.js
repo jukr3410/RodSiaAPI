@@ -13,77 +13,85 @@ const isEmpty = function (obj) {
     }
     return true;
 };
-module.exports.registerUser = (req, res) => {
+module.exports.registerUser = async (req, res) => {
 
     const errors = {};
-    const name = req.body.name
     const email = req.body.email
     const phone = req.body.phone
-    const password = req.body.password
-    const validatePhone = req.body.validatePhone
-    const brand = req.body.cars.brand
-    const model = req.body.cars.model
-    const type = req.body.cars.type
-    const year = req.body.cars.year
-    const review = req.body.review
-    const requestServices = req.body.requestServices
-    return User.findOne({
+
+    const findUser = await User.findOne({
         $or: [{
-                phone
-            },
-            {
-                email
-            }
-        ]
+            phone
+        }]
     }).then((user) => {
         if (user !== null) {
             if (user.phone === phone)
-                errors.phone = 'username: ' + phone + ' is already taken';
-            if (user.email === email)
-                errors.email = 'Email: ' + email + ' is already taken';
+                errors.email = 'Phone: ' + phone + ' is already taken';
             if (!isEmpty(errors)) {
                 // return res.status(422).json({success: false, errors});
-                return res.status(422).json(AppResponseDto.buildWithErrorMessages(errors));
+                console.dir(errors.phone)
+                return res.json(AppResponseDto.buildWithErrorMessages(errors));
             }
-        } else {
-            user = new User({
-                name: name,
-                email: email,
-                phone: phone,
-                password: password,
-                validatePhone: validatePhone,
-                cars: [{
-                    brand: brand,
-                    model: model,
-                    type: type,
-                    year: year
-                }],
-                review: review,
-                requestServices: requestServices
-            });
-            user.save().then(user => {
-                if (user) {
-                    console.dir(user);
-                    console.log(user.toJSON());
-                    res.send(UsersDto.registerDto(user));
-                } else {
-                    console.log('user is empty ...???');
-                    res.json(AppResponseDto.buildWithErrorMessages('something went wrong'));
-                }
-            }).catch(err => {
-                throw err
-            });
         }
-    }).catch(err => {
-        console.error(err);
-        res.status(500).json({
-            success: false,
-            full_messages: err
+    })
+
+    if (findUser !== null) {
+        User.findOne({
+            $or: [{
+                email
+            }]
+        }).then((user) => {
+            if (user !== null) {
+                if (user.email === email)
+                    errors.email = 'Email: ' + email + ' is already taken';
+                if (!isEmpty(errors)) {
+                    // return res.status(422).json({success: false, errors});
+                    console.log(errors.email)
+                    return res.json(AppResponseDto.buildWithErrorMessages(errors));
+                }
+            }
+            if (validatePhone !== true) {
+                errors.phone = 'phone: ' + garage.phone + ' must validate phone before register ';
+            } else {
+                user = new User({
+                    name: req.body.name,
+                    email: req.body.email,
+                    phone: req.body.phone,
+                    password: req.body.password,
+                    validatePhone: req.body.validatePhone,
+                    cars: [{
+                        brand: req.body.cars.brand,
+                        model: req.body.cars.model,
+                        type: req.body.cars.type,
+                        year: req.body.cars.year
+                    }],
+                    review: req.body.review,
+                    requestServices: req.body.requestServices
+                });
+                user.save().then(user => {
+                    if (user) {
+                        console.dir(user);
+                        console.log(user.toJSON());
+                        res.send(UsersDto.registerDto(user));
+                    } else {
+                        console.log('user is empty ...???');
+                        res.json(AppResponseDto.buildWithErrorMessages('something went wrong'));
+                    }
+                }).catch(err => {
+                    throw err
+                });
+            }
+        }).catch(err => {
+            console.error(err);
+            res.status(500).json({
+                success: false,
+                full_messages: err
+            });
         });
-    });
+    }
 }
 
-module.exports.registerGarage = (req, res) => {
+module.exports.registerGarage = async (req, res) => {
     const errors = {};
     const phone = req.body.phone
     const email = req.body.email
@@ -92,62 +100,77 @@ module.exports.registerGarage = (req, res) => {
             message: "User content can not be empty"
         });
     }
-    return Garage.findOne({
+    const findGarage = await Garage.findOne({
         $or: [{
-                'phone': phone
-            },
-            {
-                'email': email
-            }
-        ]
-    }).then(garage => {
+            phone
+        }]
+    }).then((garage) => {
         if (garage !== null) {
             if (garage.phone === phone)
-                errors.phone = 'Phone: ' + phone + ' is already taken';
-            if (garage.email === email)
-                errors.email = 'Email: ' + email + ' is already taken';
+                errors.email = 'Phone: ' + phone + ' is already taken';
             if (!isEmpty(errors)) {
                 // return res.status(422).json({success: false, errors});
-                return res.status(422).json(AppResponseDto.buildWithErrorMessages(errors));
+                console.dir(errors.phone)
+                return res.json(AppResponseDto.buildWithErrorMessages(errors));
             }
-        } else {
-            garage = new Garage({
-                name: req.body.name,
-                phone: req.body.phone,
-                email: req.body.email,
-                password: req.body.password,
-                validatePhone: req.body.validatePhone,
-                address: {
-                    addressDesc: req.body.address.addressDesc,
-                    geolocation: {
-                        lat: req.body.address.geolocation.lat,
-                        long: req.body.address.geolocation.long
-                    }
-                },
-                services: req.body.services,
-                reviews: req.body.reviews
-            });
-            garage.save()
-                .then(garage => {
-                    if (garage) {
-                        console.dir(garage);
-                        console.log(garage.toJSON());
-                        res.json(UsersDto.registerDto(garage));
-                    } else {
-                        console.log('user is empty ...???');
-                        res.json(AppResponseDto.buildWithErrorMessages('something went wrong'));
-                    }
-                }).catch(err => {
-                    throw err
-                });
         }
-    }).catch(err => {
-        console.error(err);
-        res.status(500).json({
-            success: false,
-            full_messages: err
+    })
+    if (findGarage !== null) {
+        Garage.findOne({
+            $or: [{
+                email
+            }]
+        }).then((garage) => {
+            if (garage !== null) {
+                if (garage.email === email)
+                    errors.email = 'Email: ' + email + ' is already taken';
+                if (!isEmpty(errors)) {
+                    // return res.status(422).json({success: false, errors});
+                    console.log(errors.email)
+                    return res.json(AppResponseDto.buildWithErrorMessages(errors));
+                }
+            }
+            if (validatePhone !== true) {
+                errors.phone = 'phone: ' + garage.phone + ' must validate phone before register ';
+            } else {
+                garage = new Garage({
+                    name: req.body.name,
+                    phone: req.body.phone,
+                    email: req.body.email,
+                    password: req.body.password,
+                    validatePhone: req.body.validatePhone,
+                    address: {
+                        addressDesc: req.body.address.addressDesc,
+                        geolocation: {
+                            lat: req.body.address.geolocation.lat,
+                            long: req.body.address.geolocation.long
+                        }
+                    },
+                    services: req.body.services,
+                    reviews: req.body.reviews
+                });
+                garage.save()
+                    .then(garage => {
+                        if (garage) {
+                            console.dir(garage);
+                            console.log(garage.toJSON());
+                            res.json(UsersDto.registerDto(garage));
+                        } else {
+                            console.log('user is empty ...???');
+                            res.json(AppResponseDto.buildWithErrorMessages('something went wrong'));
+                        }
+                    }).catch(err => {
+                        throw err
+                    });
+            }
+        }).catch(err => {
+            console.error(err);
+            res.status(500).json({
+                success: false,
+                full_messages: err
+            });
         });
-    });
+    }
 }
 
 module.exports.loginUser = async (req, res) => {
