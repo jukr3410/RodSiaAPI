@@ -78,14 +78,10 @@ garageSchema.path("password", {
     },
 });
 
-garageSchema.methods.isValidPassword = function (inputPassword, findPassword, callback) {
-    bcrypt.compare(
-        inputPassword,
-        findPassword.this.password.toObject(),
-        function (err, isMatch) {
-            if (err) return callback(err);
-            callback(null, isMatch);
-        }
-    );
-};
+
 module.exports = mongoose.model("Garage", garageSchema);
+
+module.exports.isValidPassword = async (inputPassword, hashPassword) => {
+    const result = await bcrypt.compare(String(inputPassword), String(hashPassword));
+    return result;
+};

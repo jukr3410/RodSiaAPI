@@ -77,17 +77,8 @@ userSchema.path('password', {
     }
 });
 
-// module.exports.isValidPassword = function (inputPassword, comparePassword, callback) {
-//     comparePassword = this.password.toObject()
-//     console.log(comparePassword)
-//     bcrypt.compare(inputPassword, comparePassword, function (error, isMatch) {
-//         if (error)
-//             return callback(error);
-//         callback(null, isMatch);
-//     })
-// };
-
 module.exports = mongoose.model('User', userSchema);
+
 module.exports.isValidPassword = async (inputPassword, hashPassword) => {
     const result = await bcrypt.compare(String(inputPassword), String(hashPassword));
     return result;
