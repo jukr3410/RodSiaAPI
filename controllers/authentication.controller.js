@@ -13,33 +13,73 @@ const isEmpty = function (obj) {
     }
     return true;
 };
+module.exports.checkPhoneUser = (req, res) => {
+    const errors = {}
+    const phone = req.body.phone
+    User.findOne({
+        phone
+    }).then((user) => {
+        if (user !== null) {
+            if (user.phone === phone)
+                errors.phone = 'Phone: ' + phone + ' is not exits';
+            if (!isEmpty(errors)) {
+                // return res.status(422).json({success: false, errors});
+                console.dir(errors.phone)
+                // console.log(errors.phone)
+                res.json(AppResponseDto.buildWithErrorMessages(errors));
+                return false
+            }
+        } else {
+            res.json(AppResponseDto.buildSuccessWithMessages(`Phone: ${phone} is already.`))
+            return true
+        }
+    }).catch(err => {
+        console.error(err);
+        res.status(500).json({
+            success: false,
+            full_messages: err
+        });
+    });
+}
+module.exports.checkPhoneGarage = (req, res) => {
+    const errors = {}
+    const phone = req.body.phone
+    Garage.findOne({
+        phone
+    }).then((garage) => {
+        if (garage !== null) {
+            if (garage.phone === phone)
+                errors.phone = 'Phone: ' + phone + ' is not exits';
+            if (!isEmpty(errors)) {
+                // return res.status(422).json({success: false, errors});
+                console.dir(errors.phone)
+                // console.log(errors.phone)
+                res.json(AppResponseDto.buildWithErrorMessages(errors));
+                return false
+            }
+        } else {
+            res.json(AppResponseDto.buildSuccessWithMessages(`Phone: ${phone} is already.`))
+            return true
+        }
+    }).catch(err => {
+        console.error(err);
+        res.status(500).json({
+            success: false,
+            full_messages: err
+        });
+    });
+}
+
 module.exports.registerUser = async (req, res) => {
 
     const errors = {};
     const email = req.body.email
     const phone = req.body.phone
 
-    const findUser = await User.findOne({
-        $or: [{
-            phone
-        }]
-    }).then((user) => {
-        if (user !== null) {
-            if (user.phone === phone)
-                errors.email = 'Phone: ' + phone + ' is already taken';
-            if (!isEmpty(errors)) {
-                // return res.status(422).json({success: false, errors});
-                console.dir(errors.phone)
-                return res.json(AppResponseDto.buildWithErrorMessages(errors));
-            }
-        }
-    })
-
-    if (findUser !== null) {
+    const checkPhone = await this.checkDupicatePhone(phone)
+    if (checkPhone === true) {
         User.findOne({
-            $or: [{
-                email
-            }]
+            email
         }).then((user) => {
             if (user !== null) {
                 if (user.email === email)
@@ -55,8 +95,8 @@ module.exports.registerUser = async (req, res) => {
             } else {
                 user = new User({
                     name: req.body.name,
-                    email: req.body.email,
-                    phone: req.body.phone,
+                    email: email,
+                    phone: phone,
                     password: req.body.password,
                     validatePhone: req.body.validatePhone,
                     cars: [{
@@ -187,8 +227,8 @@ module.exports.loginUser = async (req, res) => {
         } else {
             let encrypt = await User.isValidPassword(password, user.password);
             if (encrypt == true) {
-                session.loginUser = true
-                session.phone = phone
+                // session.loginUser = true
+                // session.phone = phone
                 res.status(200).json({
                     message: "Login Success",
                     user
@@ -202,7 +242,11 @@ module.exports.loginUser = async (req, res) => {
             }
         }
     } catch (err) {
-        throw err;
+        console.error(err);
+        res.status(500).json({
+            success: false,
+            full_messages: err
+        });
     }
 }
 
@@ -221,8 +265,8 @@ module.exports.loginGarage = async (req, res) => {
         } else {
             let encrypt = await Garage.isValidPassword(password, garage.password);
             if (encrypt == true) {
-                session.loginGarage = true
-                session.phone = phone
+                // session.loginGarage = true
+                // session.phone = phone
                 res.status(200).json({
                     message: "Login Success",
                     garage
@@ -236,7 +280,11 @@ module.exports.loginGarage = async (req, res) => {
             }
         }
     } catch (err) {
-        if (err) throw err;
+        console.error(err);
+        res.status(500).json({
+            success: false,
+            full_messages: err
+        });
     }
 }
 
