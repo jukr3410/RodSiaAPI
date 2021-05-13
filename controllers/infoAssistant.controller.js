@@ -7,7 +7,7 @@ module.exports.getAllInfoAssistant = (req, res) => {
 
     InfoAssistant.find().select(['-_id']).limit(limit).sort({
             _id: sort
-        })
+        }).populate(["serviceType","images"])
         .then(infoAssistants => {
             res.json(infoAssistants)
         })
@@ -18,7 +18,7 @@ module.exports.getInfoAssistant = (req, res) => {
     const id = new ObjectId(req.params.id)
     InfoAssistant.findById({
             "_id": id
-        })
+        }).populate(["serviceType","images"])
         .then(infoAssistant => {
             res.json(infoAssistant)
         })
@@ -29,7 +29,7 @@ module.exports.getInfoAssistant = (req, res) => {
                 });
             }
             return res.status(500).send({
-                message: "Error retrieving InfoAssistant with id " + id
+                message: "Error retrieving InfoAssistant with id" + id
             });
         });
 }
@@ -103,7 +103,6 @@ module.exports.editInfoAssistant = (req, res) => {
                     message: "Error updating InfoAssistant with id " + id
                 });
             });
-
     }
 }
 

@@ -1,5 +1,9 @@
 const User = require('../models/user.model')
+const Review = require("../models/review.model")
 const ObjectId = require('mongodb').ObjectID
+const {
+  json
+} = require('body-parser')
 
 
 module.exports.getAllUser = (req, res) => {
@@ -8,7 +12,7 @@ module.exports.getAllUser = (req, res) => {
 
   User.find().select(['-_id']).limit(limit).sort({
       _id: sort
-    })
+    }).populate(["reviews","requestServices"])
     .then(users => {
       res.json(users)
     })
@@ -20,7 +24,7 @@ module.exports.getUser = (req, res) => {
   const id = new ObjectId(req.params.id)
   User.findById({
       "_id": id
-    })
+    }).populate(["reviews","requestServices"])
     .then(user => {
       res.json(user)
     })
@@ -62,7 +66,7 @@ module.exports.addUser = (req, res) => {
         type: req.body.cars.type,
         year: req.body.cars.year
       },
-      review: req.body.review,
+      reviews: req.body.reviews,
       requestServices: req.body.requestServices
     });
     user.save()
@@ -99,7 +103,7 @@ module.exports.editUser = (req, res) => {
           type: req.body.cars.type,
           year: req.body.cars.year
         }],
-        review: req.body.review,
+        reviews: req.body.reviews,
         requestServices: req.body.requestServices
       }, {
         new: true
@@ -110,7 +114,7 @@ module.exports.editUser = (req, res) => {
             message: "User not found with id " + id
           });
         }
-        res.send(user);
+        res.send(user).populate(["reviews","requestServices"]);
       }).catch(err => {
         if (err.kind === 'ObjectId') {
           return res.status(404).send({

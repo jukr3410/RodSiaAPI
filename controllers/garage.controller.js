@@ -9,7 +9,7 @@ module.exports.getAllGarage = (req, res) => {
 
     Garage.find().select(['-_id']).limit(limit).sort({
             _id: sort
-        })
+        }).populate(["services","reviews"])
         .then(garages => {
             res.json(garages)
         })
@@ -172,7 +172,7 @@ module.exports.getByGarageName = (req, res) => {
             }
         };
 
-        Garage.find(query)
+        Garage.find(query).populate(["services","reviews"])
             .then(garage => {
                 res.json(garage)
             })

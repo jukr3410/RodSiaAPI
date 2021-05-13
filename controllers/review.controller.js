@@ -8,7 +8,7 @@ module.exports.getAllReview = (req, res) => {
 
     Review.find().select(['-_id']).limit(limit).sort({
             _id: sort
-        })
+        }).populate(["service","user","garage"])
         .then(reviews => {
             res.json(reviews)
         })
@@ -57,12 +57,11 @@ module.exports.addReview = (req, res) => {
             garage: req.body.garage
         });
         review.save()
-            // .then(serviceType => res.json(serviceType))
+            .then(review => res.json(review))
             .catch(err => console.log(err))
-        res.status(200).send({
-            message: "Add review successfully."
+        res.status(500).send({
+            message: err.message || "Some error occurred while creating the User."
         });
-
         res.json(review)
         // });
 

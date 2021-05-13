@@ -54,8 +54,10 @@ const userSchema = new Schema({
     }],
 
     reviews: [{
+
         type: Schema.Types.ObjectId,
-        ref: 'Review'
+        ref: 'Review',
+
     }],
     requestServices: [{
         type: Schema.Types.ObjectId,

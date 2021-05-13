@@ -75,60 +75,66 @@ module.exports.registerUser = async (req, res) => {
     const errors = {};
     const email = req.body.email
     const phone = req.body.phone
+    const validatePhone = req.body.validatePhone
 
-    const checkPhone = await this.checkDupicatePhone(phone)
-    if (checkPhone === true) {
-        User.findOne({
-            email
-        }).then((user) => {
-            if (user !== null) {
-                if (user.email === email)
-                    errors.email = 'Email: ' + email + ' is already taken';
-                if (!isEmpty(errors)) {
-                    // return res.status(422).json({success: false, errors});
-                    console.log(errors.email)
-                    return res.json(AppResponseDto.buildWithErrorMessages(errors));
-                }
+    // const checkPhone = await this.checkDupicatePhone(phone)
+    // if (checkPhone === true) {
+    User.findOne({
+        email
+    }).then((user) => {
+        if (user !== null) {
+            if (user.phone === phone)
+                errors.phone = 'Phone: ' + phone + ' is not exits';
+            if (user.email === email)
+                errors.email = 'Email: ' + email + ' is already taken';
+            if (!isEmpty(errors)) {
+                // return res.status(422).json({success: false, errors});
+                console.log(errors.email)
+                return res.json(AppResponseDto.buildWithErrorMessages(errors));
             }
-            if (validatePhone !== true) {
-                errors.phone = 'phone: ' + garage.phone + ' must validate phone before register ';
-            } else {
-                user = new User({
-                    name: req.body.name,
-                    email: email,
-                    phone: phone,
-                    password: req.body.password,
-                    validatePhone: req.body.validatePhone,
-                    cars: [{
-                        brand: req.body.cars.brand,
-                        model: req.body.cars.model,
-                        type: req.body.cars.type,
-                        year: req.body.cars.year
-                    }],
-                    review: req.body.review,
-                    requestServices: req.body.requestServices
-                });
-                user.save().then(user => {
-                    if (user) {
-                        console.dir(user);
-                        console.log(user.toJSON());
-                        res.send(UsersDto.registerDto(user));
-                    } else {
-                        console.log('user is empty ...???');
-                        res.json(AppResponseDto.buildWithErrorMessages('something went wrong'));
-                    }
-                }).catch(err => {
-                    throw err
-                });
-            }
-        }).catch(err => {
-            console.error(err);
-            res.status(500).json({
-                success: false,
-                full_messages: err
+        }
+
+
+        if (validatePhone !== true) {
+            errors.phone = 'phone: ' + phone + ' must validate phone before register ';
+        } else {
+            user = new User({
+                name: req.body.name,
+                email: email,
+                phone: phone,
+                password: req.body.password,
+                validatePhone: req.body.validatePhone,
+                cars: [{
+                    brand: req.body.cars.brand,
+                    model: req.body.cars.model,
+                    type: req.body.cars.type,
+                    year: req.body.cars.year
+                }],
+                reviews: req.body.reviews,
+                requestServices: req.body.requestServices
             });
+            user.save().then(user => {
+                if (user) {
+                    console.dir(user);
+                    console.log(user.toJSON());
+                    res.send(UsersDto.registerDto(user));
+                } else {
+                    console.log('user is empty ...???');
+                    res.json(AppResponseDto.buildWithErrorMessages('something went wrong'));
+                }
+            }).catch(err => {
+                throw err
+            });
+        }
+    }).catch(err => {
+        console.error(err);
+        res.status(500).json({
+            success: false,
+            full_messages: err
         });
-    }
+    });
+
+
 }
 
 module.exports.registerGarage = async (req, res) => {

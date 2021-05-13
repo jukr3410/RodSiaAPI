@@ -9,7 +9,7 @@ module.exports.getAllServiceType = (req, res) => {
 
     ServiceType.find().select(['-_id']).limit(limit).sort({
             _id: sort
-        })
+        }).populate(["services","infoAssistants"])
         .then(serviceTypes => {
             res.json(serviceTypes)
         })
@@ -20,7 +20,7 @@ module.exports.getServiceType = (req, res) => {
     const id = new ObjectId(req.params.id)
     User.findById({
             "_id": id
-        })
+        }).populate(["services","infoAssistants"])
         .then(serviceType => {
             res.json(serviceType)
         })

@@ -7,7 +7,7 @@ module.exports.getAllRequestService = (req, res) => {
 
     RequestService.find().select(['-_id']).limit(limit).sort({
             _id: sort
-        })
+        }).populate(["user","service"])
         .then(requestServices => {
             res.json(requestServices)
         })
@@ -18,7 +18,7 @@ module.exports.getRequestService = (req, res) => {
     const id = new ObjectId(req.params.id)
     RequestService.findById({
             "_id": id
-        })
+        }).populate("user","service")
         .then(requestService => {
             res.json(requestService)
         })
