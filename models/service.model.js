@@ -18,11 +18,11 @@ const servicesSchema = new Schema({
     },
     serviceTypes: [{
         type: Schema.Types.ObjectId,
-        ref: ServiceType
+        ref: "ServiceType"
     }],
     garage: {
         type: Schema.Types.ObjectId,
-        ref: Garage
+        ref: "Garage"
     },
     images: [{
         type: Schema.Types.ObjectId,

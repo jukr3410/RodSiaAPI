@@ -8,7 +8,7 @@ module.exports.getAllService = (req, res) => {
 
     Service.find().select(['-_id']).limit(limit).sort({
             _id: sort
-        }).populate(["images","serviceTypes"])
+        }).populate(["images", "serviceTypes","garage"])
         .then(services => {
             res.json(services)
         })
@@ -19,7 +19,7 @@ module.exports.getService = (req, res) => {
     const id = new ObjectId(req.params.id)
     Service.findById({
             "_id": id
-        }).populate(["images","serviceTypes"])
+        }).populate(["images", "serviceTypes"])
         .then(service => {
             res.json(service)
         })
@@ -52,7 +52,7 @@ module.exports.addService = (req, res) => {
             // id: serviceCount + 1,
             name: req.body.name,
             description: req.body.description,
-            serviceTypes: req.body.serviceType,
+            serviceTypes: req.body.serviceTypes,
             garage: req.body.garage,
             images: req.body.images
         });
@@ -79,9 +79,10 @@ module.exports.editService = (req, res) => {
         Service.findByIdAndUpdate({
                 "_id": id
             }, {
-                serviceType: req.body.serviceType,
-                problemObserve: req.body.problemObserve,
-                desc: req.body.desc,
+                name: req.body.name,
+                description: req.body.description,
+                serviceTypes: req.body.serviceType,
+                garage: req.body.garage,
                 images: req.body.images
             }, {
                 new: true
@@ -155,7 +156,7 @@ module.exports.getByServiceType = (req, res) => {
                 "$in": [id]
             }
         };
-        Service.find(query).populate(["images","serviceTypes"])
+        Service.find(query).populate(["images", "serviceTypes"])
             .then(services => {
                 res.json(services)
             })
@@ -180,7 +181,7 @@ module.exports.getByServiceName = (req, res) => {
             }
         };
 
-        Service.find(query).populate(["images","serviceTypes"])
+        Service.find(query).populate(["images", "serviceTypes"])
             .then(service => {
                 res.json(service)
             })

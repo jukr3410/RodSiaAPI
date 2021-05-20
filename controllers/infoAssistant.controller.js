@@ -1,4 +1,6 @@
 const InfoAssistant = require('../models/infoAssistant.model')
+const ObjectId = require('mongodb').ObjectID
+
 
 
 module.exports.getAllInfoAssistant = (req, res) => {
