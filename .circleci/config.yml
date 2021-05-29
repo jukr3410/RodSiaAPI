@@ -20,7 +20,7 @@ jobs:
       - image: docker:17.09.1-ce-git  # enable the docker build support
     # Then run your tests!
     # CircleCI will report the results back to your VCS provider.
-    working_directory: ~/repo
+    
 
     steps:
       # Checkout the code as the first step.
