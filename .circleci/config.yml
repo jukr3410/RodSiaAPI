@@ -38,7 +38,7 @@ jobs:
             when: on_success
             command: |
               docker --version
-              docker login -u=nuannirun1 -p=Nuannirun_1
+              docker login -u "nuannirun1" -p "Nuannirun_1"
               docker build -t nuannirun1/rodsiaapi:$CIRCLE_BRANCH --build-arg MACHINE_NAME=rodsiaapi-$CIRCLE_BRANCH .
               docker push nuannirun1/rodsiaapi:$CIRCLE_BRANCH
               echo "Docker build made sucessfully!! for rodsiaapi $CIRCLE_BRANCH"
