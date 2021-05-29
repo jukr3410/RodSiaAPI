@@ -17,16 +17,11 @@ jobs:
     # A list of available CircleCI Docker Convenience Images are available here: https://circleci.com/developer/images/image/cimg/node
     docker:
       - image: cimg/node:15.1
-      - image: docker:17.09.1-ce-git  # enable the docker build support
     # Then run your tests!
     # CircleCI will report the results back to your VCS provider.
-    
-
     steps:
       # Checkout the code as the first step.
       - checkout
-      - setup_remote_docker
-      
       # Next, the node orb's install-packages step will install the dependencies from a package.json.
       # The orb install-packages step will also automatically cache them for faster future runs.
       - node/install-packages
@@ -34,22 +29,8 @@ jobs:
       # - node/install-packages:
       #     pkg-manager: yarn 
       - run:
-            name: Build Success
-            when: on_success
-            command: |
-              docker --version
-              docker login -u "nuannirun1" -p "Nuannirun_1"
-              docker build -t nuannirun1/rodsiaapi:$CIRCLE_BRANCH --build-arg MACHINE_NAME=rodsiaapi-$CIRCLE_BRANCH .
-              docker push nuannirun1/rodsiaapi:$CIRCLE_BRANCH
-              echo "Docker build made sucessfully!! for rodsiaapi $CIRCLE_BRANCH"
-
-      - run:
-            name: Build Failure
-            when: on_fail
-            command: |
-              echo "ERROR building rodsiaapi $CIRCLE_BRANCH"
-
-
+          name: Run tests
+          command: npm test
 
 workflows:
   # Below is the definition of your workflow.
@@ -61,5 +42,3 @@ workflows:
       - build-and-test
       # For running simple node tests, you could optionally use the node/test job from the orb to replicate and replace the job above in fewer lines.
       # - node/test
-
-
