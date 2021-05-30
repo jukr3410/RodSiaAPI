@@ -1,9 +1,10 @@
 FROM node:14
 
+RUN mkdir -p /usr/local/app
 # Create app directory
-WORKDIR /usr/src/app
+WORKDIR /usr/local/app
 
-COPY package*.json ./
+COPY . .
 
 RUN npm install
 
