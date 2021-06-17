@@ -16,4 +16,6 @@ router.post('/info-assistants/:id/file-uploads', multipartMiddleware, fileUpload
 
 // router.delete('/file-uploads/:id', fileUpload.deleteFileUpload);
 
+
+
 module.exports = router;
