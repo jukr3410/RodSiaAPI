@@ -1,3 +1,178 @@
 [
-    
+    {
+        "name": "Chang Noi Service",
+        "phone": "0987654321",
+        "email": "example1@gmail.com",
+        "password": "12345",
+        "validate": true,
+        "address": {
+            "addressDesc": "",
+            "geolocation": {
+                "lat": "13.6500721",
+                "long": "100.4815814"
+            }
+        },
+        "logo_image": "https://pbs.twimg.com/media/EOgBKXdVUAAWLBx.jpg:large",
+        "image": []
+    },
+    {
+        "name": "จัมโบ้ ออโต้แอร์",
+        "phone": "0987654321",
+        "email": "example2@gmail.com",
+        "password": "12345",
+        "validate": true,
+        "address": {
+            "addressDesc": "",
+            "geolocation": {
+                "lat": "13.6500721",
+                "long": "100.4815814"
+            }
+        },
+        "logo_image": "https://pbs.twimg.com/media/EOgBKXdVUAAWLBx.jpg:large",
+        "image": []
+    },
+    {
+        "name": "หจก. อาร์ ยู เรดดี",
+        "phone": "0987654321",
+        "email": "example3@gmail.com",
+        "password": "12345",
+        "validate": true,
+        "address": {
+            "addressDesc": "",
+            "geolocation": {
+                "lat": "13.6504433",
+                "long": "100.4844226"
+            }
+        },
+        "logo_image": "https://pbs.twimg.com/media/EOgBKXdVUAAWLBx.jpg:large",
+        "image": []
+    },
+    {
+        "name": "อู่วิรัชการช่าง",
+        "phone": "0987654321",
+        "email": "example4@gmail.com",
+        "password": "12345",
+        "validate": true,
+        "address": {
+            "addressDesc": "",
+            "geolocation": {
+                "lat": "13.6504433",
+                "long": "100.4844226"
+            }
+        },
+        "logo_image": "https://pbs.twimg.com/media/EOgBKXdVUAAWLBx.jpg:large",
+        "image": []
+    },
+    {
+        "name": "Prachakchit Motor Vehicle",
+        "phone": "0987654321",
+        "email": "example5@gmail.com",
+        "password": "12345",
+        "validate": true,
+        "address": {
+            "addressDesc": "",
+            "geolocation": {
+                "lat": "13.649608",
+                "long": "100.4783343"
+            }
+        },
+        "logo_image": "https://pbs.twimg.com/media/EOgBKXdVUAAWLBx.jpg:large",
+        "image": []
+    },
+    {
+        "name": "อิเล็กตรอน",
+        "phone": "0987654321",
+        "email": "example6@gmail.com",
+        "password": "12345",
+        "validate": true,
+        "address": {
+            "addressDesc": "",
+            "geolocation": {
+                "lat": "13.6499931",
+                "long": "100.4947388"
+            }
+        },
+        "logo_image": "https://pbs.twimg.com/media/EOgBKXdVUAAWLBx.jpg:large",
+        "image": []
+    },
+    {
+        "name": "โสภณ ออโต้แอร์",
+        "phone": "0987654321",
+        "email": "example7@gmail.com",
+        "password": "12345",
+        "validate": true,
+        "address": {
+            "addressDesc": "",
+            "geolocation": {
+                "lat": "13.6499931",
+                "long": "100.4947388"
+            }
+        },
+        "logo_image": "https://pbs.twimg.com/media/EOgBKXdVUAAWLBx.jpg:large",
+        "image": []
+    },
+    {
+        "name": "23 Racing Garage",
+        "phone": "0987654321",
+        "email": "example8@gmail.com",
+        "password": "12345",
+        "validate": true,
+        "address": {
+            "addressDesc": "",
+            "geolocation": {
+                "lat": "13.6609124",
+                "long": "100.4761202"
+            }
+        },
+        "logo_image": "https://pbs.twimg.com/media/EOgBKXdVUAAWLBx.jpg:large",
+        "image": []
+    },
+    {
+        "name": "อู่ pure auto service",
+        "phone": "0987654321",
+        "email": "example9@gmail.com",
+        "password": "12345",
+        "validate": true,
+        "address": {
+            "addressDesc": "",
+            "geolocation": {
+                "lat": "13.6496111",
+                "long": "100.499037"
+            }
+        },
+        "logo_image": "https://pbs.twimg.com/media/EOgBKXdVUAAWLBx.jpg:large",
+        "image": []
+    },
+    {
+        "name": "Prachakchit Motor Vehicle",
+        "phone": "0987654321",
+        "email": "example10@gmail.com",
+        "password": "12345",
+        "validate": true,
+        "address": {
+            "addressDesc": "",
+            "geolocation": {
+                "lat": "13.6517919",
+                "long": "100.4712224"
+            }
+        },
+        "logo_image": "https://pbs.twimg.com/media/EOgBKXdVUAAWLBx.jpg:large",
+        "image": []
+    },
+    {
+        "name": "Paisal Auto Service",
+        "phone": "0987654321",
+        "email": "example11@gmail.com",
+        "password": "12345",
+        "validate": true,
+        "address": {
+            "addressDesc": "",
+            "geolocation": {
+                "lat": "13.6714759",
+                "long": "100.4515512"
+            }
+        },
+        "logo_image": "https://pbs.twimg.com/media/EOgBKXdVUAAWLBx.jpg:large",
+        "image": []
+    }
 ]

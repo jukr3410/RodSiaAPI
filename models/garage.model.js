@@ -49,6 +49,9 @@ const garageSchema = new Schema({
         },
 
     },
+    logo_image: {
+        type: String
+    },
     images: [{
         type: Schema.Types.ObjectId,
         ref: "FileUpload",
