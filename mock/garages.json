@@ -4,7 +4,7 @@
         "phone": "0987654321",
         "email": "example1@gmail.com",
         "password": "12345",
-        "validate": true,
+        "validatePhone": true,
         "address": {
             "addressDesc": "",
             "geolocation": {
@@ -17,10 +17,10 @@
     },
     {
         "name": "จัมโบ้ ออโต้แอร์",
-        "phone": "0987654321",
+        "phone": "0987654322",
         "email": "example2@gmail.com",
         "password": "12345",
-        "validate": true,
+        "validatePhone": true,
         "address": {
             "addressDesc": "",
             "geolocation": {
@@ -33,10 +33,10 @@
     },
     {
         "name": "หจก. อาร์ ยู เรดดี",
-        "phone": "0987654321",
+        "phone": "0987654323",
         "email": "example3@gmail.com",
         "password": "12345",
-        "validate": true,
+        "validatePhone": true,
         "address": {
             "addressDesc": "",
             "geolocation": {
@@ -49,10 +49,10 @@
     },
     {
         "name": "อู่วิรัชการช่าง",
-        "phone": "0987654321",
+        "phone": "0987654324",
         "email": "example4@gmail.com",
         "password": "12345",
-        "validate": true,
+        "validatePhone": true,
         "address": {
             "addressDesc": "",
             "geolocation": {
@@ -65,10 +65,10 @@
     },
     {
         "name": "Prachakchit Motor Vehicle",
-        "phone": "0987654321",
+        "phone": "0987654325",
         "email": "example5@gmail.com",
         "password": "12345",
-        "validate": true,
+        "validatePhone": true,
         "address": {
             "addressDesc": "",
             "geolocation": {
@@ -81,10 +81,10 @@
     },
     {
         "name": "อิเล็กตรอน",
-        "phone": "0987654321",
+        "phone": "0987654326",
         "email": "example6@gmail.com",
         "password": "12345",
-        "validate": true,
+        "validatePhone": true,
         "address": {
             "addressDesc": "",
             "geolocation": {
@@ -97,10 +97,10 @@
     },
     {
         "name": "โสภณ ออโต้แอร์",
-        "phone": "0987654321",
+        "phone": "0987654327",
         "email": "example7@gmail.com",
         "password": "12345",
-        "validate": true,
+        "validatePhone": true,
         "address": {
             "addressDesc": "",
             "geolocation": {
@@ -113,10 +113,10 @@
     },
     {
         "name": "23 Racing Garage",
-        "phone": "0987654321",
+        "phone": "0987654328",
         "email": "example8@gmail.com",
         "password": "12345",
-        "validate": true,
+        "validatePhone": true,
         "address": {
             "addressDesc": "",
             "geolocation": {
@@ -129,10 +129,10 @@
     },
     {
         "name": "อู่ pure auto service",
-        "phone": "0987654321",
+        "phone": "0987654329",
         "email": "example9@gmail.com",
         "password": "12345",
-        "validate": true,
+        "validatePhone": true,
         "address": {
             "addressDesc": "",
             "geolocation": {
@@ -145,10 +145,10 @@
     },
     {
         "name": "Prachakchit Motor Vehicle",
-        "phone": "0987654321",
+        "phone": "0987654310",
         "email": "example10@gmail.com",
         "password": "12345",
-        "validate": true,
+        "validatePhone": true,
         "address": {
             "addressDesc": "",
             "geolocation": {
@@ -161,10 +161,26 @@
     },
     {
         "name": "Paisal Auto Service",
-        "phone": "0987654321",
+        "phone": "0987654311",
         "email": "example11@gmail.com",
         "password": "12345",
-        "validate": true,
+        "validatePhone": true,
+        "address": {
+            "addressDesc": "",
+            "geolocation": {
+                "lat": "13.6714759",
+                "long": "100.4515512"
+            }
+        },
+        "logo_image": "https://pbs.twimg.com/media/EOgBKXdVUAAWLBx.jpg:large",
+        "image": []
+    },
+    {
+        "name": "ร้านเกาเหลา",
+        "phone": "0987654312",
+        "email": "example12@gmail.com",
+        "password": "12345",
+        "validatePhone": true,
         "address": {
             "addressDesc": "",
             "geolocation": {
