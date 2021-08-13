@@ -4,12 +4,15 @@ const ObjectId = require("mongodb").ObjectID;
 const FileUpload = require("../models/fileUpload.model");
 
 module.exports.getAllGarage = (req, res) => {
-  const limit = Number(req.query.limit) || 0;
+  const page = Number(req.query.page);
+  const limit = Number(req.query.limit) || 15;
+  const skipIndex = (page - 1) * limit;
   const sort = req.query.sort == "desc" ? -1 : 1;
 
   Garage.find()
     .select(["-_id"])
     .limit(limit)
+    .skip(skipIndex)
     .sort({
       _id: sort,
     })
