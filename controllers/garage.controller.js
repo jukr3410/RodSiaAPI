@@ -71,6 +71,7 @@ module.exports.addGarage = (req, res) => {
           long: req.body.address.geolocation.long,
         },
       },
+      openingHour: req.body.openingHour,
       services: req.body.services,
       reviews: req.body.reviews,
     });
@@ -111,6 +112,7 @@ module.exports.editGarage = (req, res) => {
         password: req.body.password,
         validatePhone: req.body.validatePhone,
         address: req.body.address,
+        openingHour: req.body.openingHour,
         images: req.body.images,
         services: req.body.services,
         reviews: req.body.reviews,

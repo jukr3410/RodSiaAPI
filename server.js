@@ -10,7 +10,7 @@ const app = express();
 const session = require("express-session");
 
 const listener = app.listen(process.env.PORT || 3000, () => {
-  console.log("Server is running on port " + listener.address().port);
+  console.log("Server is running on port http://localhost:" + listener.address().port);
 });
 
 MongoDbConfig.configure()
