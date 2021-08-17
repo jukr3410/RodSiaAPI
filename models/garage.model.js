@@ -116,19 +116,7 @@ const garageSchema = new Schema(
         type: Schema.Types.ObjectId,
         ref: "FileUpload",
       },
-    ],
-    services: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Service",
-      },
-    ],
-    reviews: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Review",
-      },
-    ],
+    ]
   },
   {
     timestamps: true,

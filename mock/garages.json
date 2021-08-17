@@ -12,6 +12,33 @@
                 "long": "100.4815814"
             }
         },
+        "openingHour": {
+            "m": {},
+            "tu": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "w": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "th": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "f": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "sa": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "su": {
+                "open": "9.00",
+                "close": "18.00"
+            }
+        },
         "logo_image": "https://pbs.twimg.com/media/EOgBKXdVUAAWLBx.jpg:large",
         "image": []
     },
@@ -26,6 +53,33 @@
             "geolocation": {
                 "lat": "13.6500721",
                 "long": "100.4815814"
+            }
+        },
+        "openingHour": {
+            "m": {},
+            "tu": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "w": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "th": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "f": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "sa": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "su": {
+                "open": "9.00",
+                "close": "18.00"
             }
         },
         "logo_image": "https://pbs.twimg.com/media/EOgBKXdVUAAWLBx.jpg:large",
@@ -44,6 +98,33 @@
                 "long": "100.4844226"
             }
         },
+        "openingHour": {
+            "m": {},
+            "tu": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "w": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "th": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "f": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "sa": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "su": {
+                "open": "9.00",
+                "close": "18.00"
+            }
+        },
         "logo_image": "https://pbs.twimg.com/media/EOgBKXdVUAAWLBx.jpg:large",
         "image": []
     },
@@ -58,6 +139,33 @@
             "geolocation": {
                 "lat": "13.6504433",
                 "long": "100.4844226"
+            }
+        },
+        "openingHour": {
+            "m": {},
+            "tu": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "w": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "th": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "f": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "sa": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "su": {
+                "open": "9.00",
+                "close": "18.00"
             }
         },
         "logo_image": "https://pbs.twimg.com/media/EOgBKXdVUAAWLBx.jpg:large",
@@ -76,6 +184,33 @@
                 "long": "100.4783343"
             }
         },
+        "openingHour": {
+            "m": {},
+            "tu": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "w": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "th": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "f": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "sa": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "su": {
+                "open": "9.00",
+                "close": "18.00"
+            }
+        },
         "logo_image": "https://pbs.twimg.com/media/EOgBKXdVUAAWLBx.jpg:large",
         "image": []
     },
@@ -90,6 +225,33 @@
             "geolocation": {
                 "lat": "13.6499931",
                 "long": "100.4947388"
+            }
+        },
+        "openingHour": {
+            "m": {},
+            "tu": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "w": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "th": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "f": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "sa": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "su": {
+                "open": "9.00",
+                "close": "18.00"
             }
         },
         "logo_image": "https://pbs.twimg.com/media/EOgBKXdVUAAWLBx.jpg:large",
@@ -108,6 +270,33 @@
                 "long": "100.4947388"
             }
         },
+        "openingHour": {
+            "m": {},
+            "tu": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "w": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "th": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "f": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "sa": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "su": {
+                "open": "9.00",
+                "close": "18.00"
+            }
+        },
         "logo_image": "https://pbs.twimg.com/media/EOgBKXdVUAAWLBx.jpg:large",
         "image": []
     },
@@ -122,6 +311,33 @@
             "geolocation": {
                 "lat": "13.6609124",
                 "long": "100.4761202"
+            }
+        },
+        "openingHour": {
+            "m": {},
+            "tu": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "w": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "th": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "f": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "sa": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "su": {
+                "open": "9.00",
+                "close": "18.00"
             }
         },
         "logo_image": "https://pbs.twimg.com/media/EOgBKXdVUAAWLBx.jpg:large",
@@ -140,6 +356,33 @@
                 "long": "100.499037"
             }
         },
+        "openingHour": {
+            "m": {},
+            "tu": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "w": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "th": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "f": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "sa": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "su": {
+                "open": "9.00",
+                "close": "18.00"
+            }
+        },
         "logo_image": "https://pbs.twimg.com/media/EOgBKXdVUAAWLBx.jpg:large",
         "image": []
     },
@@ -154,6 +397,33 @@
             "geolocation": {
                 "lat": "13.6517919",
                 "long": "100.4712224"
+            }
+        },
+        "openingHour": {
+            "m": {},
+            "tu": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "w": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "th": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "f": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "sa": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "su": {
+                "open": "9.00",
+                "close": "18.00"
             }
         },
         "logo_image": "https://pbs.twimg.com/media/EOgBKXdVUAAWLBx.jpg:large",
@@ -172,6 +442,33 @@
                 "long": "100.4515512"
             }
         },
+        "openingHour": {
+            "m": {},
+            "tu": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "w": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "th": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "f": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "sa": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "su": {
+                "open": "9.00",
+                "close": "18.00"
+            }
+        },
         "logo_image": "https://pbs.twimg.com/media/EOgBKXdVUAAWLBx.jpg:large",
         "image": []
     },
@@ -186,6 +483,33 @@
             "geolocation": {
                 "lat": "13.6714759",
                 "long": "100.4515512"
+            }
+        },
+        "openingHour": {
+            "m": {},
+            "tu": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "w": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "th": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "f": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "sa": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "su": {
+                "open": "9.00",
+                "close": "18.00"
             }
         },
         "logo_image": "https://pbs.twimg.com/media/EOgBKXdVUAAWLBx.jpg:large",
