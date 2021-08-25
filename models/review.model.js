@@ -7,16 +7,15 @@ const reviewSchema = new Schema({
     //     required: [true, "can't be blank"],
     //     unique: true
     // },
-    service: {
-        type: Schema.Types.ObjectId,
-        ref: 'Service'
-    },
+    // service: {
+    //     type: Schema.Types.ObjectId,
+    //     ref: 'Service'
+    // },
     text: {
         type: String
     },
     star: {
-        type: Number,
-        required: true
+        type: Number
     },
     user: {
         type: Schema.Types.ObjectId,

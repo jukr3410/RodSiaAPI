@@ -6,9 +6,9 @@ module.exports.getAllReview = (req, res) => {
     const limit = Number(req.query.limit) || 0
     const sort = req.query.sort == "desc" ? -1 : 1
 
-    Review.find().select(['-_id']).limit(limit).sort({
+    Review.find().select([]).limit(limit).sort({
             _id: sort
-        }).populate(["service","user","garage"])
+        }).populate([,"user","garage"])
         .then(reviews => {
             res.json(reviews)
         })
@@ -18,7 +18,7 @@ module.exports.getAllReview = (req, res) => {
 module.exports.getReview = (req, res) => {
     const id = new ObjectId(req.params.id)
     Review.findById({
-            "+id": id
+            "_id": id
         })
         .then(review => {
             res.json(review)
@@ -50,7 +50,7 @@ module.exports.addReview = (req, res) => {
         //     .then(() => {
         const review = new Review({
             // id: reviewCount + 1,
-            service: req.body.service,
+            //service: req.body.service,
             text: req.body.text,
             star: req.body.star,
             user: req.body.user,
@@ -80,7 +80,7 @@ module.exports.editReview = (req, res) => {
         Review.findByIdAndUpdate({
                 "_id": id
             }, {
-                service: req.body.service,
+                //service: req.body.service,
                 text: req.body.text,
                 star: req.body.star,
                 user: req.body.user,
