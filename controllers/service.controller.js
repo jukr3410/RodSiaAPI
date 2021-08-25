@@ -6,9 +6,9 @@ module.exports.getAllService = (req, res) => {
     const limit = Number(req.query.limit) || 0
     const sort = req.query.sort == "desc" ? -1 : 1
 
-    Service.find().select(['-_id']).limit(limit).sort({
+    Service.find().select([]).limit(limit).sort({
             _id: sort
-        }).populate(["images", "serviceTypes","garage"])
+        }).populate(["image", "serviceType","garage"])
         .then(services => {
             res.json(services)
         })
@@ -19,7 +19,7 @@ module.exports.getService = (req, res) => {
     const id = new ObjectId(req.params.id)
     Service.findById({
             "_id": id
-        }).populate(["images", "serviceTypes"])
+        }).populate(["image", "serviceType",])
         .then(service => {
             res.json(service)
         })
@@ -52,17 +52,20 @@ module.exports.addService = (req, res) => {
             // id: serviceCount + 1,
             name: req.body.name,
             description: req.body.description,
-            serviceTypes: req.body.serviceTypes,
+            serviceType: req.body.serviceType,
             garage: req.body.garage,
-            images: req.body.images
+            image: req.body.image
         });
         service.save()
-            // .then(service => res.json(service))
+            .then(service => {
+                res.status(200).send({
+                    message: "Add service successfully.",
+                    service
+                });
+            })
             .catch(err => console.log(err))
-        res.status(200).send({
-            message: "Add service successfully."
-        });
-        res.json(service)
+        
+        //res.json(service)
         // });
         // res.json({id:Service.find().count()+1,...req.body})
     }
@@ -81,9 +84,9 @@ module.exports.editService = (req, res) => {
             }, {
                 name: req.body.name,
                 description: req.body.description,
-                serviceTypes: req.body.serviceType,
+                serviceType: req.body.serviceType,
                 garage: req.body.garage,
-                images: req.body.images
+                image: req.body.image
             }, {
                 new: true
             })
@@ -93,7 +96,10 @@ module.exports.editService = (req, res) => {
                         message: "Service not found with id " + id
                     });
                 }
-                res.send(service);
+                res.status(200).send({
+                    message: "Update service successfully.",
+                    service
+                });
             }).catch(err => {
                 if (err.kind === 'ObjectId') {
                     return res.status(404).send({
@@ -152,11 +158,11 @@ module.exports.getByServiceType = (req, res) => {
         })
     } else {
         const query = {
-            serviceTypes: {
+            serviceType: {
                 "$in": [id]
             }
         };
-        Service.find(query).populate(["images", "serviceTypes"])
+        Service.find(query).populate(["image", "serviceType"])
             .then(services => {
                 res.json(services)
             })
@@ -165,6 +171,32 @@ module.exports.getByServiceType = (req, res) => {
             });
     }
 };
+
+module.exports.getServicesByGarage = (req, res) => {
+    const id = new ObjectId(req.params.id)
+
+    if (id == null) {
+        req.json({
+            status: "error",
+            message: "Garage id should be provided"
+        })
+    } else {
+        const query = {
+            garage: {
+                "$in": [id]
+            }
+        };
+        Service.find(query).populate(["image", "serviceType"])
+            .then(services => {
+                res.json(services)
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }
+};
+
+
 module.exports.getByServiceName = (req, res) => {
     const name = req.params.name
     if (name == null) {

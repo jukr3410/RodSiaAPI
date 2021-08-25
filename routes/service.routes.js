@@ -6,6 +6,7 @@ router.get('/services',service.getAllService);
 router.get('/services-id/:id',service.getService);
 router.get('/services-name/:name',service.getByServiceName);
 router.get('/service-type/:id/services',service.getByServiceType);
+router.get('/garage/:id/services', service.getServicesByGarage);
 router.post('/services',service.addService);
 router.put('/services/:id',service.editService);
 router.patch('/services/:id',service.editService);

@@ -13,7 +13,6 @@ const garageSchema = new Schema(
     // },
     name: {
       type: String,
-      required: [true, "can't be blank"],
     },
     phone: {
       type: String,

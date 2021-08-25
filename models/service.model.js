@@ -16,18 +16,18 @@ const servicesSchema = new Schema({
     description: {
         type: String
     },
-    serviceTypes: [{
+    serviceType: {
         type: Schema.Types.ObjectId,
         ref: "ServiceType"
-    }],
+    },
     garage: {
         type: Schema.Types.ObjectId,
         ref: "Garage"
     },
-    images: [{
+    image: {
         type: Schema.Types.ObjectId,
         ref: 'FileUpload'
-    }]
+    }
 });
 
 module.exports = mongoose.model('Service', servicesSchema);

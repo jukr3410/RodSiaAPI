@@ -10,7 +10,7 @@ module.exports.getAllGarage = (req, res) => {
   const sort = req.query.sort == "desc" ? -1 : 1;
 
   Garage.find()
-    .select(["-_id"])
+    .select([])
     .limit(limit)
     .skip(skipIndex)
     .sort({
@@ -28,14 +28,13 @@ module.exports.getGarage = (req, res) => {
   Garage.findById({
     _id: id,
   })
-    .populate(["services", "reviews", "images"])
     .then((garage) => {
       res.status(200).json(garage);
     })
     .catch((err) => {
       if (err.kind === "ObjectId") {
         return res.status(404).send({
-            success: false,
+          success: false,
           message: "Garage not found with id " + id,
         });
       }
@@ -63,6 +62,7 @@ module.exports.addGarage = (req, res) => {
       phone: req.body.phone,
       email: req.body.email,
       password: req.body.password,
+      otp: req.body.password,
       validatePhone: req.body.validatePhone,
       address: {
         addressDesc: req.body.address.addressDesc,
@@ -72,8 +72,8 @@ module.exports.addGarage = (req, res) => {
         },
       },
       openingHour: req.body.openingHour,
-      services: req.body.services,
-      reviews: req.body.reviews,
+      logo_image: req.body.logo_image,
+      images: req.body.images,
     });
     garage
       .save()
@@ -97,7 +97,7 @@ module.exports.editGarage = (req, res) => {
   const id = new ObjectId(req.params.id);
   if (typeof req.body == undefined || id == null) {
     res.json({
-        success: false,
+      success: false,
       message: "something went wrong! check your sent data",
     });
   } else {
@@ -110,12 +110,12 @@ module.exports.editGarage = (req, res) => {
         phone: req.body.phone,
         email: req.body.email,
         password: req.body.password,
+        otp: req.body.password,
         validatePhone: req.body.validatePhone,
         address: req.body.address,
         openingHour: req.body.openingHour,
+        logo_image: req.body.logo_image,
         images: req.body.images,
-        services: req.body.services,
-        reviews: req.body.reviews,
       },
       {
         new: true,
@@ -129,9 +129,10 @@ module.exports.editGarage = (req, res) => {
           });
         }
         res.status(200).json({
-            success: true,
-            message: "Update garage successfully.",
-            garage: garage});
+          success: true,
+          message: "Update garage successfully.",
+          garage: garage,
+        });
       })
       .catch((err) => {
         if (err.kind === "ObjectId") {
@@ -141,7 +142,7 @@ module.exports.editGarage = (req, res) => {
           });
         }
         return res.status(500).send({
-            success: false,
+          success: false,
           message: "Error updating Garage with id " + id,
         });
       });
@@ -167,9 +168,10 @@ module.exports.deleteGarage = (req, res) => {
           });
         }
         res.status(200).json({
-            success: true,
-            message: "Garage deleted successfully!",
-            garage: garage});
+          success: true,
+          message: "Garage deleted successfully!",
+          garage: garage,
+        });
       })
       .catch((err) => {
         if (err.kind === "ObjectId" || err.name === "NotFound") {
@@ -179,7 +181,7 @@ module.exports.deleteGarage = (req, res) => {
           });
         }
         return res.status(500).send({
-            success: false,
+          success: false,
           message: "Could not delete Garage with id " + id,
         });
       });
@@ -187,6 +189,11 @@ module.exports.deleteGarage = (req, res) => {
 };
 module.exports.getByGarageName = (req, res) => {
   const name = req.params.name;
+  const page = Number(req.query.page);
+  const limit = Number(req.query.limit) || 15;
+  const skipIndex = (page - 1) * limit;
+  const sort = req.query.sort == "desc" ? -1 : 1;
+
   if (name == null) {
     req.json({
       status: "error",
@@ -202,7 +209,11 @@ module.exports.getByGarageName = (req, res) => {
     };
 
     Garage.find(query)
-      .populate(["services", "reviews"])
+      .limit(limit)
+      .skip(skipIndex)
+      .sort({
+        _id: sort,
+      })
       .then((garage) => {
         res.json(garage);
       })

@@ -7,7 +7,7 @@ module.exports.getAllServiceType = (req, res) => {
     const limit = Number(req.query.limit) || 0
     const sort = req.query.sort == "desc" ? -1 : 1
 
-    ServiceType.find().select(['-_id']).limit(limit).sort({
+    ServiceType.find().select([]).limit(limit).sort({
             _id: sort
         })
         .then(serviceTypes => {
