@@ -22,7 +22,11 @@ const infoAssistantSchema = new Schema({
     images: [{
         type: Schema.Types.ObjectId,
         ref: 'FileUpload'
-    }]
+    }],
+    serviceTypes: [{
+        type: Schema.Types.ObjectId,
+        ref: "ServiceType"
+    }],
 
 })
 module.exports = mongoose.model('InfoAssistant', infoAssistantSchema)

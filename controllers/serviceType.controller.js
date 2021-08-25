@@ -9,7 +9,7 @@ module.exports.getAllServiceType = (req, res) => {
 
     ServiceType.find().select(['-_id']).limit(limit).sort({
             _id: sort
-        }).populate(["services","infoAssistants"])
+        })
         .then(serviceTypes => {
             res.json(serviceTypes)
         })
@@ -20,7 +20,7 @@ module.exports.getServiceType = (req, res) => {
     const id = new ObjectId(req.params.id)
     User.findById({
             "_id": id
-        }).populate(["services","infoAssistants"])
+        })
         .then(serviceType => {
             res.json(serviceType)
         })
@@ -53,8 +53,6 @@ module.exports.addServiceType = (req, res) => {
             // id: serviceTypeCount + 1,
             name: req.body.name,
             description: req.body.description,
-            services: req.body.services,
-            infoAssistants: req.body.infoAssistants
         });
         serviceType.save()
             // .then(serviceType => res.json(serviceType))
@@ -81,8 +79,6 @@ module.exports.editServiceType = (req, res) => {
             }, {
                 name: req.body.name,
                 description: req.body.description,
-                services: req.body.services,
-                infoAssistants: req.body.infoAssistants
             }, {
                 new: true
             })

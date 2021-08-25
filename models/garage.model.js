@@ -25,12 +25,14 @@ const garageSchema = new Schema(
     email: {
       type: String,
       lowercase: true,
-      unique: true,
       match: [/\S+@\S+\.\S+/, "is invalid"],
     },
     password: {
       type: String,
       required: true,
+    },
+    otp: {
+      type: String
     },
     validatePhone: {
       type: Boolean,
