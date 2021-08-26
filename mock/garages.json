@@ -8,11 +8,15 @@
         "addressDesc": ""
       },
       "openingHour": {
+        "mo": {
+          "open": "9.00",
+          "close": "18.00"
+        },
         "tu": {
           "open": "9.00",
           "close": "18.00"
         },
-        "w": {
+        "we": {
           "open": "9.00",
           "close": "18.00"
         },
@@ -53,11 +57,15 @@
         "addressDesc": ""
       },
       "openingHour": {
+        "mo": {
+          "open": "9.00",
+          "close": "18.00"
+        },
         "tu": {
           "open": "9.00",
           "close": "18.00"
         },
-        "w": {
+        "we": {
           "open": "9.00",
           "close": "18.00"
         },
@@ -98,11 +106,15 @@
         "addressDesc": ""
       },
       "openingHour": {
+        "mo": {
+          "open": "9.00",
+          "close": "18.00"
+        },
         "tu": {
           "open": "9.00",
           "close": "18.00"
         },
-        "w": {
+        "we": {
           "open": "9.00",
           "close": "18.00"
         },
@@ -143,11 +155,15 @@
         "addressDesc": ""
       },
       "openingHour": {
+        "mo": {
+          "open": "9.00",
+          "close": "18.00"
+        },
         "tu": {
           "open": "9.00",
           "close": "18.00"
         },
-        "w": {
+        "we": {
           "open": "9.00",
           "close": "18.00"
         },
@@ -188,11 +204,15 @@
         "addressDesc": ""
       },
       "openingHour": {
+        "mo": {
+          "open": "9.00",
+          "close": "18.00"
+        },
         "tu": {
           "open": "9.00",
           "close": "18.00"
         },
-        "w": {
+        "we": {
           "open": "9.00",
           "close": "18.00"
         },
@@ -233,11 +253,15 @@
         "addressDesc": ""
       },
       "openingHour": {
+        "mo": {
+          "open": "9.00",
+          "close": "18.00"
+        },
         "tu": {
           "open": "9.00",
           "close": "18.00"
         },
-        "w": {
+        "we": {
           "open": "9.00",
           "close": "18.00"
         },
@@ -278,11 +302,15 @@
         "addressDesc": ""
       },
       "openingHour": {
+        "mo": {
+          "open": "9.00",
+          "close": "18.00"
+        },
         "tu": {
           "open": "9.00",
           "close": "18.00"
         },
-        "w": {
+        "we": {
           "open": "9.00",
           "close": "18.00"
         },
@@ -323,11 +351,15 @@
         "addressDesc": ""
       },
       "openingHour": {
+        "mo": {
+          "open": "9.00",
+          "close": "18.00"
+        },
         "tu": {
           "open": "9.00",
           "close": "18.00"
         },
-        "w": {
+        "we": {
           "open": "9.00",
           "close": "18.00"
         },
@@ -368,11 +400,15 @@
         "addressDesc": ""
       },
       "openingHour": {
+        "mo": {
+          "open": "9.00",
+          "close": "18.00"
+        },
         "tu": {
           "open": "9.00",
           "close": "18.00"
         },
-        "w": {
+        "we": {
           "open": "9.00",
           "close": "18.00"
         },
@@ -413,11 +449,15 @@
         "addressDesc": ""
       },
       "openingHour": {
+        "mo": {
+          "open": "9.00",
+          "close": "18.00"
+        },
         "tu": {
           "open": "9.00",
           "close": "18.00"
         },
-        "w": {
+        "we": {
           "open": "9.00",
           "close": "18.00"
         },
@@ -458,11 +498,15 @@
         "addressDesc": ""
       },
       "openingHour": {
+        "mo": {
+          "open": "9.00",
+          "close": "18.00"
+        },
         "tu": {
           "open": "9.00",
           "close": "18.00"
         },
-        "w": {
+        "we": {
           "open": "9.00",
           "close": "18.00"
         },
@@ -503,11 +547,15 @@
         "addressDesc": ""
       },
       "openingHour": {
+        "mo": {
+          "open": "9.00",
+          "close": "18.00"
+        },
         "tu": {
           "open": "9.00",
           "close": "18.00"
         },
-        "w": {
+        "we": {
           "open": "9.00",
           "close": "18.00"
         },

@@ -12,8 +12,7 @@ const fileUploadSchema = new Schema({
     },
     
     fileName: {
-        type: String,
-        unique: true
+        type: String
     },
     fileLink: {
         type: String

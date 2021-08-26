@@ -50,7 +50,7 @@ const garageSchema = new Schema(
       },
     },
     openingHour: {
-      m: {
+      mo: {
         open: {
           type: String,
         },
@@ -66,7 +66,7 @@ const garageSchema = new Schema(
           type: String,
         },
       },
-      w: {
+      we: {
         open: {
           type: String,
         },
@@ -82,7 +82,7 @@ const garageSchema = new Schema(
           type: String,
         },
       },
-      f: {
+      fr: {
         open: {
           type: String,
         },
