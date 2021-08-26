@@ -12,9 +12,9 @@ module.exports.getAllUser = (req, res) => {
 
   User.find().select([]).limit(limit).sort({
       _id: sort
-    }).populate([])
+    }).populate(['cars'])
     .then(users => {
-      res.json(users)
+      res.status(200).json(users)
     })
     .catch(err => console.log(err))
 }
@@ -24,9 +24,9 @@ module.exports.getUser = (req, res) => {
   const id = new ObjectId(req.params.id)
   User.findById({
       "_id": id
-    }).populate([])
+    }).populate(['cars'])
     .then(user => {
-      res.json(user)
+      res.status(200).json(user)
     })
     .catch(err => {
       if (err.kind === 'ObjectId') {
@@ -61,22 +61,22 @@ module.exports.addUser = (req, res) => {
       password: req.body.password,
       otp: req.body.otp,
       validatePhone: req.body.validatePhone,
-      cars: {
-        brand: req.body.cars.brand,
-        model: req.body.cars.model,
-        type: req.body.cars.type,
-        year: req.body.cars.year
-      },
+      cars: req.body.cars,
       // reviews: req.body.reviews,
       // requestServices: req.body.requestServices
     });
     user.save()
-      .then(user => res.json(user))
+      .then(user => {
+        res.status(200).send({
+          message: "Add user successfully.",
+          user
+      });
+      })
       .catch(err => console.log(err))
-    res.status(500).send({
-      message: err.message || "Some error occurred while creating the User."
-    });
-    res.json(user)
+    // res.status(500).send({
+    //   message: err.message || "Some error occurred while creating the User."
+    // });
+    //res.json(user)
     // });
     // res.json({id:User.find().count()+1,...req.body})
   }
@@ -99,12 +99,7 @@ module.exports.editUser = (req, res) => {
         password: req.body.password,
         otp: req.body.otp,
         validatePhone: req.body.validatePhone,
-        cars: [{
-          brand: req.body.cars.brand,
-          model: req.body.cars.model,
-          type: req.body.cars.type,
-          year: req.body.cars.year
-        }],
+        cars: req.body.cars,
         //reviews: req.body.reviews,
         //requestServices: req.body.requestServices
       }, {
@@ -116,7 +111,7 @@ module.exports.editUser = (req, res) => {
             message: "User not found with id " + id
           });
         }
-        res.send(user).populate(["reviews","requestServices"]);
+        res.send(user).populate(['cars']);
       }).catch(err => {
         if (err.kind === 'ObjectId') {
           return res.status(404).send({

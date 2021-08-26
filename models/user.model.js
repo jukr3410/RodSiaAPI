@@ -12,7 +12,6 @@ const userSchema = new Schema({
 
     name: {
         type: String,
-        required: [true, "can't be blank"]
     },
     email: {
         type: String,
