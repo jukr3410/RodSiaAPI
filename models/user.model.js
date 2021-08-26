@@ -29,7 +29,10 @@ const userSchema = new Schema({
     },
     password: {
         type: String,
-        required: true
+        //required: true
+    },
+    otp: {
+        type: String
     },
     validatePhone: {
         type: Boolean,
@@ -53,16 +56,16 @@ const userSchema = new Schema({
         }
     }],
 
-    reviews: [{
+    // reviews: [{
 
-        type: Schema.Types.ObjectId,
-        ref: 'Review',
+    //     type: Schema.Types.ObjectId,
+    //     ref: 'Review',
 
-    }],
-    requestServices: [{
-        type: Schema.Types.ObjectId,
-        ref: 'RequestService'
-    }]
+    // }],
+    // requestServices: [{
+    //     type: Schema.Types.ObjectId,
+    //     ref: 'RequestService'
+    // }]
 }, {
     timestamps: true
 });

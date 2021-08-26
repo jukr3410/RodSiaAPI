@@ -5,7 +5,7 @@ module.exports.getAllRequestService = (req, res) => {
     const limit = Number(req.query.limit) || 0
     const sort = req.query.sort == "desc" ? -1 : 1
 
-    RequestService.find().select(['-_id']).limit(limit).sort({
+    RequestService.find().select([]).limit(limit).sort({
             _id: sort
         }).populate(["user","service"])
         .then(requestServices => {

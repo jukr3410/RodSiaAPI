@@ -27,8 +27,7 @@ const garageSchema = new Schema(
       match: [/\S+@\S+\.\S+/, "is invalid"],
     },
     password: {
-      type: String,
-      required: true,
+      type: String
     },
     otp: {
       type: String

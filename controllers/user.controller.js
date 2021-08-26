@@ -10,9 +10,9 @@ module.exports.getAllUser = (req, res) => {
   const limit = Number(req.query.limit) || 0
   const sort = req.query.sort == "desc" ? -1 : 1
 
-  User.find().select(['-_id']).limit(limit).sort({
+  User.find().select([]).limit(limit).sort({
       _id: sort
-    }).populate(["reviews","requestServices"])
+    }).populate([])
     .then(users => {
       res.json(users)
     })
@@ -24,7 +24,7 @@ module.exports.getUser = (req, res) => {
   const id = new ObjectId(req.params.id)
   User.findById({
       "_id": id
-    }).populate(["reviews","requestServices"])
+    }).populate([])
     .then(user => {
       res.json(user)
     })
@@ -59,6 +59,7 @@ module.exports.addUser = (req, res) => {
       email: req.body.email,
       phone: req.body.phone,
       password: req.body.password,
+      otp: req.body.otp,
       validatePhone: req.body.validatePhone,
       cars: {
         brand: req.body.cars.brand,
@@ -66,8 +67,8 @@ module.exports.addUser = (req, res) => {
         type: req.body.cars.type,
         year: req.body.cars.year
       },
-      reviews: req.body.reviews,
-      requestServices: req.body.requestServices
+      // reviews: req.body.reviews,
+      // requestServices: req.body.requestServices
     });
     user.save()
       .then(user => res.json(user))
@@ -96,6 +97,7 @@ module.exports.editUser = (req, res) => {
         email: req.body.email,
         phone: req.body.phone,
         password: req.body.password,
+        otp: req.body.otp,
         validatePhone: req.body.validatePhone,
         cars: [{
           brand: req.body.cars.brand,
@@ -103,8 +105,8 @@ module.exports.editUser = (req, res) => {
           type: req.body.cars.type,
           year: req.body.cars.year
         }],
-        reviews: req.body.reviews,
-        requestServices: req.body.requestServices
+        //reviews: req.body.reviews,
+        //requestServices: req.body.requestServices
       }, {
         new: true
       })
