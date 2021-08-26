@@ -5,6 +5,7 @@ const review = require('../controllers/review.controller');
 
 
 router.get('/reviews', review.getAllReview);
+router.get('/garage/:id/reviews', review.getReviewsByGarage);
 router.get('/reviews/:id', review.getReview);
 router.post('/reviews', review.addReview);
 router.put('/reviews/:id', review.editReview);

@@ -141,3 +141,27 @@ module.exports.deleteReview = (req, res) => {
             });
     }
 }
+
+module.exports.getReviewsByGarage = (req, res) => {
+    const id = new ObjectId(req.params.id)
+
+    if (id == null) {
+        req.json({
+            status: "error",
+            message: "Garage id should be provided"
+        })
+    } else {
+        const query = {
+            garage: {
+                "$in": [id]
+            }
+        };
+        Service.find(query).populate(["user"])
+            .then(reviews => {
+                res.json(reviews)
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }
+};
