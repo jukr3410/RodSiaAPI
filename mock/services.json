@@ -3,24 +3,24 @@
         "name": "ช่วงล่าง ระบบเบรค",
         "description": "",
         "serviceType": "61265f79f7b19f6ca9064b7f",
-        "garage": "611bd50a7a977135275e73db"
+        "garage": "6127a780b8e43a888b354158"
     },
     {
         "name": "ซ่อมประตูรถยนต์",
         "description": "รับซ่อมกลอนประตูรถยนต์ เฟืองหมุนกระจกประตู เฟืองกระจกประตูไฟฟ้า",
         "serviceType": "61265f79f7b19f6ca9064b80",
-        "garage": "611bd50a7a977135275e73db"
+        "garage": "6127a780b8e43a888b354158"
     },
     {
         "name": "เปลี่ยนยาง ซ่อมยางรั่ว",
         "description": "",
         "serviceType": "61265f79f7b19f6ca9064b7e",
-        "garage": "611bd50a7a977135275e73db"
+        "garage": "6127a780b8e43a888b354158"
     },
     {
         "name": "บริการรถยก รถลาก",
         "description": "",
         "serviceType": "61265f79f7b19f6ca9064b81",
-        "garage": "611bd50a7a977135275e73db"
+        "garage": "6127a780b8e43a888b354158"
     }
 ]
