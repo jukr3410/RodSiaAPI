@@ -58,7 +58,7 @@ module.exports.addService = (req, res) => {
         });
         service.save()
             .then(service => {
-                res.status(200).send({
+                res.status(201).send({
                     message: "Add service successfully.",
                     service
                 });

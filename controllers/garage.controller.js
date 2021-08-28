@@ -78,7 +78,7 @@ module.exports.addGarage = (req, res) => {
     garage
       .save()
       .then(
-        res.status(200).json({
+        res.status(201).json({
           success: true,
           message: "Add garage successfully.",
           garage: garage,

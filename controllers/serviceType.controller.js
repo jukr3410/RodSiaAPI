@@ -57,7 +57,7 @@ module.exports.addServiceType = (req, res) => {
         serviceType.save()
             // .then(serviceType => res.json(serviceType))
             .catch(err => console.log(err))
-        res.status(200).send({
+        res.status(201).send({
             message: "Add serviceType successfully."
         });
         res.json(serviceType)

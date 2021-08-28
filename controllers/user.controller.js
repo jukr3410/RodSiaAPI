@@ -67,7 +67,7 @@ module.exports.addUser = (req, res) => {
     });
     user.save()
       .then(user => {
-        res.status(200).send({
+        res.status(201).send({
           message: "Add user successfully.",
           user
       });

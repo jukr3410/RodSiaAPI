@@ -59,7 +59,7 @@ module.exports.addInfoAssistant = (req, res) => {
         infoAssistant.save()
             // .then(serviceType => res.json(serviceType))
             .catch(err => console.log(err))
-        res.status(200).send({
+        res.status(201).send({
             message: "Add infomation assistant successfully."
         });
 
