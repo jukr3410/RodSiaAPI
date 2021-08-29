@@ -57,7 +57,7 @@ module.exports.addReview = (req, res) => {
             garage: req.body.garage
         });
         review.save()
-            .then(review => res.json(review))
+            .then(review => res.status(201).json(review))
             .catch(err => console.log(err))
         res.status(500).send({
             message: err.message || "Some error occurred while creating the User."
