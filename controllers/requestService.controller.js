@@ -96,7 +96,7 @@ module.exports.editRequestService = (req, res) => {
                         message: "RequestService not found with id " + id
                     });
                 }
-                res.send(requestService);
+                res.status(200).send(requestService);
             }).catch(err => {
                 if (err.kind === 'ObjectId') {
                     return res.status(404).send({
@@ -128,7 +128,7 @@ module.exports.deleteRequestService = (req, res) => {
                         message: "RequestService not found with id " + id
                     });
                 }
-                res.send({
+                res.status(200).send({
                     message: "RequestService deleted successfully!"
                 });
             }).catch(err => {

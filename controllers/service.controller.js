@@ -131,7 +131,7 @@ module.exports.deleteService = (req, res) => {
                         message: "Service not found with id " + id
                     });
                 }
-                res.send({
+                res.status(200).send({
                     message: "Service deleted successfully!"
                 });
             }).catch(err => {

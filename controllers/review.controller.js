@@ -94,7 +94,7 @@ module.exports.editReview = (req, res) => {
                         message: "Review not found with id " + id
                     });
                 }
-                res.send(review);
+                res.status(200).send(review);
             }).catch(err => {
                 if (err.kind === 'ObjectId') {
                     return res.status(404).send({
@@ -126,7 +126,7 @@ module.exports.deleteReview = (req, res) => {
                         message: "Review not found with id " + id
                     });
                 }
-                res.send({
+                res.status(200).send({
                     message: "Review deleted successfully!"
                 });
             }).catch(err => {

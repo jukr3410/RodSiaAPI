@@ -88,7 +88,7 @@ module.exports.editServiceType = (req, res) => {
                         message: "ServiceType not found with id " + id
                     });
                 }
-                res.send(serviceType);
+                res.status(200).send(serviceType);
             }).catch(err => {
                 if (err.kind === 'ObjectId') {
                     return res.status(404).send({
@@ -120,7 +120,7 @@ module.exports.deleteServiceType = (req, res) => {
                         message: "ServiceType not found with id " + id
                     });
                 }
-                res.send({
+                res.status(200).send({
                     message: "ServiceType deleted successfully!"
                 });
             }).catch(err => {
