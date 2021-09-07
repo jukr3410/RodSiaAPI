@@ -19,7 +19,7 @@ module.exports.getService = (req, res) => {
     const id = new ObjectId(req.params.id)
     Service.findById({
             "_id": id
-        }).populate(["image", "serviceType",])
+        }).populate(["image", "serviceType", "garage"])
         .then(service => {
             res.json(service)
         })
@@ -162,7 +162,7 @@ module.exports.getByServiceType = (req, res) => {
                 "$in": [id]
             }
         };
-        Service.find(query).populate(["image", "serviceType"])
+        Service.find(query).populate(["image", "serviceType", "garage"])
             .then(services => {
                 res.json(services)
             })
@@ -186,7 +186,7 @@ module.exports.getServicesByGarage = (req, res) => {
                 "$in": [id]
             }
         };
-        Service.find(query).populate(["image", "serviceType"])
+        Service.find(query).populate(["image", "serviceType", "garage"])
             .then(services => {
                 res.json(services)
             })
