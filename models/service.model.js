@@ -25,8 +25,7 @@ const servicesSchema = new Schema({
         ref: "Garage"
     },
     image: {
-        type: Schema.Types.ObjectId,
-        ref: 'FileUpload'
+        type: String
     }
 });
 

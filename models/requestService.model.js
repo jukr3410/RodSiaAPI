@@ -17,15 +17,42 @@ const requestServiceSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: Service
     },
-
-    geolocation: {
+    car: {
+        brand: {
+            type: String
+        },
+        model: {
+            type: String
+        },
+        type: {
+            type: String
+        },
+        year: {
+            type: String
+        },
+        fuelType: {
+            type: String
+        }
+    },
+    geoLocationUser: {
         lat: {
             type: String,
-            required: true
+            //required: true
         },
         long: {
             type: String,
-            required: true
+            //required: true
+        },
+    },
+
+    geoLocationGarage: {
+        lat: {
+            type: String,
+            //required: true
+        },
+        long: {
+            type: String,
+            //required: true
         },
     },
 
@@ -39,6 +66,9 @@ const requestServiceSchema = new Schema({
     status: {
         type: String,
         required: true
+    },
+    image: {
+        type: String,
     }
 }, {
     timestamps: true

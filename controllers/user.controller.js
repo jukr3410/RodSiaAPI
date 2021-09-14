@@ -13,7 +13,7 @@ module.exports.getAllUser = (req, res) => {
     .sort({
       _id: sort,
     })
-    .populate(["cars"])
+    .populate([])
     .then((users) => {
       res.status(200).json(users);
     })
@@ -26,7 +26,7 @@ module.exports.getUser = (req, res) => {
   User.findById({
     _id: id,
   })
-    .populate(["cars"])
+    .populate([])
     .then((user) => {
       res.status(200).json(user);
     })
@@ -62,6 +62,7 @@ module.exports.addUser = (req, res) => {
       otp: req.body.otp,
       validatePhone: req.body.validatePhone,
       cars: req.body.cars,
+      profileImage: req.body.profileImage
       // reviews: req.body.reviews,
       // requestServices: req.body.requestServices
     });
@@ -88,7 +89,7 @@ module.exports.editUser = (req, res) => {
   if (typeof req.body == undefined || id == null) {
     res.json({
       status: "error",
-      message: "something went wrong! check your sent data",
+      message: "user id should be provided",
     });
   } else {
     User.findByIdAndUpdate(

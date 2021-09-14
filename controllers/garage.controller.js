@@ -16,7 +16,7 @@ module.exports.getAllGarage = (req, res) => {
     .sort({
       _id: sort,
     })
-    .populate(["services", "reviews", "images"])
+    .populate([])
     .then((garages) => {
       res.status(200).json(garages);
     })
@@ -71,8 +71,9 @@ module.exports.addGarage = (req, res) => {
           long: req.body.address.geolocation.long,
         },
       },
+      openStatus: req.body.openStatus,
       openingHour: req.body.openingHour,
-      logo_image: req.body.logo_image,
+      logoImage: req.body.logoImage,
       images: req.body.images,
     });
     garage
@@ -98,7 +99,7 @@ module.exports.editGarage = (req, res) => {
   if (typeof req.body == undefined || id == null) {
     res.json({
       success: false,
-      message: "something went wrong! check your sent data",
+      message: "garage id should be provided" ,
     });
   } else {
     Garage.findByIdAndUpdate(
@@ -114,7 +115,7 @@ module.exports.editGarage = (req, res) => {
         validatePhone: req.body.validatePhone,
         address: req.body.address,
         openingHour: req.body.openingHour,
-        logo_image: req.body.logo_image,
+        logoImage: req.body.logoImage,
         images: req.body.images,
       },
       {
@@ -187,6 +188,7 @@ module.exports.deleteGarage = (req, res) => {
       });
   }
 };
+
 module.exports.getByGarageName = (req, res) => {
   const name = req.params.name;
   const page = Number(req.query.page);
@@ -219,6 +221,54 @@ module.exports.getByGarageName = (req, res) => {
       })
       .catch((err) => {
         console.log(err);
+      });
+  }
+};
+
+
+module.exports.updateOpenStatusGarage = (req, res) => {
+  const id = new ObjectId(req.params.id);
+  if (typeof req.body == undefined || id == null) {
+    res.json({
+      success: false,
+      message: "garage id should be provided",
+    });
+  } else {
+    Garage.findByIdAndUpdate(
+      {
+        _id: id,
+      },
+      {
+        openStatus: req.body.openStatus,
+      },
+      {
+        new: true,
+      }
+    )
+      .then((garage) => {
+        if (!garage) {
+          return res.status(404).send({
+            success: false,
+            message: "Garage not found with id " + id,
+          });
+        }
+        res.status(200).json({
+          success: true,
+          message: "Update garage successfully.",
+          garage: garage,
+        });
+      })
+      .catch((err) => {
+        if (err.kind === "ObjectId") {
+          return res.status(404).send({
+            success: false,
+            message: "Garage not found with id " + id,
+          });
+        }
+        return res.status(500).send({
+          success: false,
+          message: "Error updating Garage with id " + id,
+        });
       });
   }
 };

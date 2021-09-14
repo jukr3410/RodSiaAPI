@@ -40,7 +40,7 @@ const garageSchema = new Schema(
       addressDesc: {
         type: String,
       },
-      geolocation: {
+      geoLocation: {
         lat: {
           type: String,
         },
@@ -48,6 +48,9 @@ const garageSchema = new Schema(
           type: String,
         },
       },
+    },
+    openStatus: {
+      type: Boolean,
     },
     openingHour: {
       mo: {
@@ -107,15 +110,13 @@ const garageSchema = new Schema(
         },
       },
     },
-    logo_image: {
-      type: Schema.Types.ObjectId,
-      ref: "FileUpload",
+    logoImage: {
+      type: String,
     },
     images: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "FileUpload",
-      },
+      {image: {
+        type: String,
+      },}
     ]
   },
   {

@@ -9,6 +9,7 @@ router.get('/garages-name/:name',garage.getByGarageName);
 router.post('/garages' ,garage.addGarage);
 router.put('/garages/:id', garage.editGarage);
 router.patch('/garages/:id', garage.editGarage);
+router.patch('/garages/:id/open-status', garage.updateOpenStatusGarage);
 router.delete('/garages/:id', garage.deleteGarage);
 
 

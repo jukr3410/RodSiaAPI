@@ -54,6 +54,9 @@ const userSchema = new Schema({
             type: String
         }
     }],
+    profileImage: {
+        type: String
+    },
 
     // reviews: [{
 
