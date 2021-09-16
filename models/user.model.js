@@ -16,7 +16,7 @@ const userSchema = new Schema({
     email: {
         type: String,
         lowercase: true,
-        unique: true,
+        //unique: true,
         match: [/\S+@\S+\.\S+/, 'is invalid']
     },
     phone: {
@@ -35,7 +35,7 @@ const userSchema = new Schema({
     },
     validatePhone: {
         type: Boolean,
-        required: true
+        //required: true
     },
     cars: [{
         brand: {
