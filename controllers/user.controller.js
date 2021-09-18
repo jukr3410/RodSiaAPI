@@ -123,7 +123,7 @@ module.exports.editUser = (req, res) => {
             message: "Add user successfully.",
             user,
           })
-          .populate(["cars"]);
+          .populate([]);
       })
       .catch((err) => {
         if (err.kind === "ObjectId") {
@@ -171,3 +171,49 @@ module.exports.deleteUser = (req, res) => {
       });
   }
 };
+
+// module.exports.updateUserCar = (req, res) => {
+//   const id = new ObjectId(req.params.id);
+//   if (typeof req.body == undefined || id == null) {
+//     res.json({
+//       status: "error",
+//       message: "user id should be provided",
+//     });
+//   } else {
+//     User.findByIdAndUpdate(
+//       {
+//         _id: id,
+//       },
+//       {
+//         cars: req.body.cars
+//       },
+//       {
+//         new: true,
+//       }
+//     )
+//       .then((user) => {
+//         if (!user) {
+//           return res.status(404).send({
+//             message: "User not found with id " + id,
+//           });
+//         }
+//         res
+//           .status(200)
+//           .send({
+//             message: "Add car successfully.",
+//             user,
+//           })
+//           .populate([]);
+//       })
+//       .catch((err) => {
+//         if (err.kind === "ObjectId") {
+//           return res.status(404).send({
+//             message: "User not found with id " + id,
+//           });
+//         }
+//         return res.status(500).send({
+//           message: "Error updating User with id " + id,
+//         });
+//       });
+//   }
+// };

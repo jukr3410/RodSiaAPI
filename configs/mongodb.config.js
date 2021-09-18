@@ -13,7 +13,7 @@ exports.configure = function() {
         //debug: process.env.DEBUG || true,
         keepAlive: true,
         useNewUrlParser: true,
-        useFindAndModify: true,
+        useFindAndModify: false,
         useUnifiedTopology: true, 
         useNewUrlParser: true, 
         useCreateIndex: true

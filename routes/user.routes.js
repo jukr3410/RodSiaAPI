@@ -8,5 +8,6 @@ router.post('/users',user.addUser);
 router.put('/users/:id',user.editUser);
 router.patch('/users/:id',user.editUser);
 router.delete('/users/:id',user.deleteUser);
+//router.patch('/users/:id/update-car',user.updateUserCar);
 
 module.exports = router;
