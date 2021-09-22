@@ -1,4 +1,5 @@
 const RequestService = require("../models/requestService.model");
+const ObjectId = require("mongodb").ObjectID;
 
 module.exports.getAllRequestService = (req, res) => {
   const limit = Number(req.query.limit) || 0;
@@ -22,9 +23,9 @@ module.exports.getRequestService = (req, res) => {
   RequestService.findById({
     _id: id,
   })
-    .populate("user", "service")
+    .populate([])
     .then((requestService) => {
-      res.json(requestService);
+      res.status(200).json(requestService);
     })
     .catch((err) => {
       if (err.kind === "ObjectId") {
@@ -66,7 +67,7 @@ module.exports.addRequestService = (req, res) => {
       .then((requestService) => {
         res.status(200).send({
           message: "Add request service successfully.",
-          requestService,
+          requestServiceId: requestService._id,
         });
       })
       .catch((err) => console.log(err));
