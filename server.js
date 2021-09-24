@@ -45,6 +45,9 @@ MongoDbConfig.configure()
     app.use("/api", garageRoutes);
     app.use("/api", fileUploadRoute);
     app.use("/auth", authenticationRoute);
+    app.get('/', (req, res) => {
+        res.send('<h1>Rodsia API</h1><h4>Message: Success</h4><p>Version 1.0</p>');
+    });
 
     // catch 404 and forward to error handler
     app.use(function (req, res, next) {
