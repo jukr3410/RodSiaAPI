@@ -9,10 +9,12 @@ const path = require("path");
 const fs = require("fs");
 let pathParams, image, imageName;
 
-AWS.config.loadFromPath("config.json");
+//AWS.config.loadFromPath("config.json");
 
 const s3 = new AWS.S3({
-	region: 'ap-southeast-1'
+	accessKeyId: process.env.ACCESS_KEY_ID,
+  secretAccessKey: process.env.SECRET_ACCESS_KEY,
+  region: process.env.REGION,
 });
 const createMainBucket = (callback) => {
 	const bucketParams = {
