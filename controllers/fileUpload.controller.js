@@ -1,3 +1,4 @@
+require("dotenv").config();
 const FileUpload = require('../models/fileUpload.model');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
