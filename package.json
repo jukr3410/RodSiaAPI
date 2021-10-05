@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/jukr3410/RodSiaAPI#readme",
   "dependencies": {
+    "ansi-regex": "5.0.1",
     "aws-sdk": "^2.888.0",
     "bcrypt": "^5.0.1",
     "bcrypt-nodejs": "^0.0.3",
@@ -35,18 +36,18 @@
     "gm": "^1.23.1",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.29.1",
+    "mongo-join-query": "^1.0.2",
     "mongoosastic": "^4.6.0",
     "mongoose": "^5.12.3",
     "mongoose-unique-validator": "^2.0.3",
     "morgan": "^1.10.0",
+    "mpath": "0.8.4",
     "multer": "^1.4.2",
     "nodemon": "^2.0.7",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
     "passport-local-mongoose": "^6.1.0",
-    "mpath": "0.8.4",
-    "tar": "6.1.9",
-    "ansi-regex": "5.0.1"
+    "tar": "6.1.9"
   }
 }

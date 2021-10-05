@@ -1,4 +1,5 @@
 const RequestService = require("../models/requestService.model");
+const Service = require("../models/service.model");
 const ObjectId = require("mongodb").ObjectID;
 
 module.exports.getAllRequestService = (req, res) => {
@@ -157,4 +158,50 @@ module.exports.deleteRequestService = (req, res) => {
         });
       });
   }
+};
+
+module.exports.getRequestServiceWaitingConfirm = (req, res) => {
+  const id = new ObjectId(req.params.id);
+  var serviceId;
+  Service.find({
+    garage: {
+      $in: [id],
+    },
+  })
+    .populate([])
+    .then((service) => {
+      //res.json(service);
+      serviceId = new ObjectId(service[1]._id);
+      console.log(service);
+    })
+    .catch((err) => {
+      if (err.kind === "ObjectId") {
+        // return res.status(404).send({
+        //   message: "Service not found with id " + id,
+        // });
+        console.log(err);
+      }
+      // return res.status(500).send({
+      //   message: "Error retrieving Service with id " + id,
+      // });
+    });
+
+  RequestService.findOne({
+    service: serviceId,
+    status: "รอยืนยัน",
+  })
+    .populate([])
+    .then((requestService) => {
+      res.status(200).json(requestService);
+    })
+    .catch((err) => {
+      if (err.kind === "ObjectId") {
+        res.status(404).send({
+          message: "RequestService not found with id " + id,
+        });
+      }
+      res.status(500).send({
+        message: "Error retrieving RequestService with id " + id,
+      });
+    });
 };
