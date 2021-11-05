@@ -51,6 +51,9 @@ MongoDbConfig.configure()
         "<h1>Rodsia API</h1><h4>Message: Success</h4><p>Version 1.0</p>"
       );
     });
+    app.get("/welcome", auth, (req, res) => {
+      res.status(200).send("Welcome 🙌 ");
+    });
 
 
     app.use(function (req, res, next) {
