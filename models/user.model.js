@@ -17,7 +17,7 @@ const userSchema = new Schema({
         type: String,
         lowercase: true,
         //unique: true,
-        match: [/\S+@\S+\.\S+/, 'is invalid']
+        // match: [/\S+@\S+\.\S+/, 'is invalid']
     },
     phone: {
         type: String,

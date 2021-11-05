@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/jukr3410/RodSiaAPI#readme",
   "dependencies": {
+    "@vonage/server-sdk": "^2.10.10",
     "ansi-regex": "5.0.1",
     "aws-sdk": "^2.888.0",
     "bcrypt": "^5.0.1",

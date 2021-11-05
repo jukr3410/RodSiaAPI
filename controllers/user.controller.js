@@ -32,11 +32,11 @@ module.exports.getUser = (req, res) => {
     })
     .catch((err) => {
       if (err.kind === "ObjectId") {
-        return res.status(404).send({
+         res.status(404).json({
           message: "User not found with id " + id,
         });
       }
-      return res.status(500).send({
+       res.status(500).json({
         message: "Error retrieving User with id " + id,
       });
     });
@@ -44,7 +44,7 @@ module.exports.getUser = (req, res) => {
 
 module.exports.addUser = (req, res) => {
   if (req.body == undefined) {
-    return res.status(400).send({
+     res.status(400).json({
       message: "User content can not be empty",
     });
   } else {
@@ -69,13 +69,13 @@ module.exports.addUser = (req, res) => {
     user
       .save()
       .then((user) => {
-        res.status(201).send({
+        res.status(201).json({
           message: "Add user successfully.",
           user,
         });
       })
       .catch((err) => console.log(err));
-    // res.status(500).send({
+    // res.status(500).json({
     //   message: err.message || "Some error occurred while creating the User."
     // });
     //res.json(user)
@@ -84,55 +84,55 @@ module.exports.addUser = (req, res) => {
   }
 };
 
-module.exports.editUser = (req, res) => {
+module.exports.editUser = async (req, res) => {
   const id = new ObjectId(req.params.id);
-  if (typeof req.body == undefined || id == null) {
+  const phone = req.body.phone;
+  console.log(phone);
+  if (typeof req.body == undefined || phone == null) {
     res.json({
       status: "error",
-      message: "user id should be provided",
+      message: "user phone should be provided",
     });
   } else {
-    User.findByIdAndUpdate(
+    
+    await User.findOneAndUpdate(
       {
-        _id: id,
+        phone: phone,
       },
       {
         name: req.body.name,
         email: req.body.email,
-        phone: req.body.phone,
         password: req.body.password,
         otp: req.body.otp,
         validatePhone: req.body.validatePhone,
         cars: req.body.cars,
-        //reviews: req.body.reviews,
-        //requestServices: req.body.requestServices
+        profileImage: req.body.profileImage
       },
-      {
-        new: true,
-      }
-    )
-      .then((user) => {
-        if (!user) {
-          return res.status(404).send({
-            message: "User not found with id " + id,
-          });
-        }
+      
+      
+    ).then((user) => {
+      
+
+        // if (!user) {
+        //    res.status(404).json({
+        //     message: "User not found with id " + phone,
+        //   });
+        // }
         res
           .status(200)
-          .send({
-            message: "Add user successfully.",
+          .json({
+            message: "Update user successfully.",
             user,
-          })
-          .populate([]);
+          });
       })
       .catch((err) => {
         if (err.kind === "ObjectId") {
-          return res.status(404).send({
-            message: "User not found with id " + id,
+           res.status(404).json({
+            message: "User not found with id " + phone,
           });
         }
-        return res.status(500).send({
-          message: "Error updating User with id " + id,
+         res.status(500).json({
+          message: "Error updating User with id " + phone,
         });
       });
   }
@@ -150,22 +150,22 @@ module.exports.deleteUser = (req, res) => {
       _id: id,
     })
       .then((user) => {
-        if (!user) {
-          return res.status(404).send({
-            message: "User not found with id " + id,
-          });
-        }
-        res.status(200).send({
+        // if (!user) {
+        //    res.status(404).json({
+        //     message: "User not found with id " + id,
+        //   });
+        // }
+        res.status(200).json({
           message: "User deleted successfully!",
         });
       })
       .catch((err) => {
         if (err.kind === "ObjectId" || err.name === "NotFound") {
-          return res.status(404).send({
+           res.status(404).json({
             message: "User not found with id " + id,
           });
         }
-        return res.status(500).send({
+         res.status(500).json({
           message: "Could not delete User with id " + id,
         });
       });
@@ -193,13 +193,13 @@ module.exports.deleteUser = (req, res) => {
 //     )
 //       .then((user) => {
 //         if (!user) {
-//           return res.status(404).send({
+//            res.status(404).json({
 //             message: "User not found with id " + id,
 //           });
 //         }
 //         res
 //           .status(200)
-//           .send({
+//           .json({
 //             message: "Add car successfully.",
 //             user,
 //           })
@@ -207,11 +207,11 @@ module.exports.deleteUser = (req, res) => {
 //       })
 //       .catch((err) => {
 //         if (err.kind === "ObjectId") {
-//           return res.status(404).send({
+//            res.status(404).json({
 //             message: "User not found with id " + id,
 //           });
 //         }
-//         return res.status(500).send({
+//          res.status(500).json({
 //           message: "Error updating User with id " + id,
 //         });
 //       });

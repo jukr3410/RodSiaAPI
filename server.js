@@ -8,9 +8,13 @@ const MongoDbConfig = require("./configs/mongodb.config");
 const AppResponseDto = require("./dtos/responses/appResponse.dto");
 const app = express();
 const session = require("express-session");
+const cors = require('cors');
+
 
 const listener = app.listen(process.env.PORT || 3000, () => {
-  console.log("Server is running on port http://localhost:" + listener.address().port);
+  console.log(
+    "Server is running on port http://localhost:" + listener.address().port
+  );
 });
 
 MongoDbConfig.configure()
@@ -29,12 +33,9 @@ MongoDbConfig.configure()
     app.use(logger("dev"));
     // parses incoming requests with JSON payloads
     app.use(express.json());
+    app.use(cors());
 
-    app.use(function (req, res, next) {
-      res.header("Access-Control-Allow-Origin", "*");
-      res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-      next();
-    });
+   
     // routes middleware
     app.use("/api", userRoute);
     app.use("/api", serviceRoute);
@@ -44,9 +45,26 @@ MongoDbConfig.configure()
     app.use("/api", infoAssistantRoute);
     app.use("/api", garageRoutes);
     app.use("/api", fileUploadRoute);
-    app.use("/auth", authenticationRoute);
-    app.get('/', (req, res) => {
-        res.send('<h1>Rodsia API</h1><h4>Message: Success</h4><p>Version 1.0</p>');
+    app.use("/api/auth", authenticationRoute);
+    app.get("/", (req, res) => {
+      res.send(
+        "<h1>Rodsia API</h1><h4>Message: Success</h4><p>Version 1.0</p>"
+      );
+    });
+
+
+    app.use(function (req, res, next) {
+      res.header("Access-Control-Allow-Origin", "*");
+      res.header("Access-Control-Allow-Credentials", true);
+      res.header(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept, content-type, application/json"
+      );
+      res.setHeader(
+        "Access-Control-Allow-Methods",
+        "POST, GET, PUT, PATCH, DELETE,HEAD, OPTIONS"
+      );
+      next();
     });
 
     // catch 404 and forward to error handler
