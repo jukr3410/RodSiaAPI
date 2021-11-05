@@ -9,7 +9,7 @@ const AppResponseDto = require("./dtos/responses/appResponse.dto");
 const app = express();
 const session = require("express-session");
 const cors = require('cors');
-
+const auth = require("./middlewares/auth.middleware");
 
 const listener = app.listen(process.env.PORT || 3000, () => {
   console.log(

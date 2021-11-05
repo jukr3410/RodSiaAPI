@@ -1,9 +1,11 @@
+require("dotenv").config();
 const User = require("../models/user.model");
 const mongoose = require("mongoose");
 const UsersDto = require("../dtos/responses/users.dto");
 const AppResponseDto = require("../dtos/responses/app_response.dto");
 const session = require("express-session");
 const Garage = require("../models/garage.model");
+const jwt = require("jsonwebtoken");
 
 const isEmpty = function (obj) {
   for (let key in obj) {
@@ -82,13 +84,13 @@ module.exports.registerUser = async (req, res) => {
   const validatePhone = req.body.validatePhone;
 
   user = new User({
-      name: req.body.name,
-      email: req.body.email,
-      phone: req.body.phone,
-      otp: req.body.otp,
-      validatePhone: req.body.validatePhone,
-      cars: req.body.cars,
-      profileImage: req.body.profileImage
+    name: req.body.name,
+    email: req.body.email,
+    phone: req.body.phone,
+    otp: req.body.otp,
+    validatePhone: req.body.validatePhone,
+    cars: req.body.cars,
+    profileImage: req.body.profileImage,
   });
   user
     .save()
@@ -194,8 +196,25 @@ module.exports.loginUser = async (req, res) => {
       if (encrypt == true) {
         // session.loginUser = true
         // session.phone = phone
+
+        // Create token
+        const token = jwt.sign(
+          {
+            phone: user.phone,
+            password: user.id
+          },
+          process.env.JWT_KEY,
+          {
+            expiresIn: "2h",
+          }
+        );
+
+        // save user token
+        //user.token = token;
+
         res.status(200).json({
           message: "Login Success",
+          token,
           user,
         });
         console.dir(user);
