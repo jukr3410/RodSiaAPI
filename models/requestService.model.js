@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const User = require("./user.model");
 const Service = require("./service.model");
+const Garage = require('./garage.model')
 
 const requestServiceSchema = new Schema({
     // id: {
@@ -12,6 +13,10 @@ const requestServiceSchema = new Schema({
     user: {
         type: Schema.Types.ObjectId,
         ref: User
+    },
+    garage: {
+        type: Schema.Types.ObjectId,
+        ref: Garage
     },
     service: {
         type: Schema.Types.ObjectId,

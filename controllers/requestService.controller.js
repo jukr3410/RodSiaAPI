@@ -39,6 +39,26 @@ module.exports.getRequestService = (req, res) => {
       });
     });
 };
+module.exports.getRequestByUserId = (req, res) => {
+  const id = new ObjectId(req.params.id);
+  RequestService.find({
+    user: id,
+  })
+    .populate(["user", "service", "garage"])
+    .then((requestService) => {
+      res.status(200).json(requestService);
+    })
+    .catch((err) => {
+      if (err.kind === "ObjectId") {
+        return res.status(404).send({
+          message: "RequestService not found with id " + id,
+        });
+      }
+      return res.status(500).send({
+        message: "Error retrieving RequestService with id " + id,
+      });
+    });
+};
 
 module.exports.addRequestService = (req, res) => {
   if (req.body == undefined) {
@@ -56,6 +76,7 @@ module.exports.addRequestService = (req, res) => {
       // id: requestServiceCount + 1,
       user: req.body.user,
       service: req.body.service,
+      garage: req.body.garage,
       car: req.body.car,
       geoLocationUser: req.body.geoLocationUser,
       geoLocationGarage: req.body.geoLocationGarage,
@@ -94,6 +115,7 @@ module.exports.editRequestService = (req, res) => {
       {
         user: req.body.user,
         service: req.body.service,
+        garage: req.body.garage,
         car: req.body.car,
         geoLocationUser: req.body.geoLocationUser,
         geoLocationGarage: req.body.geoLocationGarage,
