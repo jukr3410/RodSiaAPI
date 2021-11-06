@@ -44,8 +44,22 @@ module.exports.getRequestByUserId = (req, res) => {
   RequestService.find({
     user: id,
   })
-    .populate(["user", "service", "garage"])
+    .populate([
+      "user",
+      {
+        path: "service",
+        populate: [
+          {
+            path: "garage",
+          },
+          {
+            path: "serviceType",
+          },
+        ],
+      },
+    ])
     .then((requestService) => {
+      // getGarage;
       res.status(200).json(requestService);
     })
     .catch((err) => {
