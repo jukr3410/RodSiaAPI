@@ -12,7 +12,20 @@ module.exports.getAllRequestService = (req, res) => {
     .sort({
       _id: sort,
     })
-    .populate(["user", "service"])
+    .populate([
+      "user",
+      {
+        path: "service",
+        populate: [
+          {
+            path: "garage",
+          },
+          {
+            path: "serviceType",
+          },
+        ],
+      },
+    ])
     .then((requestServices) => {
       res.json(requestServices);
     })
