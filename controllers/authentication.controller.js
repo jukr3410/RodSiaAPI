@@ -201,7 +201,7 @@ module.exports.loginUser = async (req, res) => {
         const token = jwt.sign(
           {
             phone: user.phone,
-            password: user.id
+            password: user.id,
           },
           process.env.JWT_KEY,
           {
@@ -250,12 +250,25 @@ module.exports.loginGarage = async (req, res) => {
       if (encrypt == true) {
         // session.loginGarage = true
         // session.phone = phone
+
+        const token = jwt.sign(
+          {
+            phone: garage.phone,
+            password: garage.id,
+          },
+          process.env.JWT_KEY,
+          {
+            expiresIn: "2h",
+          }
+        );
+
         res.status(200).json({
           message: "Login Success",
           garage,
+          token
         });
-        console.dir(user);
-        console.log(user.toJSON());
+        console.dir(garage);
+        console.log(garage.toJSON());
       } else {
         res.status(401).json({
           message: "Invalid password",

@@ -73,6 +73,40 @@ module.exports.getRequestByUserId = (req, res) => {
       });
     });
 };
+module.exports.getRequestByServiceId = (req, res) => {
+  const id = new ObjectId(req.params.id);
+  RequestService.find({
+    service: id,
+  })
+    .populate([
+      "user",
+      {
+        path: "service",
+        populate: [
+          {
+            path: "garage",
+          },
+          {
+            path: "serviceType",
+          },
+        ],
+      },
+    ])
+    .then((requestService) => {
+      // getGarage;
+      res.status(200).json(requestService);
+    })
+    .catch((err) => {
+      if (err.kind === "ObjectId") {
+        return res.status(404).send({
+          message: "RequestService not found with id " + id,
+        });
+      }
+      return res.status(500).send({
+        message: "Error retrieving RequestService with id " + id,
+      });
+    });
+};
 
 module.exports.addRequestService = (req, res) => {
   if (req.body == undefined) {
