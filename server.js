@@ -8,8 +8,20 @@ const MongoDbConfig = require("./configs/mongodb.config");
 const AppResponseDto = require("./dtos/responses/appResponse.dto");
 const app = express();
 const session = require("express-session");
-const cors = require('cors');
+const cors = require("cors");
 const auth = require("./middlewares/auth.middleware");
+const http = require("http");
+
+// socket io
+const server = http.createServer(app);
+const { Server } = require("socket.io");
+const io = new Server(server);
+io.on("connection", (socket) => {
+  console.log("a user connected");
+  socket.on("disconnect", () => {
+    console.log("user disconnected");
+  });
+});
 
 const listener = app.listen(process.env.PORT || 3000, () => {
   console.log(
@@ -35,7 +47,6 @@ MongoDbConfig.configure()
     app.use(express.json());
     app.use(cors());
 
-   
     // routes middleware
     app.use("/api", userRoute);
     app.use("/api", serviceRoute);
@@ -54,7 +65,6 @@ MongoDbConfig.configure()
     app.get("/welcome", auth, (req, res) => {
       res.status(200).send("Welcome 🙌 ");
     });
-
 
     app.use(function (req, res, next) {
       res.header("Access-Control-Allow-Origin", "*");
