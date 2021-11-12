@@ -10,16 +10,29 @@ const app = express();
 const session = require("express-session");
 const cors = require("cors");
 const auth = require("./middlewares/auth.middleware");
-const http = require("http");
 
 // socket io
-const server = http.createServer(app);
-const { Server } = require("socket.io");
-const io = new Server(server);
+const http = require("http").createServer(app);
+const io = require("socket.io")(http);
 io.on("connection", (socket) => {
+  chatID = socket.handshake.query.chatID;
+  socket.join(chatID);
   console.log("a user connected");
   socket.on("disconnect", () => {
+    socket.leave(chatID);
     console.log("user disconnected");
+  });
+  socket.on("send_message", (message) => {
+    receiverChatID = message.receiverChatID;
+    senderChatID = message.senderChatID;
+    content = message.content;
+
+    //Send message to only that particular room
+    socket.in(receiverChatID).emit("receive_message", {
+      content: content,
+      senderChatID: senderChatID,
+      receiverChatID: receiverChatID,
+    });
   });
 });
 
