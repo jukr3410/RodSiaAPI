@@ -12,31 +12,17 @@ const cors = require("cors");
 const auth = require("./middlewares/auth.middleware");
 
 // socket io
-const http = require("http").createServer(app);
-const io = require("socket.io")(http);
+const http = require("http");
+const server = http.createServer(app);
+const io = require("socket.io")(server);
 io.on("connection", (socket) => {
-  chatID = socket.handshake.query.chatID;
-  socket.join(chatID);
-  console.log("a user connected");
-  socket.on("disconnect", () => {
-    socket.leave(chatID);
-    console.log("user disconnected");
-  });
-  socket.on("send_message", (message) => {
-    receiverChatID = message.receiverChatID;
-    senderChatID = message.senderChatID;
-    content = message.content;
-
-    //Send message to only that particular room
-    socket.in(receiverChatID).emit("receive_message", {
-      content: content,
-      senderChatID: senderChatID,
-      receiverChatID: receiverChatID,
-    });
+  console.log("User connected");
+  socket.on("disconnect", function () {
+    console.log("User disconnected");
   });
 });
 
-const listener = app.listen(process.env.PORT || 3000, () => {
+const listener = server.listen(process.env.PORT || 3000, () => {
   console.log(
     "Server is running on port http://localhost:" + listener.address().port
   );
@@ -71,9 +57,10 @@ MongoDbConfig.configure()
     app.use("/api", fileUploadRoute);
     app.use("/api/auth", authenticationRoute);
     app.get("/", (req, res) => {
-      res.send(
-        "<h1>Rodsia API</h1><h4>Message: Success</h4><p>Version 1.0</p>"
-      );
+      res.sendFile(__dirname + "/index.html");
+      // res.send(
+      //   "<h1>Rodsia API</h1><h4>Message: Success</h4><p>Version 1.0</p>"
+      // );
     });
     app.get("/welcome", auth, (req, res) => {
       res.status(200).send("Welcome 🙌 ");
