@@ -24,7 +24,7 @@ const garageSchema = new Schema(
     email: {
       type: String,
       lowercase: true,
-      match: [/\S+@\S+\.\S+/, "is invalid"],
+      //match: [/\S+@\S+\.\S+/, "is invalid"],
     },
     password: {
       type: String

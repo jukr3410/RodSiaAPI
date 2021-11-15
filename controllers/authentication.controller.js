@@ -6,6 +6,12 @@ const AppResponseDto = require("../dtos/responses/app_response.dto");
 const session = require("express-session");
 const Garage = require("../models/garage.model");
 const jwt = require("jsonwebtoken");
+const Vonage = require("@vonage/server-sdk");
+
+const vonage = new Vonage({
+  apiKey: "242f2e02",
+  apiSecret: "mL6sm5MakJwO6MVb",
+});
 
 const isEmpty = function (obj) {
   for (let key in obj) {
@@ -51,16 +57,15 @@ module.exports.checkPhoneGarage = (req, res) => {
     phone,
   })
     .then((garage) => {
-      if (garage !== null) {
-        if (garage.phone === phone)
-          errors.phone = "Phone: " + phone + " is not exits";
-        if (!isEmpty(errors)) {
-          // return res.status(422).json({success: false, errors});
-          console.dir(errors.phone);
-          // console.log(errors.phone)
-          res.json(AppResponseDto.buildWithErrorMessages(errors));
-          return false;
-        }
+      console.log("check phone garage: " + garage);
+      if (garage == null) {
+        errors.phone = "phone number is not exists";
+
+        // return res.status(422).json({success: false, errors});
+        console.dir(errors.phone);
+        // console.log(errors.phone)
+        res.json(AppResponseDto.buildWithErrorMessages(errors));
+        return false;
       } else {
         res.json(
           AppResponseDto.buildSuccessWithMessages(`Phone: ${phone} is already.`)
@@ -82,6 +87,8 @@ module.exports.registerUser = async (req, res) => {
 
   const phone = req.body.phone;
   const validatePhone = req.body.validatePhone;
+
+
 
   user = new User({
     name: req.body.name,
@@ -115,60 +122,29 @@ module.exports.registerUser = async (req, res) => {
 
 module.exports.registerGarage = async (req, res) => {
   const errors = {};
+
   const phone = req.body.phone;
-  const email = req.body.email;
   const validatePhone = req.body.validatePhone;
-  if (req.body == undefined) {
-    return res.status(400).send({
-      message: "User content can not be empty",
-    });
-  }
-  Garage.findOne({
-    $or: [
-      {
-        email,
-      },
-      {
-        phone,
-      },
-    ],
-  })
+
+
+  garage = new Garage({
+    name: req.body.name,
+    email: req.body.email,
+    phone: req.body.phone,
+    otp: req.body.otp,
+    validatePhone: req.body.validatePhone,
+    logoImage: req.body.logoImage,
+  });
+  garage
+    .save()
     .then((garage) => {
-      if (garage !== null) {
-        if (garage.phone === phone)
-          errors.phone = "Phone: " + phone + " is not exits";
-        if (garage.email === email)
-          errors.email = "Email: " + email + " is already taken";
-        if (!isEmpty(errors)) {
-          // return res.status(422).json({success: false, errors});
-          console.log(errors.email);
-          return res.json(AppResponseDto.buildWithErrorMessages(errors));
-        }
-      }
-      if (validatePhone !== true) {
-        errors.phone =
-          "phone: " + phone + " must validate phone before register ";
+      if (garage) {
+        console.dir(garage);
+        console.log(garage.toJSON());
+        res.send(UsersDto.registerDto(garage));
       } else {
-        garage = new Garage({
-          phone: phone,
-        });
-        garage
-          .save()
-          .then((garage) => {
-            if (garage) {
-              console.dir(garage);
-              console.log(garage.toJSON());
-              res.json(UsersDto.registerDto(garage));
-            } else {
-              console.log("user is empty ...???");
-              res.json(
-                AppResponseDto.buildWithErrorMessages("something went wrong")
-              );
-            }
-          })
-          .catch((err) => {
-            throw err;
-          });
+        console.log("garage is empty ...???");
+        res.json(AppResponseDto.buildWithErrorMessages("something went wrong"));
       }
     })
     .catch((err) => {
@@ -176,6 +152,206 @@ module.exports.registerGarage = async (req, res) => {
       res.status(500).json({
         success: false,
         full_messages: err,
+      });
+    });
+};
+
+module.exports.sendOtpUser = async (req, res) => {
+  const phone = req.body.phone;
+  console.log(phone);
+  if (typeof req.body == undefined || phone == null) {
+    res.json({
+      status: "error",
+      message: "user phone should be provided",
+    });
+  } else {
+
+    var digit = Math.floor(1000 + Math.random() * 9000);
+
+    const from = "Rodsia";
+    var to = "66" + phone.substring(1);
+    var text = digit.toString() + " is your Rodsia register code.";
+  
+    vonage.message.sendSms(from, to, text, (err, responseData) => {
+      if (err) {
+        console.log(err);
+      } else {
+        if (responseData.messages[0]["status"] === "0") {
+          console.log("Message sent successfully.");
+        } else {
+          console.log(
+            `Message failed with error: ${responseData.messages[0]["error-text"]}`
+          );
+        }
+      }
+    });
+    
+    await User.findOneAndUpdate(
+      {
+        phone: phone,
+      },
+      {
+        otp: digit.toString(),
+      },
+      
+      
+    ).then((user) => {
+      
+
+        // if (!user) {
+        //    res.status(404).json({
+        //     message: "User not found with id " + phone,
+        //   });
+        // }
+        res
+          .status(200)
+          .json({
+            message: "Update user OTP successfully.",
+            user,
+          });
+      })
+      .catch((err) => {
+        if (err.kind === "ObjectId") {
+           res.status(404).json({
+            message: "User not found with id " + phone,
+          });
+        }
+         res.status(500).json({
+          message: "Error updating User OTP with id " + phone,
+        });
+      });
+  }
+};
+
+module.exports.sendOtpGarage = async (req, res) => {
+  const phone = req.body.phone;
+  console.log(phone);
+  if (typeof req.body == undefined || phone == null) {
+    res.json({
+      status: "error",
+      message: "garage phone should be provided",
+    });
+  } else {
+
+    var digit = Math.floor(1000 + Math.random() * 9000);
+
+    const from = "Rodsia";
+    var to = "66" + phone.substring(1);
+    var text = digit.toString() + " is your Rodsia garage register code.";
+  
+    vonage.message.sendSms(from, to, text, (err, responseData) => {
+      if (err) {
+        console.log(err);
+      } else {
+        if (responseData.messages[0]["status"] === "0") {
+          console.log("Message sent successfully.");
+        } else {
+          console.log(
+            `Message failed with error: ${responseData.messages[0]["error-text"]}`
+          );
+        }
+      }
+    });
+    
+    await Garage.findOneAndUpdate(
+      {
+        phone: phone,
+      },
+      {
+        otp: digit.toString(),
+      },
+      
+      
+    ).then((garage) => {
+      
+
+        // if (!garage) {
+        //    res.status(404).json({
+        //     message: "Garage not found with id " + phone,
+        //   });
+        // }
+        res
+          .status(200)
+          .json({
+            message: "Update garage OTP successfully.",
+            garage,
+          });
+      })
+      .catch((err) => {
+        if (err.kind === "ObjectId") {
+           res.status(404).json({
+            message: "Garage not found with id " + phone,
+          });
+        }
+         res.status(500).json({
+          message: "Error updating Garage OTP with id " + phone,
+        });
+      });
+  }
+};
+
+module.exports.verifyOtpUser = (req, res) => {
+  // const id = req.params.id
+  const id = new ObjectId(req.params.id);
+  const phone = req.body.phone;
+  const otp = req.body.otp;
+  User.find({
+    phone: phone,
+  })
+    .populate([])
+    .then((user) => {
+      var success = false;
+      var message = "Error invalid User OTP";
+      if (user.otp == otp) {
+        success = true;
+        message = "Success";
+      }
+      res.status(200).json({
+        success: success,
+        message: message
+      });
+    })
+    .catch((err) => {
+      if (err.kind === "ObjectId") {
+         res.status(404).json({
+          message: "User not found with id " + id,
+        });
+      }
+       res.status(500).json({
+        message: "Error retrieving User with id " + id,
+      });
+    });
+};
+
+module.exports.verifyOtpGarage = (req, res) => {
+  // const id = req.params.id
+  const id = new ObjectId(req.params.id);
+  const phone = req.body.phone;
+  const otp = req.body.otp;
+  Garage.find({
+    phone: phone,
+  })
+    .populate([])
+    .then((garage) => {
+      var success = false;
+      var message = "Error invalid Garage OTP";
+      if (garage.otp == otp) {
+        success = true;
+        message = "Success";
+      }
+      res.status(200).json({
+        success: success,
+        message: message
+      });
+    })
+    .catch((err) => {
+      if (err.kind === "ObjectId") {
+         res.status(404).json({
+          message: "Garage not found with id " + id,
+        });
+      }
+       res.status(500).json({
+        message: "Error retrieving Garage with id " + id,
       });
     });
 };
@@ -205,7 +381,7 @@ module.exports.loginUser = async (req, res) => {
           },
           process.env.JWT_KEY,
           {
-            expiresIn: "2h",
+            expiresIn: "30d",
           }
         );
 
@@ -243,7 +419,7 @@ module.exports.loginGarage = async (req, res) => {
     });
     if (!garage) {
       res.status(404).send({
-        message: "User not found with that " + phone,
+        message: "Garage not found with that " + phone,
       });
     } else {
       let encrypt = await Garage.isValidPassword(password, garage.password);
@@ -258,14 +434,14 @@ module.exports.loginGarage = async (req, res) => {
           },
           process.env.JWT_KEY,
           {
-            expiresIn: "2h",
+            expiresIn: "30d",
           }
         );
 
         res.status(200).json({
           message: "Login Success",
           garage,
-          token
+          token,
         });
         console.dir(garage);
         console.log(garage.toJSON());
