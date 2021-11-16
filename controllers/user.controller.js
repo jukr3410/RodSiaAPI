@@ -54,11 +54,11 @@ module.exports.getUserPhone = (req, res) => {
     .catch((err) => {
       if (err.kind === "ObjectId") {
         res.status(404).json({
-          message: "User not found with id " + id,
+          message: "User not found with id " + phone,
         });
       }
       res.status(500).json({
-        message: "Error retrieving User with id " + id,
+        message: "Error retrieving User with id " + phone,
       });
     });
 };
