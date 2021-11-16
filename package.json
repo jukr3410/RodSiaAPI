@@ -36,6 +36,7 @@
     "finalhandler": "^1.1.2",
     "gm": "^1.23.1",
     "http": "0.0.1-security",
+    "i18n-nodejs": "^3.0.0",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.29.1",
     "mongo-join-query": "^1.0.2",
