@@ -36,7 +36,7 @@ module.exports.checkPhoneUser = (req, res) => {
         res.json(AppResponseDto.buildWithErrorMessages(errors));
         return false;
       } else {
-        
+
         res.json(
           AppResponseDto.buildSuccessWithMessages(`Phone: ${phone} is already.`)
         );
@@ -206,11 +206,11 @@ module.exports.sendOtpUser = async (req, res) => {
       .catch((err) => {
         if (err.kind === "ObjectId") {
            res.status(404).json({
-            message: "User not found with id " + phone,
+            message: "User not found with phone " + phone,
           });
         }
          res.status(500).json({
-          message: "Error updating User OTP with id " + phone,
+          message: "Error updating User OTP with phone " + phone,
         });
       });
   }
@@ -228,10 +228,9 @@ module.exports.sendOtpGarage = async (req, res) => {
 
     var digit = Math.floor(1000 + Math.random() * 9000);
     var digit_temp = digit;
-
     const from = "Rodsia";
     var to = "66" + phone.substring(1);
-    var text = digit.toString() + " is your Rodsia Garage register code.";
+    var text = digit_temp + " is your Rodsia car service register code.";
   
     vonage.message.sendSms(from, to, text, (err, responseData) => {
       if (err) {
@@ -253,10 +252,9 @@ module.exports.sendOtpGarage = async (req, res) => {
       },
       {
         otp: digit_temp.toString(),
-      },
-      
-      
+      }, 
     ).then((garage) => {
+        console.log(garage.toJSON());
         res
           .status(200)
           .json({
