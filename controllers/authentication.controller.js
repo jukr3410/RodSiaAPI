@@ -36,6 +36,7 @@ module.exports.checkPhoneUser = (req, res) => {
         res.json(AppResponseDto.buildWithErrorMessages(errors));
         return false;
       } else {
+        
         res.json(
           AppResponseDto.buildSuccessWithMessages(`Phone: ${phone} is already.`)
         );
@@ -192,13 +193,8 @@ module.exports.sendOtpUser = async (req, res) => {
       },
       {
         otp: digit_temp.toString(),
-      },
-      
-      
+      }, 
     ).then((user) => {
-      
-
-
         console.log(user.toJSON());
         res
           .status(200)
@@ -231,10 +227,11 @@ module.exports.sendOtpGarage = async (req, res) => {
   } else {
 
     var digit = Math.floor(1000 + Math.random() * 9000);
+    var digit_temp = digit;
 
     const from = "Rodsia";
     var to = "66" + phone.substring(1);
-    var text = digit.toString() + " is your Rodsia garage register code.";
+    var text = digit.toString() + " is your Rodsia Garage register code.";
   
     vonage.message.sendSms(from, to, text, (err, responseData) => {
       if (err) {
@@ -255,18 +252,11 @@ module.exports.sendOtpGarage = async (req, res) => {
         phone: phone,
       },
       {
-        otp: digit.toString(),
+        otp: digit_temp.toString(),
       },
       
       
     ).then((garage) => {
-      
-
-        // if (!garage) {
-        //    res.status(404).json({
-        //     message: "Garage not found with id " + phone,
-        //   });
-        // }
         res
           .status(200)
           .json({
@@ -277,11 +267,11 @@ module.exports.sendOtpGarage = async (req, res) => {
       .catch((err) => {
         if (err.kind === "ObjectId") {
            res.status(404).json({
-            message: "Garage not found with id " + phone,
+            message: "Garage not found with phone " + phone,
           });
         }
          res.status(500).json({
-          message: "Error updating Garage OTP with id " + phone,
+          message: "Error updating Garage OTP with phone " + phone,
         });
       });
   }
@@ -306,6 +296,14 @@ module.exports.verifyOtpUser = async (req, res) => {
         console.log("Verify Success");
         success = true;
         message = "Success";
+        User.findOneAndUpdate(
+          {
+            phone: phone,
+          },
+          {
+            validatePhone: true,
+          }, 
+        );
       }
       res.status(200).json({
         success: success,
@@ -340,11 +338,19 @@ module.exports.verifyOtpGarage = async (req, res) => {
       if (garage.otp == otp) {
         success = true;
         message = "Success";
+        Garage.findOneAndUpdate(
+          {
+            phone: phone,
+          },
+          {
+            validatePhone: true,
+          }, 
+        );
       }
       res.status(200).json({
         success: success,
         message: message,
-        user
+        garage
       });
     })
     .catch((err) => {
