@@ -290,12 +290,12 @@ module.exports.sendOtpGarage = async (req, res) => {
   }
 };
 
-module.exports.verifyOtpUser = (req, res) => {
+module.exports.verifyOtpUser = async (req, res) => {
   // const id = req.params.id
   const id = new ObjectId(req.params.id);
   const phone = req.body.phone;
   const otp = req.body.otp;
-  User.find({
+  await User.find({
     phone: phone,
   })
     .populate([])
@@ -323,12 +323,12 @@ module.exports.verifyOtpUser = (req, res) => {
     });
 };
 
-module.exports.verifyOtpGarage = (req, res) => {
+module.exports.verifyOtpGarage = async (req, res) => {
   // const id = req.params.id
   const id = new ObjectId(req.params.id);
   const phone = req.body.phone;
   const otp = req.body.otp;
-  Garage.find({
+  await Garage.find({
     phone: phone,
   })
     .populate([])
