@@ -99,7 +99,7 @@ module.exports.registerUser = async (req, res) => {
     cars: req.body.cars,
     profileImage: req.body.profileImage,
   });
-  user
+  await user
     .save()
     .then((user) => {
       if (user) {
@@ -135,7 +135,7 @@ module.exports.registerGarage = async (req, res) => {
     validatePhone: req.body.validatePhone,
     logoImage: req.body.logoImage,
   });
-  garage
+  await garage
     .save()
     .then((garage) => {
       if (garage) {
@@ -167,10 +167,10 @@ module.exports.sendOtpUser = async (req, res) => {
   } else {
 
     var digit = Math.floor(1000 + Math.random() * 9000);
-
+    var digit_temp = digit;
     const from = "Rodsia";
     var to = "66" + phone.substring(1);
-    var text = digit.toString() + " is your Rodsia register code.";
+    var text = digit_temp + " is your Rodsia register code.";
   
     vonage.message.sendSms(from, to, text, (err, responseData) => {
       if (err) {
@@ -191,18 +191,15 @@ module.exports.sendOtpUser = async (req, res) => {
         phone: phone,
       },
       {
-        otp: digit.toString(),
+        otp: digit_temp.toString(),
       },
       
       
     ).then((user) => {
       
 
-        // if (!user) {
-        //    res.status(404).json({
-        //     message: "User not found with id " + phone,
-        //   });
-        // }
+
+        console.log(user.toJSON());
         res
           .status(200)
           .json({
@@ -291,44 +288,49 @@ module.exports.sendOtpGarage = async (req, res) => {
 };
 
 module.exports.verifyOtpUser = async (req, res) => {
-  // const id = req.params.id
-  const id = new ObjectId(req.params.id);
+  
   const phone = req.body.phone;
   const otp = req.body.otp;
-  await User.find({
+
+  console.log("Phone: "+ phone + ", Otp: "+otp);
+  await User.findOne({
     phone: phone,
   })
     .populate([])
     .then((user) => {
       var success = false;
       var message = "Error invalid User OTP";
+      console.log(user.toJSON());
+      //console.log("User res otp: "+user.otp);
       if (user.otp == otp) {
+        console.log("Verify Success");
         success = true;
         message = "Success";
       }
       res.status(200).json({
         success: success,
-        message: message
+        message: message,
+        user
       });
     })
     .catch((err) => {
       if (err.kind === "ObjectId") {
          res.status(404).json({
-          message: "User not found with id " + id,
+          message: "User not found with phone " + phone,
         });
       }
        res.status(500).json({
-        message: "Error retrieving User with id " + id,
+        message: "Error retrieving User with phone " + phone,
       });
     });
 };
 
 module.exports.verifyOtpGarage = async (req, res) => {
-  // const id = req.params.id
-  const id = new ObjectId(req.params.id);
+  
   const phone = req.body.phone;
   const otp = req.body.otp;
-  await Garage.find({
+  
+  await Garage.findOne({
     phone: phone,
   })
     .populate([])
@@ -341,17 +343,18 @@ module.exports.verifyOtpGarage = async (req, res) => {
       }
       res.status(200).json({
         success: success,
-        message: message
+        message: message,
+        user
       });
     })
     .catch((err) => {
       if (err.kind === "ObjectId") {
          res.status(404).json({
-          message: "Garage not found with id " + id,
+          message: "Garage not found with phone " + phone,
         });
       }
        res.status(500).json({
-        message: "Error retrieving Garage with id " + id,
+        message: "Error retrieving Garage with phone " + phone,
       });
     });
 };
