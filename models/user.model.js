@@ -55,6 +55,9 @@ const userSchema = new Schema(
         fuelType: {
           type: String,
         },
+        regisNumber: {
+          type: String,
+        },
       },
     ],
     profileImage: {

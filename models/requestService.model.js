@@ -36,6 +36,9 @@ const requestServiceSchema = new Schema(
       fuelType: {
         type: String,
       },
+      regisNumber: {
+        type: String,
+      },
     },
     geoLocationUser: {
       lat: {
