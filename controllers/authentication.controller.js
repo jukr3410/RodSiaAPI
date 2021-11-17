@@ -422,7 +422,7 @@ module.exports.loginGarage = async (req, res) => {
     const phone = req.body.phone;
     const password = req.body.password;
     const garage = await Garage.findOne({
-      phone,
+      phone: phone,
     });
     if (!garage) {
       res.status(404).send({
@@ -434,6 +434,7 @@ module.exports.loginGarage = async (req, res) => {
         // session.loginGarage = true
         // session.phone = phone
 
+        // Create token
         const token = jwt.sign(
           {
             phone: garage.phone,
@@ -445,10 +446,13 @@ module.exports.loginGarage = async (req, res) => {
           }
         );
 
+        // save garage token
+        //garage.token = token;
+
         res.status(200).json({
           message: "Login Success",
-          garage,
           token,
+          garage,
         });
         console.dir(garage);
         console.log(garage.toJSON());

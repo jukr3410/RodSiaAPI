@@ -1,4 +1,7 @@
 const Garage = require("../models/garage.model");
+const Service = require('../models/service.model');
+const ServiceType = require('../models/serviceType.model');
+
 const ObjectId = require("mongodb").ObjectID;
 
 const FileUpload = require("../models/fileUpload.model");
@@ -66,9 +69,9 @@ module.exports.addGarage = (req, res) => {
       validatePhone: req.body.validatePhone,
       address: {
         addressDesc: req.body.address.addressDesc,
-        geolocation: {
-          lat: req.body.address.geolocation.lat,
-          long: req.body.address.geolocation.long,
+        geoLocation: {
+          lat: req.body.address.geoLocation.lat,
+          long: req.body.address.geoLocation.long,
         },
       },
       openStatus: req.body.openStatus,
@@ -123,7 +126,6 @@ module.exports.editGarage = (req, res) => {
       }
     )
       .then((garage) => {
-       
         res.status(200).json({
           success: true,
           message: "Update garage successfully.",
@@ -158,10 +160,9 @@ module.exports.deleteGarage = (req, res) => {
       phone: phone,
     })
       .then((garage) => {
-        
         res.status(200).json({
           success: true,
-          message: "Garage deleted successfully! "+ phone,
+          message: "Garage deleted successfully! " + phone,
         });
       })
       .catch((err) => {
@@ -217,7 +218,7 @@ module.exports.getByGarageName = (req, res) => {
 
 module.exports.updateOpenStatusGarage = (req, res) => {
   const id = new ObjectId(req.params.id);
-  
+
   if (typeof req.body == undefined || id == null) {
     res.json({
       success: false,
@@ -284,7 +285,6 @@ module.exports.getGaragePhone = (req, res) => {
     });
 };
 
-
 module.exports.getAllGarageByQuery = async (req, res) => {
   const page = Number(req.query.page);
   const limit = Number(req.query.limit) || 15;
@@ -294,7 +294,43 @@ module.exports.getAllGarageByQuery = async (req, res) => {
   const serviceTypes = req.query.serviceTypes || [];
   const carTypes = req.query.carTypes || [];
 
-  Garage.find({})
+  // filter service types
+  const selectedServiceTypesId = [];
+
+  // get type id by name
+//   const 
+//   if (serviceTypes.length == 0) {
+//     serviceTypes = ["ปิ้งย่าง", "ชาบู"]
+//   }
+//   await Service.find({serviceType: {
+//     "$in": [id]
+// }}).populate(["image", "serviceType", "garage"])
+
+  // filter car types
+  const selectedCarTypes = [];
+  if (carTypes.length != 0) {
+    carTypes.forEach((carType) => {
+      selectedCarTypes.push(carType);
+    });
+  } else {
+    selectedCarTypes.push("two-wheel");
+    selectedCarTypes.push("three-wheel");
+    selectedCarTypes.push("four-wheel");
+    selectedCarTypes.push("heavy-wheel");
+  }
+
+  console.log("selectedCarTypes:\n", selectedCarTypes);
+
+  Garage.find({
+    $and: [
+      {
+        "typeCarRepairs.type": { $in: selectedCarTypes },
+      },
+      {
+        "phone": {}
+      }
+    ],
+  })
     .select([])
     .limit(limit)
     .skip(skipIndex)

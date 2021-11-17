@@ -27,10 +27,10 @@ const garageSchema = new Schema(
       //match: [/\S+@\S+\.\S+/, "is invalid"],
     },
     password: {
-      type: String
+      type: String,
     },
     otp: {
-      type: String
+      type: String,
     },
     validatePhone: {
       type: Boolean,
@@ -114,15 +114,19 @@ const garageSchema = new Schema(
       type: String,
     },
     images: [
-      {image: {
-        type: String,
-      },}
+      {
+        image: {
+          type: String,
+        },
+      },
     ],
     typeCarRepairs: [
-      {type: {
-        type: String,
-      },}
-    ]
+      {
+        type: {
+          type: String,
+        },
+      },
+    ],
   },
   {
     timestamps: true,
@@ -142,10 +146,15 @@ garageSchema.path("password", {
 
 module.exports = mongoose.model("Garage", garageSchema);
 
-module.exports.isValidPassword = async (inputPassword, hashPassword) => {
-  const result = await bcrypt.compare(
+module.exports.isValidPassword = async (
+  inputPassword,
+  hashPassword,
+) => {
+  var result = await bcrypt.compareSync(
     String(inputPassword),
-    String(hashPassword)
+    String(hashPassword),
   );
+  console.log(result);
   return result;
+
 };

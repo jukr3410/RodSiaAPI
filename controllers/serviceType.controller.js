@@ -18,7 +18,7 @@ module.exports.getAllServiceType = (req, res) => {
 
 module.exports.getServiceType = (req, res) => {
     const id = new ObjectId(req.params.id)
-    User.findById({
+    ServiceType.findById({
             "_id": id
         })
         .then(serviceType => {

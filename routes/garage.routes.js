@@ -4,6 +4,7 @@ const garage = require('../controllers/garage.controller');
 
 
 router.get('/garages', garage.getAllGarage);
+router.get('/garages/q', garage.getAllGarageByQuery);
 router.get('/garages-id/:id', garage.getGarage);
 router.get('/garages-name/:name',garage.getByGarageName);
 router.get('/garages-phone/:phone',garage.getGaragePhone);

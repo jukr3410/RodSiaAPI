@@ -1,61 +1,64 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken');
-const secret = process.env.JWT_SECRET || 'JWT_SUPER_SECRET';
+const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const secret = process.env.JWT_SECRET || "JWT_SUPER_SECRET";
 const Schema = mongoose.Schema;
 
-const userSchema = new Schema({
+const userSchema = new Schema(
+  {
     // id: {
     //     type: Number,
     //     required: [true, "can't be blank"]
     // },
 
     name: {
-        type: String,
+      type: String,
     },
     email: {
-        type: String,
-        lowercase: true,
-        //unique: true,
-        // match: [/\S+@\S+\.\S+/, 'is invalid']
+      type: String,
+      lowercase: true,
+      //unique: true,
+      // match: [/\S+@\S+\.\S+/, 'is invalid']
     },
     phone: {
-        type: String,
-        required: [true, "can't be blank"],
-        unique: true,
-        match: [/^[0-9]+$/, 'is invalid'],
-        index: true
+      type: String,
+      required: [true, "can't be blank"],
+      unique: true,
+      match: [/^[0-9]+$/, "is invalid"],
+      index: true,
     },
     password: {
-        type: String,
-        //required: true
+      type: String,
+      //required: true
     },
     otp: {
-        type: String
+      type: String,
     },
     validatePhone: {
-        type: Boolean,
-        //required: true
+      type: Boolean,
+      //required: true
     },
-    cars: [{
+    cars: [
+      {
         brand: {
-            type: String
+          type: String,
         },
         model: {
-            type: String
+          type: String,
         },
         type: {
-            type: String
+          type: String,
         },
         year: {
-            type: String
+          type: String,
         },
         fuelType: {
-            type: String
-        }
-    }],
+          type: String,
+        },
+      },
+    ],
     profileImage: {
-        type: String
+      type: String,
     },
 
     // reviews: [{
@@ -68,25 +71,30 @@ const userSchema = new Schema({
     //     type: Schema.Types.ObjectId,
     //     ref: 'RequestService'
     // }]
-}, {
-    timestamps: true
+  },
+  {
+    timestamps: true,
+  }
+);
+
+userSchema.path("password", {
+  // เข้ารหัส password ด้วย hash ที่นี้ password จะไม่ใช่ string แล้ว
+  // จะดึงก็ต้อง this.password.toObject() หรือ this.get('password')
+
+  set: function (password) {
+    const salt = bcrypt.genSaltSync(10);
+    const hashedPassword = bcrypt.hashSync(password, salt);
+    return hashedPassword;
+  },
 });
 
-
-userSchema.path('password', {
-    // เข้ารหัส password ด้วย hash ที่นี้ password จะไม่ใช่ string แล้ว 
-    // จะดึงก็ต้อง this.password.toObject() หรือ this.get('password')
-
-    set: function (password) {
-        const salt = bcrypt.genSaltSync(10);
-        const hashedPassword = bcrypt.hashSync(password, salt);
-        return hashedPassword;
-    }
-});
-
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model("User", userSchema);
 
 module.exports.isValidPassword = async (inputPassword, hashPassword) => {
-    const result = await bcrypt.compare(String(inputPassword), String(hashPassword));
-    return result;
+  const result = await bcrypt.compareSync(
+    String(inputPassword),
+    String(hashPassword),
+   
+  );
+  return result;
 };
