@@ -101,7 +101,7 @@ module.exports.editGarage = (req, res) => {
   if (typeof req.body == undefined || id == null) {
     res.json({
       success: false,
-      message: "garage id should be provided" ,
+      message: "garage id should be provided",
     });
   } else {
     Garage.findOneAndUpdate(
@@ -215,7 +215,6 @@ module.exports.getByGarageName = (req, res) => {
   }
 };
 
-
 module.exports.updateOpenStatusGarage = (req, res) => {
   const id = new ObjectId(req.params.id);
   
@@ -262,4 +261,25 @@ module.exports.updateOpenStatusGarage = (req, res) => {
         });
       });
   }
+};
+
+module.exports.getGaragePhone = (req, res) => {
+  const phone = req.params.phone;
+  Garage.find({
+    phone: phone,
+  })
+    .populate([])
+    .then((garage) => {
+      res.status(200).json(garage);
+    })
+    .catch((err) => {
+      if (err.kind === "ObjectId") {
+        res.status(404).json({
+          message: "User not found with phone " + phone,
+        });
+      }
+      res.status(500).json({
+        message: "Error retrieving Garage with phone " + phone,
+      });
+    });
 };
