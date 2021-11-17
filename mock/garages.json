@@ -1,0 +1,77 @@
+[
+    {
+        "address": {
+            "geoLocation": {
+                "lat": "13.649608",
+                "long": "100.4783343"
+            },
+            "addressDesc": ""
+        },
+        "openingHour": {
+            "mo": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "tu": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "we": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "th": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "fr": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "sa": {
+                "open": "9.00",
+                "close": "18.00"
+            },
+            "su": {
+                "open": "9.00",
+                "close": "18.00"
+            }
+        },
+        "name": "Prachakchit Motor Vehicle",
+        "phone": "0987654325",
+        "email": "example5@gmail.com",
+        "password": "1234567890",
+        "otp": "1111",
+        "validatePhone": true,
+        "openStatus": true,
+        "logoImage": "https://www.torquethailand.com/wp-content/uploads/2021/09/MMS_Drive-Thru-Car-Check-Up-Service.jpg",
+        "images": [
+            {
+                "image": "https://d193ppza2qrruo.cloudfront.net/production/images/large/large_What-to-expect-from-a-service.jpg"
+            },
+            {
+                "image": "https://d193ppza2qrruo.cloudfront.net/production/images/large/large_What-to-expect-from-a-service.jpg"
+            },
+            {
+                "image": "https://d193ppza2qrruo.cloudfront.net/production/images/large/large_What-to-expect-from-a-service.jpg"
+            },
+            {
+                "image": "https://d193ppza2qrruo.cloudfront.net/production/images/large/large_What-to-expect-from-a-service.jpg"
+            }
+        ],
+        "typeCarRepairs": [
+            {
+                "type": "two-wheel"
+            },
+            {
+                "type": "three-wheel"
+            },
+            {
+                "type": "four-wheel"
+            },
+            {
+                "type": "heavy-wheel"
+            }
+        ]
+    }
+]

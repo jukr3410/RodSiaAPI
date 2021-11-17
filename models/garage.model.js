@@ -117,6 +117,11 @@ const garageSchema = new Schema(
       {image: {
         type: String,
       },}
+    ],
+    typeCarRepairs: [
+      {type: {
+        type: String,
+      },}
     ]
   },
   {

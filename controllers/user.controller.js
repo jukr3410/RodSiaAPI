@@ -130,12 +130,9 @@ module.exports.editUser = async (req, res) => {
       }
     )
       .then((user) => {
-        // if (!user) {
-        //    res.status(404).json({
-        //     message: "User not found with id " + phone,
-        //   });
-        // }
+       
         res.status(200).json({
+          success: true,
           message: "Update user successfully.",
           user,
         });
@@ -143,11 +140,11 @@ module.exports.editUser = async (req, res) => {
       .catch((err) => {
         if (err.kind === "ObjectId") {
           res.status(404).json({
-            message: "User not found with id " + phone,
+            message: "User not found with phone " + phone,
           });
         }
         res.status(500).json({
-          message: "Error updating User with id " + phone,
+          message: "Error updating User with phone " + phone,
         });
       });
   }
@@ -155,22 +152,20 @@ module.exports.editUser = async (req, res) => {
 
 module.exports.deleteUser = (req, res) => {
   const id = new ObjectId(req.params.id);
+  const phone = req.body.phone;
   if (id == null) {
     res.json({
       status: "error",
       message: "user id should be provided",
     });
   } else {
-    User.findByIdAndRemove({
-      _id: id,
+    User.findOneAndRemove({
+      phone: phone,
     })
       .then((user) => {
-        // if (!user) {
-        //    res.status(404).json({
-        //     message: "User not found with id " + id,
-        //   });
-        // }
+
         res.status(200).json({
+          success: true,
           message: "User deleted successfully!",
         });
       })
