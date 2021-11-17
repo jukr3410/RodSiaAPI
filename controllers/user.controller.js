@@ -44,7 +44,7 @@ module.exports.getUser = (req, res) => {
 
 module.exports.getUserPhone = (req, res) => {
   const phone = req.params.phone;
-  User.find({
+  User.findOne({
     phone: phone,
   })
     .populate([])

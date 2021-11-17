@@ -265,7 +265,7 @@ module.exports.updateOpenStatusGarage = (req, res) => {
 
 module.exports.getGaragePhone = (req, res) => {
   const phone = req.params.phone;
-  Garage.find({
+  Garage.findOne({
     phone: phone,
   })
     .populate([])
