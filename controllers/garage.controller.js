@@ -283,3 +283,24 @@ module.exports.getGaragePhone = (req, res) => {
       });
     });
 };
+
+
+module.exports.getAllGarageByQuery = async (req, res) => {
+  const page = Number(req.query.page);
+  const limit = Number(req.query.limit) || 15;
+  const skipIndex = (page - 1) * limit;
+  const sort = req.query.sort == "desc" ? -1 : 1;
+
+  const serviceTypes = req.query.serviceTypes || [];
+  const carTypes = req.query.carTypes || [];
+
+  Garage.find({})
+    .select([])
+    .limit(limit)
+    .skip(skipIndex)
+    .populate([])
+    .then((garages) => {
+      res.status(200).json(garages);
+    })
+    .catch((err) => console.log(err));
+};
