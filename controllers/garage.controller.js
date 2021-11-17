@@ -75,6 +75,7 @@ module.exports.addGarage = (req, res) => {
       openingHour: req.body.openingHour,
       logoImage: req.body.logoImage,
       images: req.body.images,
+      typeCarRepairs: req.body.typeCarRepairs,
     });
     garage
       .save()
@@ -96,15 +97,16 @@ module.exports.addGarage = (req, res) => {
 
 module.exports.editGarage = (req, res) => {
   const id = new ObjectId(req.params.id);
+  const phone = req.body.phone;
   if (typeof req.body == undefined || id == null) {
     res.json({
       success: false,
       message: "garage id should be provided" ,
     });
   } else {
-    Garage.findByIdAndUpdate(
+    Garage.findOneAndUpdate(
       {
-        _id: id,
+        phone: phone,
       },
       {
         name: req.body.name,
@@ -117,18 +119,11 @@ module.exports.editGarage = (req, res) => {
         openingHour: req.body.openingHour,
         logoImage: req.body.logoImage,
         images: req.body.images,
-      },
-      {
-        new: true,
+        typeCarRepairs: req.body.typeCarRepairs,
       }
     )
       .then((garage) => {
-        if (!garage) {
-          return res.status(404).send({
-            success: false,
-            message: "Garage not found with id " + id,
-          });
-        }
+       
         res.status(200).json({
           success: true,
           message: "Update garage successfully.",
@@ -139,12 +134,12 @@ module.exports.editGarage = (req, res) => {
         if (err.kind === "ObjectId") {
           return res.status(404).send({
             success: false,
-            message: "Garage not found with id " + id,
+            message: "Garage not found with phone " + phone,
           });
         }
         return res.status(500).send({
           success: false,
-          message: "Error updating Garage with id " + id,
+          message: "Error updating Garage with phone " + phone,
         });
       });
   }
@@ -152,38 +147,33 @@ module.exports.editGarage = (req, res) => {
 
 module.exports.deleteGarage = (req, res) => {
   const id = new ObjectId(req.params.id);
+  const phone = req.body.phone;
   if (id == null) {
     res.json({
       status: "error",
       message: "garage id should be provided",
     });
   } else {
-    Garage.findByIdAndRemove({
-      _id: id,
+    Garage.findOneAndRemove({
+      phone: phone,
     })
       .then((garage) => {
-        if (!garage) {
-          return res.status(404).send({
-            success: false,
-            message: "Garage not found with id " + id,
-          });
-        }
+        
         res.status(200).json({
           success: true,
-          message: "Garage deleted successfully!",
-          garage: garage,
+          message: "Garage deleted successfully! "+ phone,
         });
       })
       .catch((err) => {
         if (err.kind === "ObjectId" || err.name === "NotFound") {
           return res.status(404).send({
             success: false,
-            message: "Garage not found with id " + id,
+            message: "Garage not found with phone " + phone,
           });
         }
         return res.status(500).send({
           success: false,
-          message: "Could not delete Garage with id " + id,
+          message: "Could not delete Garage with phone " + phone,
         });
       });
   }
@@ -228,6 +218,7 @@ module.exports.getByGarageName = (req, res) => {
 
 module.exports.updateOpenStatusGarage = (req, res) => {
   const id = new ObjectId(req.params.id);
+  
   if (typeof req.body == undefined || id == null) {
     res.json({
       success: false,

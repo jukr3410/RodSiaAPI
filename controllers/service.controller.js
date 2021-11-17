@@ -126,11 +126,7 @@ module.exports.deleteService = (req, res) => {
                 "_id": id
             })
             .then(service => {
-                if (!service) {
-                    return res.status(404).send({
-                        message: "Service not found with id " + id
-                    });
-                }
+
                 res.status(200).send({
                     message: "Service deleted successfully!"
                 });
