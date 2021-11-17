@@ -1,6 +1,6 @@
 const Garage = require("../models/garage.model");
-const Service = require('../models/service.model');
-const ServiceType = require('../models/serviceType.model');
+const Service = require("../models/service.model");
+const ServiceType = require("../models/serviceType.model");
 
 const ObjectId = require("mongodb").ObjectID;
 
@@ -291,46 +291,49 @@ module.exports.getAllGarageByQuery = async (req, res) => {
   const skipIndex = (page - 1) * limit;
   const sort = req.query.sort == "desc" ? -1 : 1;
 
-  const serviceTypes = req.query.serviceTypes || [];
-  const carTypes = req.query.carTypes || [];
+  const serviceType = req.query.serviceType;
+  const carType = req.query.carType;
+  const lat = req.query.lat;
+  const long = req.query.long;
 
-  // filter service types
-  const selectedServiceTypesId = [];
+  console.log(serviceType + " : " + carType);
 
-  // get type id by name
-//   const 
-//   if (serviceTypes.length == 0) {
-//     serviceTypes = ["ปิ้งย่าง", "ชาบู"]
-//   }
-//   await Service.find({serviceType: {
-//     "$in": [id]
-// }}).populate(["image", "serviceType", "garage"])
+  var query = {};
 
-  // filter car types
-  const selectedCarTypes = [];
-  if (carTypes.length != 0) {
-    carTypes.forEach((carType) => {
-      selectedCarTypes.push(carType);
-    });
-  } else {
-    selectedCarTypes.push("two-wheel");
-    selectedCarTypes.push("three-wheel");
-    selectedCarTypes.push("four-wheel");
-    selectedCarTypes.push("heavy-wheel");
+  if (
+    carType != "" &&
+    carType != null &&
+    serviceType != "" &&
+    serviceType != null
+  ) {
+    //filter service types
+    const selectedServiceType = await ServiceType.findOne({
+      name: serviceType,
+    }).exec();
+
+    const garageIdHaveServices = await Service.find({
+      serviceType: selectedServiceType._id,
+    })
+      .select(["garage"])
+      .exec();
+
+    console.log("garageIdHaveServices:\n", garageIdHaveServices);
+
+    const garageIds = garageIdHaveServices.map((garage) => garage.garage);
+
+    query = {
+      $and: [
+        {
+          "typeCarRepairs.type": carType,
+        },
+        { _id: { $in: garageIds } },
+      ],
+    };
   }
 
-  console.log("selectedCarTypes:\n", selectedCarTypes);
+  console.log("query:\n", query);
 
-  Garage.find({
-    $and: [
-      {
-        "typeCarRepairs.type": { $in: selectedCarTypes },
-      },
-      {
-        "phone": {}
-      }
-    ],
-  })
+  Garage.find(query)
     .select([])
     .limit(limit)
     .skip(skipIndex)
