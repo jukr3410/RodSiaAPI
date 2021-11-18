@@ -398,7 +398,7 @@ module.exports.loginUser = async (req, res) => {
         res.status(200).json({
           message: "Login Success",
           token,
-          user,
+          user_id: user._id
         });
         console.dir(user);
         console.log(user.toJSON());
@@ -452,7 +452,7 @@ module.exports.loginGarage = async (req, res) => {
         res.status(200).json({
           message: "Login Success",
           token,
-          garage,
+          garage_id: garage._id
         });
         console.dir(garage);
         console.log(garage.toJSON());
