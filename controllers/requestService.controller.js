@@ -37,7 +37,20 @@ module.exports.getRequestService = (req, res) => {
   RequestService.findById({
     _id: id,
   })
-    .populate([])
+    .populate([
+      "user",
+      {
+        path: "service",
+        populate: [
+          {
+            path: "garage",
+          },
+          {
+            path: "serviceType",
+          },
+        ],
+      },
+    ])
     .then((requestService) => {
       res.status(200).json(requestService);
     })
@@ -139,6 +152,7 @@ module.exports.addRequestService = (req, res) => {
       service: req.body.service,
       garage: req.body.garage,
       car: req.body.car,
+      addressUser: req.body.addressUser,
       geoLocationUser: req.body.geoLocationUser,
       geoLocationGarage: req.body.geoLocationGarage,
       problemDesc: req.body.problemDesc,
@@ -178,6 +192,7 @@ module.exports.editRequestService = (req, res) => {
         service: req.body.service,
         garage: req.body.garage,
         car: req.body.car,
+        addressUser: req.body.addressUser,
         geoLocationUser: req.body.geoLocationUser,
         geoLocationGarage: req.body.geoLocationGarage,
         problemDesc: req.body.problemDesc,

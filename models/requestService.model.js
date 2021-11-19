@@ -40,6 +40,9 @@ const requestServiceSchema = new Schema(
         type: String,
       },
     },
+    addressUser: {
+      type: String,
+    },
     geoLocationUser: {
       lat: {
         type: String,
