@@ -96,8 +96,7 @@ module.exports = mongoose.model("User", userSchema);
 module.exports.isValidPassword = async (inputPassword, hashPassword) => {
   const result = await bcrypt.compareSync(
     String(inputPassword),
-    String(hashPassword),
-   
+    String(hashPassword)
   );
   return result;
 };

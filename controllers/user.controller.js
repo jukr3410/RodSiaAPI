@@ -130,7 +130,48 @@ module.exports.editUser = async (req, res) => {
       }
     )
       .then((user) => {
-       
+        res.status(200).json({
+          success: true,
+          message: "Update user successfully.",
+          user,
+        });
+      })
+      .catch((err) => {
+        if (err.kind === "ObjectId") {
+          res.status(404).json({
+            message: "User not found with phone " + phone,
+          });
+        }
+        res.status(500).json({
+          message: "Error updating User with phone " + phone,
+        });
+      });
+  }
+};
+module.exports.editUserNoPassword = async (req, res) => {
+  const id = new ObjectId(req.params.id);
+  const phone = req.body.phone;
+  console.log(phone);
+  if (typeof req.body == undefined || phone == null) {
+    res.json({
+      status: "error",
+      message: "user phone should be provided",
+    });
+  } else {
+    await User.findOneAndUpdate(
+      {
+        phone: phone,
+      },
+      {
+        name: req.body.name,
+        email: req.body.email,
+        otp: req.body.otp,
+        validatePhone: req.body.validatePhone,
+        cars: req.body.cars,
+        profileImage: req.body.profileImage,
+      }
+    )
+      .then((user) => {
         res.status(200).json({
           success: true,
           message: "Update user successfully.",
@@ -163,7 +204,6 @@ module.exports.deleteUser = (req, res) => {
       phone: phone,
     })
       .then((user) => {
-
         res.status(200).json({
           success: true,
           message: "User deleted successfully!",
