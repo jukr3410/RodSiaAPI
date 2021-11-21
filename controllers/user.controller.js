@@ -261,48 +261,23 @@ module.exports.deleteUser = (req, res) => {
   }
 };
 
-// module.exports.updateUserCar = (req, res) => {
-//   const id = new ObjectId(req.params.id);
-//   if (typeof req.body == undefined || id == null) {
-//     res.json({
-//       status: "error",
-//       message: "user id should be provided",
-//     });
-//   } else {
-//     User.findByIdAndUpdate(
-//       {
-//         _id: id,
-//       },
-//       {
-//         cars: req.body.cars
-//       },
-//       {
-//         new: true,
-//       }
-//     )
-//       .then((user) => {
-//         if (!user) {
-//            res.status(404).json({
-//             message: "User not found with id " + id,
-//           });
-//         }
-//         res
-//           .status(200)
-//           .json({
-//             message: "Add car successfully.",
-//             user,
-//           })
-//           .populate([]);
-//       })
-//       .catch((err) => {
-//         if (err.kind === "ObjectId") {
-//            res.status(404).json({
-//             message: "User not found with id " + id,
-//           });
-//         }
-//          res.status(500).json({
-//           message: "Error updating User with id " + id,
-//         });
-//       });
-//   }
-// };
+module.exports.updateProfileImageUser = async (phone, profileImage) => {
+  console.log("profileImage: " + profileImage);
+  const user = await User.findOneAndUpdate(
+    {
+      phone: phone,
+    },
+    {
+      profileImage: profileImage,
+    },
+
+    function (err, docs) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("Updated profileImage : ", docs);
+      }
+    }
+  ).exec();
+  return user;
+};

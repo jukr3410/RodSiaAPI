@@ -4,7 +4,6 @@ const ServiceType = require("../models/serviceType.model");
 
 const ObjectId = require("mongodb").ObjectID;
 
-const FileUpload = require("../models/fileUpload.model");
 
 module.exports.getAllGarage = (req, res) => {
   const page = Number(req.query.page);

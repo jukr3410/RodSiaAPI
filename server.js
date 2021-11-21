@@ -41,7 +41,7 @@ MongoDbConfig.configure()
     const requestSerivceRoute = require("./routes/requestService.routes");
     const infoAssistantRoute = require("./routes/infoAssistant.routes");
     const garageRoutes = require("./routes/garage.routes");
-    const fileUploadRoute = require("./routes/fileUpload.routes");
+    const imageUploadRoute = require("./routes/imageUpload.routes");
     const authenticationRoute = require("./routes/authentication.routes");
 
     app.use(logger("dev"));
@@ -57,7 +57,7 @@ MongoDbConfig.configure()
     app.use("/api", requestSerivceRoute);
     app.use("/api", infoAssistantRoute);
     app.use("/api", garageRoutes);
-    app.use("/api", fileUploadRoute);
+    app.use("/api", imageUploadRoute);
     app.use("/api/auth", authenticationRoute);
     app.get("/", (req, res) => {
       res.sendFile(__dirname + "/index.html");

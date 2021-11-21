@@ -288,7 +288,20 @@ module.exports.getRequestServiceWaitingConfirm = (req, res) => {
     service: serviceId,
     status: "รอยืนยัน",
   })
-    .populate([])
+    .populate([
+      "user",
+      {
+        path: "service",
+        populate: [
+          {
+            path: "garage",
+          },
+          {
+            path: "serviceType",
+          },
+        ],
+      },
+    ])
     .then((requestService) => {
       res.status(200).json(requestService);
     })
