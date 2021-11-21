@@ -148,6 +148,46 @@ module.exports.editUser = async (req, res) => {
       });
   }
 };
+module.exports.editUserPassword = async (req, res) => {
+  // const id = new ObjectId(req.params.id);
+  const phone = req.body.phone;
+  const password = req.body.password;
+  console.log(phone);
+  if (typeof req.body == undefined || phone == null || password == null) {
+    res.json({
+      status: "error",
+      message: "user phone or password should be provided",
+    });
+  } else {
+    const salt = bcrypt.genSaltSync(10);
+    const hashedPassword = bcrypt.hashSync(password, salt);
+    await User.findOneAndUpdate(
+      {
+        phone: phone,
+      },
+      {
+        password: hashedPassword,
+      }
+    )
+      .then((user) => {
+        res.status(200).json({
+          success: true,
+          message: "Update user successfully.",
+          user,
+        });
+      })
+      .catch((err) => {
+        if (err.kind === "ObjectId") {
+          res.status(404).json({
+            message: "User not found with phone " + phone,
+          });
+        }
+        res.status(500).json({
+          message: "Error updating User with phone " + phone,
+        });
+      });
+  }
+};
 module.exports.editUserNoPassword = async (req, res) => {
   const id = new ObjectId(req.params.id);
   const phone = req.body.phone;
