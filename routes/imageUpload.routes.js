@@ -8,7 +8,7 @@ router.get('/image-uploads', imageUpload.displayForm); //test upload with websit
 
 router.post('/image-uploads/user/:phone', imageUpload.uploadProfileImageUserwithPhone);
 
-//router.post('/image-uploads/garage/:phone', imageUpload.uploadProfileImageGaragewithPhone);
+router.post('/image-uploads/garage/:phone', imageUpload.uploadProfileImageGaragewithPhone);
 
 
 router.get('/garages/:id/images', imageUpload.getByGarageId);
