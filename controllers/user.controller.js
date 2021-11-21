@@ -1,6 +1,7 @@
 const User = require("../models/user.model");
 const Review = require("../models/review.model");
 const ObjectId = require("mongodb").ObjectID;
+const bcrypt = require("bcrypt");
 const { json } = require("body-parser");
 
 module.exports.getAllUser = (req, res) => {
@@ -159,14 +160,12 @@ module.exports.editUserPassword = async (req, res) => {
       message: "user phone or password should be provided",
     });
   } else {
-    const salt = bcrypt.genSaltSync(10);
-    const hashedPassword = bcrypt.hashSync(password, salt);
     await User.findOneAndUpdate(
       {
         phone: phone,
       },
       {
-        password: hashedPassword,
+        password: req.body.password,
       }
     )
       .then((user) => {
