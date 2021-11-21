@@ -4,7 +4,6 @@ const ServiceType = require("../models/serviceType.model");
 
 const ObjectId = require("mongodb").ObjectID;
 
-
 module.exports.getAllGarage = (req, res) => {
   const page = Number(req.query.page);
   const limit = Number(req.query.limit) || 15;
@@ -141,6 +140,90 @@ module.exports.editGarage = (req, res) => {
         return res.status(500).send({
           success: false,
           message: "Error updating Garage with phone " + phone,
+        });
+      });
+  }
+};
+
+module.exports.editGaragePassword = async (req, res) => {
+  // const id = new ObjectId(req.params.id);
+  const phone = req.body.phone;
+  const password = req.body.password;
+  console.log(phone);
+  if (typeof req.body == undefined || phone == null || password == null) {
+    res.json({
+      status: "error",
+      message: "user phone or password should be provided",
+    });
+  } else {
+    await Garage.findOneAndUpdate(
+      {
+        phone: phone,
+      },
+      {
+        password: req.body.password,
+      }
+    )
+      .then((user) => {
+        res.status(200).json({
+          success: true,
+          message: "Update garage successfully.",
+          user,
+        });
+      })
+      .catch((err) => {
+        if (err.kind === "ObjectId") {
+          res.status(404).json({
+            message: "garage not found with phone " + phone,
+          });
+        }
+        res.status(500).json({
+          message: "Error updating garage with phone " + phone,
+        });
+      });
+  }
+};
+module.exports.editGarageNoPassword = async (req, res) => {
+  const id = new ObjectId(req.params.id);
+  const phone = req.body.phone;
+  console.log(phone);
+  if (typeof req.body == undefined || phone == null) {
+    res.json({
+      status: "error",
+      message: "user phone should be provided",
+    });
+  } else {
+    await Garage.findOneAndUpdate(
+      {
+        phone: phone,
+      },
+      {
+        name: req.body.name,
+        email: req.body.email,
+        otp: req.body.password,
+        validatePhone: req.body.validatePhone,
+        address: req.body.address,
+        openingHour: req.body.openingHour,
+        logoImage: req.body.logoImage,
+        images: req.body.images,
+        typeCarRepairs: req.body.typeCarRepairs,
+      }
+    )
+      .then((user) => {
+        res.status(200).json({
+          success: true,
+          message: "Update user successfully.",
+          user,
+        });
+      })
+      .catch((err) => {
+        if (err.kind === "ObjectId") {
+          res.status(404).json({
+            message: "User not found with phone " + phone,
+          });
+        }
+        res.status(500).json({
+          message: "Error updating User with phone " + phone,
         });
       });
   }
@@ -344,16 +427,24 @@ module.exports.getAllGarageByQuery = async (req, res) => {
         currentLong != "" &&
         currentLong != null
       ) {
-      garages.forEach(garage => {
-        console.log("Geo: ", garage.address.geoLocation);
-        console.log("Distance: "+getDistanceFromLatLongInKm(parseFloat(currentLat),parseFloat(currentLong),parseFloat(garage.address.geoLocation.lat),parseFloat(garage.address.geoLocation.long)));
-      });}
-      
+        garages.forEach((garage) => {
+          console.log("Geo: ", garage.address.geoLocation);
+          console.log(
+            "Distance: " +
+              getDistanceFromLatLongInKm(
+                parseFloat(currentLat),
+                parseFloat(currentLong),
+                parseFloat(garage.address.geoLocation.lat),
+                parseFloat(garage.address.geoLocation.long)
+              )
+          );
+        });
+      }
+
       res.status(200).json(garages);
     })
     .catch((err) => console.log(err));
 };
-
 
 module.exports.updateProfileImageGarage = async (phone, profileImage) => {
   console.log("profileImage: " + profileImage);
@@ -376,20 +467,21 @@ module.exports.updateProfileImageGarage = async (phone, profileImage) => {
   return garage;
 };
 
-function getDistanceFromLatLongInKm(lat1,long1,lat2,long2) {
+function getDistanceFromLatLongInKm(lat1, long1, lat2, long2) {
   var R = 6371; // Radius of the earth in km
-  var dLat = deg2rad(lat2-lat1);  // deg2rad below
-  var dLong = deg2rad(long2-long1); 
-  var a = 
-    Math.sin(dLat/2) * Math.sin(dLat/2) +
-    Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
-    Math.sin(dLong/2) * Math.sin(dLong/2)
-    ; 
-  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+  var dLat = deg2rad(lat2 - lat1); // deg2rad below
+  var dLong = deg2rad(long2 - long1);
+  var a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(deg2rad(lat1)) *
+      Math.cos(deg2rad(lat2)) *
+      Math.sin(dLong / 2) *
+      Math.sin(dLong / 2);
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   var distance = R * c; // Distance in km
   return distance;
 }
 
 function deg2rad(deg) {
-  return deg * (Math.PI/180)
+  return deg * (Math.PI / 180);
 }
