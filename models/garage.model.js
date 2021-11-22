@@ -53,61 +53,34 @@ const garageSchema = new Schema(
       type: Boolean,
     },
     openingHour: {
+      open: {
+        type: String,
+      },
+      close: {
+        type: String,
+      },
+    },
+    openingDayOfWeek: {
       mo: {
-        open: {
-          type: String,
-        },
-        close: {
-          type: String,
-        },
+        type: Boolean,
       },
       tu: {
-        open: {
-          type: String,
-        },
-        close: {
-          type: String,
-        },
+        type: Boolean,
       },
       we: {
-        open: {
-          type: String,
-        },
-        close: {
-          type: String,
-        },
+        type: Boolean,
       },
       th: {
-        open: {
-          type: String,
-        },
-        close: {
-          type: String,
-        },
+        type: Boolean,
       },
       fr: {
-        open: {
-          type: String,
-        },
-        close: {
-          type: String,
-        },
+        type: Boolean,
       },
       sa: {
-        open: {
-          type: String,
-        },
-        close: {
-          type: String,
-        },
+        type: Boolean,
       },
       su: {
-        open: {
-          type: String,
-        },
-        close: {
-          type: String,
-        },
+        type: Boolean,
       },
     },
     logoImage: {
