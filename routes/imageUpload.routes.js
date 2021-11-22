@@ -6,9 +6,12 @@ const multipartMiddleware = multipart()
 
 router.get('/image-uploads', imageUpload.displayForm); //test upload with website
 
-router.post('/image-uploads/user/:phone', imageUpload.uploadProfileImageUserwithPhone);
+router.post('/image-uploads/user/:phone', multipartMiddleware,  imageUpload.uploadProfileImageUserwithPhone);
 
-router.post('/image-uploads/garage/:phone', imageUpload.uploadProfileImageGaragewithPhone);
+router.post('/image-uploads/garage/:phone', multipartMiddleware,  imageUpload.uploadProfileImageGaragewithPhone);
+
+router.post('/image-uploads-multi/garage/:phone/:index', multipartMiddleware, imageUpload.uploadGarageImageMultiple);
+
 
 
 router.get('/garages/:id/images', imageUpload.getByGarageId);

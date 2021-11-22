@@ -470,6 +470,28 @@ module.exports.updateProfileImageGarage = async (phone, profileImage) => {
   return garage;
 };
 
+module.exports.updateImageListGarage = async (phone, imageInput) =>  {
+  console.log("imageInput: " + imageInput);
+  const garage = await Garage.findOneAndUpdate(
+    {
+      phone: phone,
+    },
+    {
+      $addToSet: {images: {$each: [ {image: imageInput},]}}
+    },
+
+    function (err, res) {
+      if (err) {
+        console.log(err);
+      } else {
+        //console.log("Updated Images : ", res.images);
+        console.log("Updated Images.");
+      }
+    }
+  ).exec();
+  return garage;
+},
+
 function getDistanceFromLatLongInKm(lat1, long1, lat2, long2) {
   var R = 6371; // Radius of the earth in km
   var dLat = deg2rad(lat2 - lat1); // deg2rad below

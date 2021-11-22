@@ -164,7 +164,66 @@ module.exports.uploadProfileImageGaragewithPhone = async (req, res, next) => {
 		  .catch((err) => console.log(err));
 	  }
 	});
+};
+
+module.exports.uploadGarageImageMultiple = async (req, res, next) => {
+  //var tmp_path = req.files.file.path;
+
+	const phone = req.params.phone;
+  var number = req.params.index;
+
+  console.log("index:" + number);
+
+  console.log("file", req.files.file);
+  var tmp_path = req.files.file.path;
+  var imageS3 = await fs.createReadStream(tmp_path);
+
+  //imageName = "restaurants/" + req.files.file.name; // ex. set name such as use id-date.(png/jpg)
+  const pathImg = "garages/" + phone + "/images/";
+  const parts = req.files.file.name.split(".");
+  const extension = parts[parts.length - 1];
+  //imageName = pathImg + req.params.id + '-' + Date.now();
+  var imageNameS3 = pathImg + Date.now() + number;
+
+  if (extension === "png" || extension === "jpeg" || extension === "jpg") {
+    imageNameS3 += "." + extension;
+  }
+
+  const params = {
+    Bucket: bucketName,
+    Key: `${imageNameS3}`,
+    ACL: "public-read",
+    Body: imageS3,
   };
+  await s3.putObject(params, function (err, imageS3) {
+    if (err) {
+      console.log("Error uploading image: ", err);
+    } else {
+      console.log("Successfully uploaded image on S3", imageS3);
+
+      const imageMongo = new Image({
+        _id: new mongoose.Types.ObjectId(),
+        //name: req.params.id + '-' + Date.now(),
+        name: imageNameS3,
+        imageLink: process.env.S3_FILE_URL + imageNameS3,
+      });
+      imageMongo
+        .save()
+        .then((image) => {
+          console.log("Image _id : " + image._id);
+          console.log("phone: " + phone);
+
+          Garage.updateImageListGarage(phone, image.imageLink);
+
+          res.json({
+            message: "Successfully  uploaded",
+            imageMongo,
+          });
+        })
+        .catch((err) => console.log(err));
+    }
+  });
+};
 
 module.exports.uploadByGarage = (req, res, next) => {
   var tmp_path = req.files.file.path;
