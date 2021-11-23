@@ -258,19 +258,21 @@ module.exports.deleteRequestService = (req, res) => {
   }
 };
 
-module.exports.getRequestServiceWaitingConfirm = (req, res) => {
-  const id = new ObjectId(req.params.id);
-  var serviceId;
-  Service.find({
-    garage: {
-      $in: [id],
-    },
+module.exports.getRequestServiceWaitingConfirm = async (req, res) => {
+  const garageId = req.params.id;
+  const status = req.query.status;
+  var servicesId = [];
+  await Service.find({
+    garage: garageId,
   })
     .populate([])
-    .then((service) => {
-      //res.json(service);
-      serviceId = new ObjectId(service[1]._id);
-      console.log(service);
+    .then((services) => {
+      //res.json(services);
+      console.log(services);
+
+      services.forEach((service) => {
+        servicesId.push(service._id);
+      });
     })
     .catch((err) => {
       if (err.kind === "ObjectId") {
@@ -279,15 +281,23 @@ module.exports.getRequestServiceWaitingConfirm = (req, res) => {
         // });
         console.log(err);
       }
-      // return res.status(500).send({
-      //   message: "Error retrieving Service with id " + id,
-      // });
     });
+    var query = {
+      service: {
+        $in: servicesId,
+      }
+    };
 
-  RequestService.findOne({
-    service: serviceId,
-    status: "รอยืนยัน",
-  })
+  if (status != null && status != '') {
+    query = {
+      service: {
+        $in: servicesId,
+      },
+      status: status,
+    }
+  }
+
+  await RequestService.find(query)
     .populate([
       "user",
       {
@@ -302,8 +312,8 @@ module.exports.getRequestServiceWaitingConfirm = (req, res) => {
         ],
       },
     ])
-    .then((requestService) => {
-      res.status(200).json(requestService);
+    .then((requestServices) => {
+      res.status(200).json(requestServices);
     })
     .catch((err) => {
       if (err.kind === "ObjectId") {
