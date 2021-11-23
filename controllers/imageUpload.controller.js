@@ -3,6 +3,10 @@ const Image = require("../models/image.model");
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+const User = require("../controllers/user.controller");
+const Garage = require("../controllers/garage.controller");
+
+
 const AWS = require("aws-sdk");
 const async = require("async");
 const bucketName = "rodsiastorages";
@@ -94,16 +98,16 @@ module.exports.uploadProfileImageUserwithPhone = async (req, res, next) => {
       });
       image
         .save()
-        .then((image) => {
+        .then(async (image) => {
           console.log("Image _id : " + image._id);
           console.log("phone: " + phone);
 
-          const user = User.updateProfileImageUser(phone, image.imageLink);
+          const user = await User.updateProfileImageUser(phone, image.imageLink);
           console.log("result: " + user);
 
-          res.json({
+          res.status(200).json({
             message: "Successfully  uploaded",
-            image,
+            user,
           });
         })
         .catch((err) => console.log(err));
@@ -149,16 +153,16 @@ module.exports.uploadProfileImageGaragewithPhone = async (req, res, next) => {
 		});
 		image
 		  .save()
-		  .then((image) => {
+		  .then( async (image) => {
 			console.log("Image _id : " + image._id);
 			console.log("phone: " + phone);
   
-			const garage = Garage.updateProfileImageGarage(phone, image.imageLink);
+			const garage = await Garage.updateProfileImageGarage(phone, image.imageLink);
 			console.log("result: " + garage);
   
 			res.json({
 			  message: "Successfully  uploaded",
-			  image,
+			  garage,
 			});
 		  })
 		  .catch((err) => console.log(err));
@@ -209,15 +213,15 @@ module.exports.uploadGarageImageMultiple = async (req, res, next) => {
       });
       imageMongo
         .save()
-        .then((image) => {
+        .then( async (image) => {
           console.log("Image _id : " + image._id);
           console.log("phone: " + phone);
 
-          Garage.updateImageListGarage(phone, image.imageLink);
+          const garage = await Garage.updateImageListGarage(phone, image.imageLink);
 
           res.json({
             message: "Successfully  uploaded",
-            imageMongo,
+            garage,
           });
         })
         .catch((err) => console.log(err));

@@ -22,6 +22,7 @@ const isEmpty = function (obj) {
 module.exports.checkPhoneUser = (req, res) => {
   const errors = {};
   const phone = req.body.phone;
+  console.log("phone: "+phone);
   User.findOne({
     phone,
   })
@@ -89,7 +90,7 @@ module.exports.registerUser = async (req, res) => {
   const phone = req.body.phone;
   const validatePhone = req.body.validatePhone;
 
-
+  console.log("phone: "+phone);
 
   user = new User({
     name: req.body.name,
