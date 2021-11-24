@@ -1,6 +1,8 @@
 const Garage = require("../models/garage.model");
 const Service = require("../models/service.model");
 const ServiceType = require("../models/serviceType.model");
+const Review = require("../models/review.model");
+
 
 const ObjectId = require("mongodb").ObjectID;
 
@@ -423,28 +425,46 @@ module.exports.getAllGarageByQuery = async (req, res) => {
     .limit(limit)
     .skip(skipIndex)
     .populate([])
-    .then((garages) => {
+    .then(async (garages) => {
       if (
         currentLat != "" &&
         currentLat != null &&
         currentLong != "" &&
         currentLong != null
       ) {
-        garages.forEach((garage) => {
+        var garagesInRadius = [];
+        const radius = 50;
+        for (let garage of garages) {
           console.log("Geo: ", garage.address.geoLocation);
-          console.log(
-            "Distance: " +
-              getDistanceFromLatLongInKm(
-                parseFloat(currentLat),
-                parseFloat(currentLong),
-                parseFloat(garage.address.geoLocation.lat),
-                parseFloat(garage.address.geoLocation.long)
-              )
+          var distance = await this.getDistanceFromLatLongInKm(
+            parseFloat(currentLat),
+            parseFloat(currentLong),
+            parseFloat(garage.address.geoLocation.lat),
+            parseFloat(garage.address.geoLocation.long)
           );
-        });
+          console.log("Distance: " + distance.toFixed(1));
+          if (distance.toFixed(1) < radius) {
+            console.log("garage id: " + garage._id);
+            // get all review by garage
+            const reviews = await Review.find({ garage: garage._id}).exec();
+            // cal review star
+            let reviewScoreList = await reviews.map((review) => review.star);
+            const reviewScoreTotal = await reviewScoreList.reduce((a, b) => a + b, 0);
+            console.log("reviewScoreTotal: " +reviewScoreTotal +" / " + reviewScoreList.length);
+            var reviewScoreP = 0;
+            if (reviewScoreList.length != 0) {
+              reviewScoreP = reviewScoreTotal / reviewScoreList.length;
+            }
+            
+            // parse to json for add new field
+            var garageJson = JSON.parse(JSON.stringify(garage));
+            garageJson.reviewStar = reviewScoreP.toFixed(1);
+            garagesInRadius.push(garageJson);
+          }
+        }
       }
 
-      res.status(200).json(garages);
+      res.status(200).json(garagesInRadius);
     })
     .catch((err) => console.log(err));
 };
@@ -470,14 +490,14 @@ module.exports.updateProfileImageGarage = async (phone, profileImage) => {
   return garage;
 };
 
-module.exports.updateImageListGarage = async (phone, imageInput) =>  {
+module.exports.updateImageListGarage = async (phone, imageInput) => {
   console.log("imageInput: " + imageInput);
   const garage = await Garage.findOneAndUpdate(
     {
       phone: phone,
     },
     {
-      $addToSet: {images: {$each: [ {image: imageInput},]}}
+      $addToSet: { images: { $each: [{ image: imageInput }] } },
     },
 
     function (err, res) {
@@ -490,9 +510,14 @@ module.exports.updateImageListGarage = async (phone, imageInput) =>  {
     }
   ).exec();
   return garage;
-},
+};
 
-function getDistanceFromLatLongInKm(lat1, long1, lat2, long2) {
+module.exports.getDistanceFromLatLongInKm = async (
+  lat1,
+  long1,
+  lat2,
+  long2
+) => {
   var R = 6371; // Radius of the earth in km
   var dLat = deg2rad(lat2 - lat1); // deg2rad below
   var dLong = deg2rad(long2 - long1);
@@ -505,7 +530,21 @@ function getDistanceFromLatLongInKm(lat1, long1, lat2, long2) {
   var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   var distance = R * c; // Distance in km
   return distance;
-}
+};
+// function getDistanceFromLatLongInKm(lat1, long1, lat2, long2) {
+//   var R = 6371; // Radius of the earth in km
+//   var dLat = deg2rad(lat2 - lat1); // deg2rad below
+//   var dLong = deg2rad(long2 - long1);
+//   var a =
+//     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+//     Math.cos(deg2rad(lat1)) *
+//       Math.cos(deg2rad(lat2)) *
+//       Math.sin(dLong / 2) *
+//       Math.sin(dLong / 2);
+//   var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+//   var distance = R * c; // Distance in km
+//   return distance;
+// }
 
 function deg2rad(deg) {
   return deg * (Math.PI / 180);

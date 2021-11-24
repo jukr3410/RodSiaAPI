@@ -24,7 +24,12 @@ const reviewSchema = new Schema({
     garage: {
         type: Schema.Types.ObjectId,
         ref: 'Garage'
-    }
+    },
+    requestService: {
+        type: Schema.Types.ObjectId,
+        ref: 'RequestService'
+    },
+    
 }, {
     timestamps: true
 })

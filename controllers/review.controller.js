@@ -56,6 +56,7 @@ module.exports.addReview = (req, res) => {
       star: req.body.star,
       user: req.body.user,
       garage: req.body.garage,
+      requestService: req.body.requestService
     });
     review
       .save()
@@ -92,6 +93,7 @@ module.exports.editReview = (req, res) => {
         star: req.body.star,
         user: req.body.user,
         garage: req.body.garage,
+        requestService: req.body.requestService
       },
       {
         new: true,
@@ -166,10 +168,33 @@ module.exports.getReviewsByGarage = (req, res) => {
         $in: [id],
       },
     };
-    Service.find(query)
+    Review.find(query)
       .populate(["user"])
       .then((reviews) => {
         res.json(reviews);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+};
+
+module.exports.getReviewByRequestService = (req, res) => {
+  const id = new ObjectId(req.params.id);
+
+  if (id == null) {
+    req.json({
+      status: "error",
+      message: "RequestService id should be provided",
+    });
+  } else {
+    const query = {
+      requestService: requestService
+    };
+    Review.findOne(query)
+      .populate(["user"])
+      .then((review) => {
+        res.json(review);
       })
       .catch((err) => {
         console.log(err);
