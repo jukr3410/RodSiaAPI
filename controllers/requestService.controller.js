@@ -152,6 +152,7 @@ module.exports.addRequestService = (req, res) => {
       service: req.body.service,
       garage: req.body.garage,
       car: req.body.car,
+      images: req.body.images,
       addressUser: req.body.addressUser,
       geoLocationUser: req.body.geoLocationUser,
       geoLocationGarage: req.body.geoLocationGarage,
