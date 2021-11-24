@@ -76,9 +76,13 @@ const requestServiceSchema = new Schema(
       type: String,
       required: true,
     },
-    image: {
-      type: String,
-    },
+    images: [
+      {
+        image: {
+          type: String,
+        },
+      },
+    ],
   },
   {
     timestamps: true,
