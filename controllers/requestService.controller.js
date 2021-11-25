@@ -193,6 +193,7 @@ module.exports.editRequestService = (req, res) => {
         service: req.body.service,
         garage: req.body.garage,
         car: req.body.car,
+        images: req.body.images,
         addressUser: req.body.addressUser,
         geoLocationUser: req.body.geoLocationUser,
         geoLocationGarage: req.body.geoLocationGarage,
@@ -283,19 +284,19 @@ module.exports.getRequestServiceWaitingConfirm = async (req, res) => {
         console.log(err);
       }
     });
-    var query = {
-      service: {
-        $in: servicesId,
-      }
-    };
+  var query = {
+    service: {
+      $in: servicesId,
+    },
+  };
 
-  if (status != null && status != '') {
+  if (status != null && status != "") {
     query = {
       service: {
         $in: servicesId,
       },
       status: status,
-    }
+    };
   }
 
   await RequestService.find(query)
