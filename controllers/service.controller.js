@@ -190,7 +190,7 @@ module.exports.getServicesByGarage = (req, res) => {
       },
     };
     Service.find(query)
-      .populate(["image", "serviceType", "garage"])
+      .populate(["serviceType", "garage"])
       .then((services) => {
         res.json(services);
       })

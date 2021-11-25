@@ -3,7 +3,6 @@ const Service = require("../models/service.model");
 const ServiceType = require("../models/serviceType.model");
 const Review = require("../models/review.model");
 
-
 const ObjectId = require("mongodb").ObjectID;
 
 module.exports.getAllGarage = (req, res) => {
@@ -446,19 +445,31 @@ module.exports.getAllGarageByQuery = async (req, res) => {
           if (distance.toFixed(1) < radius) {
             console.log("garage id: " + garage._id);
             // get all review by garage
-            const reviews = await Review.find({ garage: garage._id}).exec();
+            const reviews = await Review.find({ garage: garage._id }).exec();
             // cal review star
             let reviewScoreList = await reviews.map((review) => review.star);
-            const reviewScoreTotal = await reviewScoreList.reduce((a, b) => a + b, 0);
-            console.log("reviewScoreTotal: " +reviewScoreTotal +" / " + reviewScoreList.length);
+            const reviewScoreTotal = await reviewScoreList.reduce(
+              (a, b) => a + b,
+              0
+            );
+            console.log(
+              "reviewScoreTotal: " +
+                reviewScoreTotal +
+                " / " +
+                reviewScoreList.length
+            );
             var reviewScoreP = 0;
             if (reviewScoreList.length != 0) {
               reviewScoreP = reviewScoreTotal / reviewScoreList.length;
             }
-            
+            const services = await Service.find({garage: garage._id})
+              .populate(["serviceType"])
+              .exec();
+
             // parse to json for add new field
             var garageJson = JSON.parse(JSON.stringify(garage));
             garageJson.reviewStar = reviewScoreP.toFixed(1);
+            garageJson["serviceInGarages"] = services;
             garagesInRadius.push(garageJson);
           }
         }
