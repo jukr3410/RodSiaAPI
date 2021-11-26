@@ -260,7 +260,7 @@ module.exports.deleteRequestService = (req, res) => {
   }
 };
 
-module.exports.getRequestServiceWaitingConfirm = async (req, res) => {
+module.exports.getRequestServiceWithStatus = async (req, res) => {
   const garageId = req.params.id;
   const status = req.query.status;
   var servicesId = [];
