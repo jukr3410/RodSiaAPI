@@ -70,11 +70,11 @@ const requestServiceSchema = new Schema(
     },
     confirmRequest: {
       type: Boolean,
-      required: true,
+      //required: true,
     },
     status: {
       type: String,
-      required: true,
+      //required: true,
     },
     images: [
       {
