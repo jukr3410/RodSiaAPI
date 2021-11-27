@@ -161,22 +161,39 @@ module.exports.addRequestService = async (req, res) => {
       status: req.body.status,
     });
     await requestService
+      .populate([
+        "user",
+        {
+          path: "service",
+          populate: [
+            {
+              path: "garage",
+            },
+            {
+              path: "serviceType",
+            },
+          ],
+        },
+      ])
+      .execPopulate()
       .save()
       .then((requestService) => {
-        requestService.populate([
-          "user",
-          {
-            path: "service",
-            populate: [
-              {
-                path: "garage",
-              },
-              {
-                path: "serviceType",
-              },
-            ],
-          },
-        ]).execPopulate()
+        requestService
+          .populate([
+            "user",
+            {
+              path: "service",
+              populate: [
+                {
+                  path: "garage",
+                },
+                {
+                  path: "serviceType",
+                },
+              ],
+            },
+          ])
+          .execPopulate();
         res.status(200).send({
           message: "Add request service successfully.",
           requestService: requestService,
