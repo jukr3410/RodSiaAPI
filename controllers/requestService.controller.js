@@ -163,6 +163,21 @@ module.exports.addRequestService = async (req, res) => {
 
     
     await requestService
+      .populate([
+        "user",
+        {
+          path: "service",
+          populate: [
+            {
+              path: "garage",
+            },
+            {
+              path: "serviceType",
+            },
+          ],
+        },
+      ])
+      .execPopulate()
       .save()
       .then( (requestService) => {
 
