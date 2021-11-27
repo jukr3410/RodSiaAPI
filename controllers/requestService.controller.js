@@ -178,22 +178,8 @@ module.exports.addRequestService = async (req, res) => {
       .execPopulate()
       .save()
       .then((requestService) => {
-        requestService
-          .populate([
-            "user",
-            {
-              path: "service",
-              populate: [
-                {
-                  path: "garage",
-                },
-                {
-                  path: "serviceType",
-                },
-              ],
-            },
-          ])
-          .execPopulate();
+        requestService;
+
         res.status(200).send({
           message: "Add request service successfully.",
           requestService: requestService,
