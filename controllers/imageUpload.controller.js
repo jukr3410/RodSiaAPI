@@ -282,7 +282,7 @@ module.exports.uploadRequestServiceImageMultiple = async (req, res, next) => {
 
           res.json({
             message: "Successfully  uploaded",
-            RequestService,
+            requestService,
           });
         })
         .catch((err) => console.log(err));
