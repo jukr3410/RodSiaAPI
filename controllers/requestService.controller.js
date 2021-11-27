@@ -160,10 +160,13 @@ module.exports.addRequestService = async (req, res) => {
       confirmRequest: req.body.confirmRequest,
       status: req.body.status,
     });
+
+    
     await requestService
       .save()
-      .then((requestServiceDoc) => {
-        var requestService = requestServiceDoc.populate([
+      .then( (requestService) => {
+
+        requestService.populate([
           "user",
           {
             path: "service",
@@ -176,13 +179,13 @@ module.exports.addRequestService = async (req, res) => {
               },
             ],
           },
-        ]).execPopulate()
-        requestService.then(requestService => {
+        ], function(err) {
           res.status(200).send({
             message: "Add request service successfully.",
             requestService,
           });
-       });
+         });
+
        
       })
       .catch((err) => console.log(err));
