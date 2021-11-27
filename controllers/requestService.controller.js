@@ -179,7 +179,7 @@ module.exports.addRequestService = async (req, res) => {
         ]).execPopulate()
         res.status(200).send({
           message: "Add request service successfully.",
-          requestService
+          requestService: requestService,
         });
       })
       .catch((err) => console.log(err));
@@ -342,7 +342,6 @@ module.exports.getRequestServiceWithStatus = async (req, res) => {
       });
     });
 };
-
 
 module.exports.updateImageListRequestService = async (id, imageInput) => {
   console.log("imageInput: " + imageInput);
