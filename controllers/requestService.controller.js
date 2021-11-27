@@ -328,3 +328,26 @@ module.exports.getRequestServiceWithStatus = async (req, res) => {
       });
     });
 };
+
+
+module.exports.updateImageListRequestService = async (id, imageInput) => {
+  console.log("imageInput: " + imageInput);
+  const requestService = await RequestService.findOneAndUpdate(
+    {
+      id: id,
+    },
+    {
+      $addToSet: { images: { $each: [{ image: imageInput }] } },
+    },
+
+    function (err, res) {
+      if (err) {
+        console.log(err);
+      } else {
+        //console.log("Updated Images : ", res.images);
+        console.log("Updated Images.");
+      }
+    }
+  ).exec();
+  return requestService;
+};

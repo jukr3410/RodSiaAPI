@@ -12,6 +12,8 @@ router.post('/image-uploads/garage/:phone', multipartMiddleware,  imageUpload.up
 
 router.post('/image-uploads-multi/garage/:phone/:index', multipartMiddleware, imageUpload.uploadGarageImageMultiple);
 
+router.post('/image-uploads-multi/request-service/:id/:index', multipartMiddleware, imageUpload.uploadRequestServiceImageMultiple);
+
 
 
 router.get('/garages/:id/images', imageUpload.getByGarageId);
