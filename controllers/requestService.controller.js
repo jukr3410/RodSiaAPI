@@ -351,11 +351,10 @@ module.exports.getRequestServiceWithStatus = async (req, res) => {
 };
 
 module.exports.updateImageListRequestService = async (id, imageInput) => {
+  
   console.log("imageInput: " + imageInput);
   const requestService = await RequestService.findByIdAndUpdate(
-    {
-      id,
-    },
+    id,
     {
       $addToSet: { images: { $each: [{ image: imageInput }] } },
     },
