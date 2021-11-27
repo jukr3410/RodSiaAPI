@@ -134,7 +134,7 @@ module.exports.getRequestByServiceId = (req, res) => {
     });
 };
 
-module.exports.addRequestService = (req, res) => {
+module.exports.addRequestService = async (req, res) => {
   if (req.body == undefined) {
     return res.status(400).send({
       message: "RequestService content can not be empty",
@@ -160,12 +160,12 @@ module.exports.addRequestService = (req, res) => {
       confirmRequest: req.body.confirmRequest,
       status: req.body.status,
     });
-    requestService
+    await requestService
       .save()
       .then((requestService) => {
         res.status(200).send({
           message: "Add request service successfully.",
-          requestServiceId: requestService._id,
+          requestService
         });
       })
       .catch((err) => console.log(err));
