@@ -162,26 +162,8 @@ module.exports.addRequestService = async (req, res) => {
     });
 
     
-    await requestService
-      .populate([
-        "user",
-        {
-          path: "service",
-          populate: [
-            {
-              path: "garage",
-            },
-            {
-              path: "serviceType",
-            },
-          ],
-        },
-      ])
-      .execPopulate()
-      .save()
-      .then( (requestService) => {
-
-        requestService.populate([
+    await requestService.save();
+    requestService.populate([
           "user",
           {
             path: "service",
@@ -195,6 +177,11 @@ module.exports.addRequestService = async (req, res) => {
             ],
           },
         ], function(err) {
+          if(err){
+            res.status(500).send({
+              message: "Can not Add request service",
+            });
+          }
           res.status(200).send({
             message: "Add request service successfully.",
             requestService,
@@ -202,8 +189,7 @@ module.exports.addRequestService = async (req, res) => {
          });
 
        
-      })
-      .catch((err) => console.log(err));
+      
   }
   //res.json(requestService)
   // });
