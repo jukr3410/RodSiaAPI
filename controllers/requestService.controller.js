@@ -140,14 +140,8 @@ module.exports.addRequestService = async (req, res) => {
       message: "RequestService content can not be empty",
     });
   } else {
-    // let requestServiceCount = 0;
-    // RequestService.find().countDocuments(function (err, count) {
-    //         requestServiceCount = count
-    //     })
-    //     .then(() => {
 
     const requestService = new RequestService({
-      // id: requestServiceCount + 1,
       user: req.body.user,
       service: req.body.service,
       garage: req.body.garage,
@@ -187,14 +181,7 @@ module.exports.addRequestService = async (req, res) => {
             requestService,
           });
          });
-
-       
-      
   }
-  //res.json(requestService)
-  // });
-
-  // res.json({id:RequestService.find().count()+1,...req.body})
 };
 
 module.exports.editRequestService = (req, res) => {
