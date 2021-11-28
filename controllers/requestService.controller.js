@@ -1,5 +1,7 @@
 const RequestService = require("../models/requestService.model");
 const Service = require("../models/service.model");
+const Review = require("../models/review.model");
+
 const ObjectId = require("mongodb").ObjectID;
 
 module.exports.getAllRequestService = (req, res) => {
@@ -322,8 +324,18 @@ module.exports.getRequestServiceWithStatus = async (req, res) => {
         ],
       },
     ])
-    .then((requestServices) => {
-      res.status(200).json(requestServices);
+    .then( async (requestServices) => {
+      var requestServicesAndReview = [];
+      for (let requestService of requestServices) {
+        const review = await Review.findOne({ requestService: requestService._id }).exec();
+        // parse to json for add new field
+        var requestServiceJson = JSON.parse(JSON.stringify(requestService));
+        requestServiceJson.review = review;
+        requestServicesAndReview.push(requestServiceJson);
+        
+      }
+
+      res.status(200).json(requestServicesAndReview);
     })
     .catch((err) => {
       if (err.kind === "ObjectId") {
