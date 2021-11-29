@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const garage = require("../controllers/garage.controller");
+const auth = require("../middlewares/auth.middleware");
+
 
 router.get("/garages", garage.getAllGarage);
 router.get("/garages/q", garage.getAllGarageByQuery);

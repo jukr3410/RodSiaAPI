@@ -293,8 +293,35 @@ module.exports.getByGarageName = (req, res) => {
       .sort({
         _id: sort,
       })
-      .then((garage) => {
-        res.json(garage);
+      .then( async (garages) => {
+        var garagesAndReview = [];
+        for (let garage of garages) {
+          // get all review by garage
+          const reviews = await Review.find({ garage: garage._id }).exec();
+          // cal review star
+          let reviewScoreList = await reviews.map((review) => review.star);
+          const reviewScoreTotal = await reviewScoreList.reduce(
+            (a, b) => a + b,
+            0
+          );
+          console.log(
+            "reviewScoreTotal: " +
+              reviewScoreTotal +
+              " / " +
+              reviewScoreList.length
+          );
+          var reviewScoreP = 0;
+          if (reviewScoreList.length != 0) {
+            reviewScoreP = reviewScoreTotal / reviewScoreList.length;
+          }
+
+          // parse to json for add new field
+          var garageJson = JSON.parse(JSON.stringify(garage));
+          garageJson.reviewStar = reviewScoreP.toFixed(1);
+          garagesAndReview.push(garageJson);
+        }
+
+        res.json(garagesAndReview);
       })
       .catch((err) => {
         console.log(err);
@@ -462,7 +489,7 @@ module.exports.getAllGarageByQuery = async (req, res) => {
             if (reviewScoreList.length != 0) {
               reviewScoreP = reviewScoreTotal / reviewScoreList.length;
             }
-            const services = await Service.find({garage: garage._id})
+            const services = await Service.find({ garage: garage._id })
               .populate(["serviceType"])
               .exec();
 
